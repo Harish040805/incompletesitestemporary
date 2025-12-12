@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f0f0;
+    text-align: center;
+}
+.heading {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+}
+.carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0;
+    position: relative;
+}
+#carouselImage {
+    width: 100%;
+    max-width: 800px;
+    height: 400px; 
+    object-fit: fill; 
+}
+.nav-btn {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.nav-btn:hover {
+    background-color: #222;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+}
+.modal-content {
+    display: block;
+    margin: auto;
+    max-width: 95%;
+    max-height: 90%;
+    border-radius: 10px;
+	object-fit: fill; 
+}
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover {
+    color: #ccc;
+}
+#passwordOverlay {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.iframe-box {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    text-align: center;
+    max-width: 500px;
+	max-height: 500px;
+    width: 90%;
+}
+.iframe-box h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+.iframe-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    font-size: 16px;
+}
+.iframe-box button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.iframe-box button:hover {
+    background-color: #555;
+}
+	</style>
+    <title>Photography Site</title>
+</head>
+<body>
+
+<div id="passwordOverlay">
+    <div class="iframe-box">
+        <h2>Enter Password to Access Gallery</h2>
+        <input type="password" id="passwordInput" placeholder="Enter Password" />
+        <button onclick="checkPassword()">Enter</button>
+		<p>Password: 123</p>
+        <p id="errorMessage"></p>
+    </div>
+</div>
+
+    <div class="heading">
+        <h1>Photography Site</h1>
+    </div>
+
+    <div class="carousel-container">
+        <button class="nav-btn" onclick="prevImage()">❮</button>
+        <img id="carouselImage" src="" onclick="openModal(currentImages[currentIndex])">
+        <button class="nav-btn" onclick="nextImage()">❯</button>
+    </div>
+
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+function checkPassword() {
+    const password = document.getElementById("passwordInput").value;
+    const correctPassword = "123";
+    const overlay = document.getElementById("passwordOverlay");
+    const error = document.getElementById("errorMessage");
+
+    if (password === correctPassword) {
+        overlay.style.display = "none";
+    } else {
+        error.textContent = "Wrong password";
+        error.style.color = "red";
+    }
+}
+	
+	
+        const currentImages = [
+            "https://media.geeksforgeeks.org/wp-content/uploads/20240311163321/Types-of-Wastes-(Banner).webp",
+            "https://media.geeksforgeeks.org/wp-content/uploads/20240311125007/Invertebrates-(Banner).webp",
+            "https://media.geeksforgeeks.org/wp-content/uploads/20240311120816/GBlog-banner.webp",
+            "https://media.geeksforgeeks.org/wp-content/uploads/20240308123700/Layers-of-Atmosphere-Banner-02.webp",
+            "https://media.geeksforgeeks.org/wp-content/uploads/20240307180031/List-of-Rocket-Launching-Stations-in-India---banner.webp",
+            "https://media.geeksforgeeks.org/wp-content/uploads/20240215134226/Russia-Banner-copy-2.webp",
+            "https://media.geeksforgeeks.org/wp-content/uploads/20240226155245/girl-dog-names-banner.webp",
+            "https://media.geeksforgeeks.org/wp-content/uploads/20240215151423/Types-of-Microscope-(Banner).png"
+        ];
+
+        let currentIndex = 0;
+
+        function updateImage() {
+            document.getElementById("carouselImage").src = currentImages[currentIndex];
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % currentImages.length;
+            updateImage();
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+            updateImage();
+        }
+
+        function openModal(src) {
+            document.getElementById("modalImage").src = src;
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        window.onload = updateImage;
+    </script>
+</body>
+</html>

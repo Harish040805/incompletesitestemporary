@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>D Productivity Tool</title>
+	<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 50px;
+    background-color: #f2f9ff;
+    color: #000;
+}
+#task {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+#task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #000;
+}
+.task {
+    padding: 4px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    clear: both;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.options {
+    float: right;
+}
+.btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+.btn:disabled {
+    background-color: #ccc !important;
+    color: #666 !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.update-btn {
+    background-color: #4CAF50;
+}
+.update-btn:hover {
+    background-color: #3e8e41;
+}
+.delete-btn {
+    background-color: #f44336;
+}
+.delete-btn:hover {
+    background-color: #ff0000;
+    color: #fff;
+}
+#add-btn {
+    background-color: #fff;
+	color: #3792cb;
+}
+#add-btn:hover {
+    background-color: #eee;
+	color: #3ca9ed;
+}
+.todo-container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 70%;
+    margin: 40px auto;
+	border: 1px solid #eee;
+    color: #000;
+}
+.todo-container h1 {
+    font-size: 2rem;
+    color: #3792cb;
+}
+.done-btn {
+    background-color: #28a745; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.done-btn:hover:not(:disabled) {
+    background-color: #218838; 
+}
+
+.done-btn:disabled {
+    background-color: #ccc; 
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.main-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+.level-indicator {
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 18px;
+    text-align: center;
+    color: #fff;
+    background-color: #3792cb;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+meter {
+    width: 60%;
+    height: 13px;
+    border-radius: 12px;
+    background: #e0f0ff;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    margin-left: 10px;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    appearance: none;
+}
+meter::before,
+meter::after {
+    content: none !important;
+}
+meter::-webkit-meter-bar {
+    background: #e0f0ff;
+    border-radius: 12px;
+}
+meter::-webkit-meter-optimum-value {
+    background: linear-gradient(90deg, #3ca9ed, #3792cb);
+    border-radius: 12px;
+}
+meter::-moz-meter-bar {
+    background: linear-gradient(90deg, #3ca9ed, #3792cb);
+    border-radius: 12px;
+}
+.task-completed {
+    text-decoration: line-through;
+    color: #999;
+}
+#live-time-top {
+    position: fixed;
+    width: 93%;
+	top: 0;
+	background-color: #3ca9ed;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+}
+.bluebox {
+  position: fixed;
+  top: 50px;      
+  right: 30px;     
+  width: 13%;
+  height: 200px;   
+  background-color: #3792cb;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 1000; 
+  border: 5px double white;  
+}
+#streak {
+  left: 30px;
+  right: auto;
+  top: 50px;
+  position: fixed;
+  width: 13%;
+  height: 200px;
+  background-color: #3792cb;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 1000;
+  text-align: center;
+}
+.toggleui{
+  right: 30px;
+  left: auto;
+  top: 70px;
+  position: fixed;
+  width: 8%;
+  height: 50px;
+  background-color: #3792cb;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 1000;
+  text-align: center;
+}
+.header-container {
+  width: 500px;
+  margin: 20px auto;
+  text-align: center;
+}
+.header-container h4, .header-container h1 {
+  display: inline;
+}
+.bottom-taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #3792cb;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+.bottom-taskbar .btn {
+  font-size: 16px;
+  padding: 8px 16px;
+}
+	</style>
+</head>
+<body>
+<div id="live-time-top"></div>
+<div class="main-container">
+<div class="todo-container">
+    <center>
+        <img src="https://www.creativefabrica.com/wp-content/uploads/2021/09/21/To-do-list-icon-Graphics-17618184-1.jpg" style="width:25%; height:25%;">
+        <br>
+<div class="header-container">
+  <h4>New</h4> &nbsp;
+  <h1>Productivity Tool</h1> &nbsp; &nbsp;
+</div>
+    </center>
+<div class="level-indicator">
+  <br>
+  <span id="level-text">Level 1</span>
+  <meter id="levelMeter" min="0" max="0" value="0"></meter>
+  <br><br>
+</div>
+	<br>
+    <ul id="task-list"></ul>
+</div>
+  <div class="bluebox" id="streak">Streak 0</div>
+  </div>
+</div>
+<div class="bottom-taskbar">
+  	<input type="text" id="task" placeholder="Enter Task to Perform in To-Do List" />
+	    <button id="add-btn" class="btn">Add</button>
+		<button id="reset-btn" class="btn delete-btn">&#9760;</button>
+</div>
+  <button id="toggle-visibility" class="toggleui">Toggle UI</button>
+
+<script>
+let level = parseInt(localStorage.getItem("level") || "1", 10);
+let streak = parseInt(localStorage.getItem("streak") || "0", 10);
+let lastActiveDate = localStorage.getItem("lastActiveDate") || "";
+let lastCompletionFull = false; 
+let db = null;
+let otp = null;
+
+document.getElementById("level-text").textContent = `Level ${level}`;
+document.getElementById("streak").textContent = `Streak ${streak}`;
+
+document.getElementById("toggle-visibility").addEventListener("click", () => {
+    const elems = [
+        document.getElementById("streak"),
+        document.querySelector(".bottom-taskbar"),
+    ];
+    elems.forEach(el => {
+        if (!el) return;
+        el.style.display = (el.style.display === "none") ? "" : "none";
+    });
+});
+
+function getTodayDate() {
+    const now = new Date();
+    return now.toISOString().split("T")[0]; 
+}
+function isYesterday(dateStr) {
+    if (!dateStr) return false;
+    const date = new Date(dateStr);
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return date.toISOString().split("T")[0] === yesterday.toISOString().split("T")[0];
+}
+
+(function initStreak() {
+    const today = getTodayDate();
+    if (lastActiveDate && lastActiveDate !== today && !isYesterday(lastActiveDate)) {
+        streak = 0;
+        localStorage.setItem("streak", String(streak));
+    }
+    document.getElementById("streak").textContent = `Streak ${streak}`;
+})();
+
+
+const request = indexedDB.open("todoDB_v2", 1);
+
+request.onupgradeneeded = (e) => {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains("todos_v2")) {
+        db.createObjectStore("todos_v2", { autoIncrement: true });
+    }
+};
+
+request.onsuccess = (e) => {
+    db = e.target.result;
+    displayTodos();
+    updateMeter(); 
+};
+
+request.onerror = (e) => {
+    console.error("IndexedDB open error:", e);
+    alert("Failed to open local database. Some functionality may be unavailable.");
+};
+
+document.getElementById("add-btn").addEventListener("click", addTodo);
+document.getElementById("task").addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter") addTodo();
+});
+
+function addTodo() {
+    const todoInput = document.getElementById("task");
+    const todoText = todoInput.value.trim();
+    if (!todoText) {
+        todoInput.focus();
+        return;
+    }
+    if (!db) {
+        alert("Database not ready. Please try again shortly.");
+        return;
+    }
+
+    try {
+        const transaction = db.transaction(["todos_v2"], "readwrite");
+        const store = transaction.objectStore("todos_v2");
+        const addReq = store.add({ text: todoText, completed: false });
+        addReq.onsuccess = () => {
+            todoInput.value = "";
+            todoInput.focus();
+        };
+        addReq.onerror = (err) => {
+            console.error("Add todo error:", err);
+            alert("Could not add task. See console for details.");
+        };
+        transaction.oncomplete = () => {
+            displayTodos();
+            updateMeter();
+        };
+        transaction.onerror = (err) => {
+            console.error("Transaction error on add:", err);
+        };
+    } catch (err) {
+        console.error("Error adding todo:", err);
+    }
+}
+
+function displayTodos() {
+    const todoList = document.getElementById("task-list");
+    todoList.innerHTML = "";
+    if (!db) return;
+
+    try {
+        const transaction = db.transaction(["todos_v2"], "readonly");
+        const store = transaction.objectStore("todos_v2");
+
+        let currentTasksCount = 0;
+
+        store.openCursor().onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+                const todo = cursor.value;
+                const id = cursor.key;
+                currentTasksCount++;
+
+                const todoItem = document.createElement("li");
+                todoItem.className = "task";
+
+                const textSpan = document.createElement("span");
+                textSpan.textContent = todo.text;
+                if (todo.completed) textSpan.classList.add("task-completed");
+                todoItem.appendChild(textSpan);
+				
+				const streakEl = document.getElementById("streak");
+				if (streakEl) {
+					streakEl.textContent = `Streak ${streak}`;
+				}
+
+                const optionsDiv = document.createElement("div");
+                optionsDiv.className = "options";
+
+                const updateBtn = document.createElement("button");
+                updateBtn.className = "update-btn btn";
+                updateBtn.textContent = "Update";
+                updateBtn.addEventListener("click", () => updateTodo(id, todo.text));
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "delete-btn btn";
+                deleteBtn.textContent = "Delete";
+                deleteBtn.addEventListener("click", () => deleteTodo(id));
+
+                const doneBtn = document.createElement("button");
+				doneBtn.textContent = "Done";
+				doneBtn.classList.add("done-btn"); 
+				doneBtn.disabled = todo.completed;
+				doneBtn.addEventListener("click", () => toggleDone(id, todo));
+
+                optionsDiv.appendChild(updateBtn);
+                optionsDiv.appendChild(deleteBtn);
+                optionsDiv.appendChild(doneBtn);
+
+                todoItem.appendChild(optionsDiv);
+                todoList.appendChild(todoItem);
+
+                cursor.continue();
+            } else {
+                updateMeter(currentTasksCount);
+            }
+        };
+
+        store.openCursor().onerror = (err) => {
+            console.error("Cursor error when displaying todos:", err);
+        };
+    } catch (err) {
+        console.error("displayTodos error:", err);
+    }
+}
+
+function toggleDone(id, todo) {
+    if (!db) return;
+    if (todo.completed) return;
+	try {
+        const transaction = db.transaction(["todos_v2"], "readwrite");
+        const store = transaction.objectStore("todos_v2");
+        
+		todo.completed = true;
+		
+		const putReq = store.put(todo, id);
+        putReq.onsuccess = () => {
+            handleTaskCompletedToday();
+        };
+        transaction.oncomplete = () => {
+            displayTodos();
+            updateMeter();
+        };
+    } catch (err) {
+        console.error("toggleDone error:", err);
+    }
+}
+
+function handleTaskCompletedToday() {
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        const lastCompletionDate = localStorage.getItem("lastCompletionDate");
+
+        if (lastCompletionDate) {
+            const lastDate = new Date(lastCompletionDate);
+            const currentDate = new Date(today);
+            const differenceInDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
+
+            if (differenceInDays === 1) {
+                streak++;
+            } else if (differenceInDays > 1) {
+                streak = 1;
+            }
+        } else {
+            streak = 1;
+        }
+
+        localStorage.setItem("streak", String(streak));
+        localStorage.setItem("lastCompletionDate", today);
+
+        const streakEl = document.getElementById("streak");
+        if (streakEl) {
+            streakEl.textContent = `Streak ${streak}`;
+        }
+    } catch (err) {
+        console.error("handleTaskCompletedToday error:", err);
+    }
+}
+
+function updateTodo(key, currentText) {
+    const newTask = prompt('Enter new task:', currentText);
+    if (newTask === null) return;
+    const trimmed = newTask.trim();
+    if (trimmed === '') {
+        alert("Task cannot be empty.");
+        return;
+    }
+    if (!db) return;
+    try {
+        const transaction = db.transaction(["todos_v2"], "readwrite");
+        const store = transaction.objectStore("todos_v2");
+        const getReq = store.get(key);
+        getReq.onsuccess = () => {
+            const todo = getReq.result;
+            if (!todo) return;
+            todo.text = trimmed;
+            const putReq = store.put(todo, key);
+            putReq.onerror = (err) => {
+                console.error("Error saving updated todo:", err);
+                alert("Could not update task. See console for details.");
+            };
+        };
+        transaction.oncomplete = () => {
+            displayTodos();
+            updateMeter();
+        };
+        transaction.onerror = (err) => {
+            console.error("Transaction error on update:", err);
+        };
+    } catch (err) {
+        console.error("updateTodo error:", err);
+    }
+}
+
+function deleteTodo(key) {
+    if (!db) return;
+    try {
+        const transaction = db.transaction(["todos_v2"], "readwrite");
+        const store = transaction.objectStore("todos_v2");
+        const delReq = store.delete(key);
+        delReq.onsuccess = () => {
+        };
+        delReq.onerror = (err) => {
+            console.error("Delete todo error:", err);
+            alert("Could not delete task. See console for details.");
+        };
+        transaction.oncomplete = () => {
+            displayTodos();
+            updateMeter();
+        };
+    } catch (err) {
+        console.error("deleteTodo error:", err);
+    }
+}
+
+function countTotalTasks() {
+    return new Promise((resolve, reject) => {
+        if (!db) return resolve(0);
+        try {
+            const transaction = db.transaction(["todos_v2"], "readonly");
+            const store = transaction.objectStore("todos_v2");
+            let count = 0;
+            store.openCursor().onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    count++;
+                    cursor.continue();
+                } else {
+                    resolve(count);
+                }
+            };
+            store.openCursor().onerror = (err) => reject(err);
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
+
+function updateMeter(totalFromDisplay = null) {
+    if (!db) {
+        const meter = document.getElementById("levelMeter");
+        meter.max = 1;
+        meter.value = 0;
+        return;
+    }
+
+    if (typeof totalFromDisplay === "number") {
+        try {
+            const transaction = db.transaction(["todos_v2"], "readonly");
+            const store = transaction.objectStore("todos_v2");
+            let completed = 0;
+            store.openCursor().onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    if (cursor.value.completed) completed++;
+                    cursor.continue();
+                } else {
+                    applyMeterValues(totalFromDisplay, completed);
+                }
+            };
+            store.openCursor().onerror = (err) => console.error("Cursor error in updateMeter:", err);
+        } catch (err) {
+            console.error("updateMeter error:", err);
+        }
+    } else {
+        try {
+            const transaction = db.transaction(["todos_v2"], "readonly");
+            const store = transaction.objectStore("todos_v2");
+            let total = 0, completed = 0;
+            store.openCursor().onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    total++;
+                    if (cursor.value.completed) completed++;
+                    cursor.continue();
+                } else {
+                    applyMeterValues(total, completed);
+                }
+            };
+            store.openCursor().onerror = (err) => console.error("Cursor error in updateMeter:", err);
+        } catch (err) {
+            console.error("updateMeter error:", err);
+        }
+    }
+}
+
+function applyMeterValues(total, completed) {
+    const meter = document.getElementById("levelMeter");
+    meter.max = total || 1;
+    meter.value = completed;
+
+    const isFullyCompleted = total > 0 && completed === total;
+
+    if (isFullyCompleted && !lastCompletionFull) {
+        level++;
+        localStorage.setItem("level", String(level));
+        document.getElementById("level-text").textContent = `Level ${level}`;
+    }
+
+    lastCompletionFull = isFullyCompleted;
+}
+
+function updateLiveTime() {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const dateStr = `${day}/${month}/${year}`;
+    const timeStr = now.toLocaleTimeString();
+    const dayOfWeek = now.toLocaleString('en-US', { weekday: 'long' });
+    document.getElementById("live-time-top").textContent = `${dayOfWeek}, ${dateStr} ${timeStr}`;
+}
+setInterval(updateLiveTime, 1000);
+updateLiveTime();
+
+const resetBtn = document.getElementById('reset-btn');
+resetBtn.addEventListener('click', () => {
+    otp = Math.floor(100000 + Math.random() * 900000);
+    alert(`One-time OTP for reset: ${otp}`);
+    const otpInput = prompt('Enter the OTP to confirm reset:');
+    if (otpInput !== otp.toString()) {
+        alert('Invalid OTP. Reset cancelled.');
+        return;
+    }
+    if (!confirm("Are you absolutely sure? This will permanently delete all tasks and reset streak & level.")) {
+        return;
+    }
+    resetAll();
+});
+
+function resetAll() {
+    if (!db) {
+        streak = 0;
+        localStorage.setItem("streak", "0");
+        lastActiveDate = "";
+        localStorage.setItem("lastActiveDate", "");
+        level = 1;
+        localStorage.setItem("level", "1");
+        document.getElementById("streak").textContent = "Streak 0";
+        document.getElementById("level-text").textContent = "Level 1";
+        const meter = document.getElementById("levelMeter");
+        meter.max = 1;
+        meter.value = 0;
+        lastCompletionFull = false;
+        displayTodos();
+        return;
+    }
+
+    try {
+        const transaction = db.transaction(["todos_v2"], "readwrite");
+        const store = transaction.objectStore("todos_v2");
+        const clearReq = store.clear();
+        clearReq.onsuccess = () => {
+            streak = 0;
+            localStorage.setItem("streak", "0");
+            lastActiveDate = "";
+            localStorage.setItem("lastActiveDate", "");
+            level = 1;
+            localStorage.setItem("level", "1");
+            document.getElementById("streak").textContent = "Streak 0";
+            document.getElementById("level-text").textContent = "Level 1";
+
+            const meter = document.getElementById("levelMeter");
+            meter.max = 1;
+            meter.value = 0;
+
+            lastCompletionFull = false;
+
+            displayTodos();
+            updateMeter();
+        };
+        clearReq.onerror = (err) => {
+            console.error("Error clearing store:", err);
+            alert("Failed to reset tasks. See console for details.");
+        };
+    } catch (err) {
+        console.error("resetAll error:", err);
+    }
+}
+</script>
+</body>
+</html>
