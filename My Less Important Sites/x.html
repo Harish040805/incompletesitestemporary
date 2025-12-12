@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>x</title>
+  <style>
+body{
+	background: linear-gradient(to bottom, #aaa, #a3a3a3);
+}
+.breast, .buttl, .buttr, .collar, .hair, .head, .hip, .mole, .neck, .nipple, 
+.thighabove.left, .thighabove.right, .thighbelow.left, .thighbelow.right {
+    transform: translate(-50%, -50%);
+}
+.breast {
+    width: 80px;
+    height: 100px;
+    border: 1px solid #dba059;
+	border-radius: 50%;
+    background: linear-gradient(to right,#ffbd6d, #F5DEB3);
+    position: absolute;
+    top: 38%;
+    z-index: 1;
+}
+.breast:nth-child(4) {
+    left: calc(50% + 40px);
+}
+.breast:nth-child(3) {
+    left: calc(50% - 40px);
+}
+.buttl, .buttr {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #dba059;
+	border-radius: 50%;
+    position: absolute;
+    top: 56%;
+	z-index: -1;
+}
+.buttl{
+	left: 47%;
+  background: linear-gradient(to right,#ffbd6d, #F5DEB3);
+}
+.buttr{
+	left: 53%;
+  background: linear-gradient(to left,#ffbd6d, #F5DEB3);
+}
+.collar {
+  width: 210px;
+  height: 100px;
+  clip-path: polygon(100% 19%, 100% 63%, 51% 100%, 0 64%, 0 20%, 51% 24%);
+  border: 1px solid #dba059;
+  background: linear-gradient(to bottom, #ffbd6d, #F5DEB3);
+  position: absolute;
+  top: 32.5%;
+  left: 50.3%;
+  border-radius: 50%;
+}
+.eyel, .eyer{
+	width: 20px;
+	height: 20px;
+  background: linear-gradient(to bottom, #fff, #e2e2e2);
+	position: absolute;
+	top: 20%;
+	border-radius: 50%;
+	z-index: 1.5;
+	animation: rotateEyes 10s infinite;
+  border: 1px solid black;
+}
+.eyel{
+	left: 22%;
+}
+.eyer{
+  left: 60%;
+}
+.eyeli, .eyeri{
+	width: 10px;
+	height: 25px;
+	background: #000;
+	position: absolute;
+	top: 0.5%;
+	left: 20%;
+	clip-path: ellipse(50% 22% at 50% 50%);
+}
+.feetl, .feetr{
+	width: 70px;
+	height: 40px;
+	border: 1px solid #dba059;
+    background: linear-gradient(to bottom, #F5DEB3, #E4C59E);
+    position: absolute;
+	top: 92%;
+	clip-path: polygon(57% 0, 100% 0, 100% 100%, 0 100%, 0 73%);
+}
+.feetl{
+	right: 51.5%;
+}
+.feetr{
+	right: 43.8%;
+	transform: scaleX(-1);
+}
+.hair {
+  width: 300px;
+  height: 150px;
+  clip-path: polygon(53% 4%, 56% 6%, 49% 1549%, 54% 4%, 54% 4%, 54% 4%, 62% 0%, 62% 0%, 62% 0%, 76% 0%, 76% 0%, 76% 0%, 83% 9%, 83% 9%, 83% 9%, 86% 21%, 86% 21%,
+  86% 21%, 90% 29%, 90% 29%, 90% 29%, 94% 40%, 94% 40%, 94% 40%, 94% 55%, 94% 55%, 94% 55%, 90% 64%, 90% 64%, 90% 64%, 82% 71%, 82% 71%, 82% 71%, 73% 77%, 
+  73% 77%, 73% 77%, 63% 81%, 63% 81%, 63% 81%, 50% 77%, 57% 78%, 45% 77%, 39% 72%, 39% 72%, 39% 72%, 31% 65%, 31% 65%, 31% 65%, 20% 60%, 20% 60%, 20% 60%, 
+  14% 66%, 14% 66%, 14% 66%, 8% 72%, 8% 72%, 8% 72%, 2% 81%, 2% 81%, 2% 81%, 0% 70%, 0% 70%, 0% 70%, 1% 59%, 1% 59%, 1% 59%, 3% 44%, 3% 44%, 3% 44%, 0% 37%, 
+  0% 37%, 0% 37%, 14% 32%, 14% 32%, 14% 32%, 30% 34%, 30% 34%, 30% 34%, 40% 32%, 40% 32%, 40% 32%, 47% 23%, 47% 23%, 47% 23%);  
+  border: 1px solid #dba059;
+  background: linear-gradient(to right, #964B00, #654321);
+  position: absolute;
+  top: 15%;
+  left: 47%;
+  animation: drift 5s infinite;
+}
+.handl, .handr{
+	width: 100px;
+	height: 190px;
+	border-radius: 85%;
+	transform-origin: top center;
+	background: linear-gradient(to right,#ffbd6d, #F5DEB3);
+    position: absolute;	
+	top: 28%;
+}
+.handl{
+	border: 1px solid #dba059;
+	clip-path: polygon(38% 0%, 6% 40%, 38% 77%, 37% 90%, 49% 95%, 63% 89%, 47% 80%, 30% 41%, 61% 0);
+	left: 41.5%;
+}
+.handr{
+	border: 3px solid #dba059;
+    clip-path: polygon(33% 0, 50% 39%, 46% 79%, 24% 89%, 41% 97%, 56% 93%, 56% 80%, 69% 40%, 56% 0);
+	right: 39.5%;
+}
+.head {
+  width: 90px;
+  height: 100px;
+  clip-path: polygon(0% 15%, 0 0, 28% 15%, 85% 2%, 100% 0, 100% 15%, 100% 37%, 95% 69%, 73% 99%, 18% 90%, 0% 38%, 0 66%);
+  border: 1px solid #dba059;
+  background: linear-gradient(to right, #ffd19a, #F5DEB3);
+  position: absolute;
+  top: 20%;
+  left: 50%;
+}
+.hip {
+  width: 172px;
+  height: 172px;
+  clip-path: polygon(50% 0%, 100% 0, 84% 29%, 100% 69%, 63% 84%, 50% 100%, 35% 83%, 0 68%, 19% 32%, 0 0);
+  border: 1px solid #dba059;
+  border-radius: 50%;
+  background: linear-gradient(to right, #ffbd6d, #F5DEB3);
+  position: absolute;
+  top: 46.3%;
+  left: 50%;
+}
+.lashl, .lashr{
+  width: 20px;
+  height: 50px;
+  background: linear-gradient(to bottom, #f89797, #f7c5c5);
+  position: absolute;
+  clip-path: ellipse(50% 22% at 50% 50%);
+  z-index: 2;
+}
+.lashl{
+	top: 5%;
+	left: 22.5%;
+	animation: blink 6s infinite;
+}
+.lashr{
+  top: 5%;
+  left: 60.5%;
+  animation: blink 2s infinite;
+}
+.lips{
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(to bottom, #ff1493, #facce5, #ff1493);
+  position: absolute;
+  border-radius: 50%;
+  clip-path: polygon(50% 39%, 69% 26%, 83% 26%, 100% 40%, 69% 83%, 32% 83%, 12% 61%, 0 35%, 14% 26%, 30% 26%);
+  top: 50%;
+  left: 35%;
+  border: 1px solid pink;
+}
+.lips.clicked {
+  background: #ecebeb;
+  border: 1px solid pink;
+}
+.mole {
+  width: 4px;
+  height: 2px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #644925, #8d6632);
+  position: absolute;
+  top: 80%; 
+  left: 55%; 
+}
+.navel {
+  font-size: x-small;
+  font-family: "Comic Sans MS", cursive;
+    -webkit-text-stroke: 0.5px #80633c;
+  color: #634d30;
+  position: absolute;
+  top: 70%; 
+  left: 50%;
+  transform: translateX(-50%);
+  text-shadow: 2px 0px 4px #4f3c22;
+}
+.neck{
+    width: 50px;
+    height: 110px;
+	border: 1px solid #dba059;
+    background: linear-gradient(to bottom, #ffd19a, #F5DEB3);
+    position: absolute;
+    top: 33%;
+    left: 50%;
+	clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+}
+.nipple {
+  width: 15px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #A25050, #ff69a0);
+  position: absolute;
+  top: 90%; 
+  left: 55%; 
+}
+.publichair {
+  width: 50px;
+  height: 20px;
+  clip-path: polygon(0 0, 51% 100%, 100% 0);
+  background: rgba(0, 0, 0, 0.369);
+  float: left; 
+  margin-top: 53.3vh; 
+  margin-left: 48.3%; 
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}
+.square {
+  position: fixed;
+  top: 35vh; 
+  left: 0;
+  width: 100vw;
+  height: 35vh;
+  background: linear-gradient(to right, rgba(207, 237, 251, 0.95), rgba(172, 192, 198, 0.95));
+  z-index: 1000; 
+  cursor: grab;
+}
+.thighabove, .thighbelow {
+	border-radius: 30%;
+	border: 1px solid #dba059;
+    background: linear-gradient(to bottom, #ffbd6d, #F5DEB3);
+	position: absolute;
+}
+	.thighabove {
+      width: 70px;
+      height: 195px;
+      top: 60%;
+	  z-index: -1;
+    }
+    .thighabove.left {
+      left: calc(50% - 40px);
+    }
+    .thighabove.right {
+      left: calc(50% + 40px);
+    }
+	.thighbelow {
+      width: 50px;
+      height: 180px;
+      top: 80%;
+	  z-index: -2;
+    }
+	.thighbelow.left {
+      left: calc(50% - 40px);
+    }
+    .thighbelow.right {
+      left: calc(50% + 40px);
+    }
+    .vagina {
+      width: 20px;
+      height: 30px;
+	  border-radius: 50%;
+	  clip-path: polygon(50% 0%, 61% 7%, 70% 18%, 75% 30%, 75% 45%, 70% 55%, 61% 65%, 50% 75%, 39% 65%, 30% 55%, 25% 45%, 25% 30%, 30% 18%, 39% 7%);
+      position: absolute;
+      margin-top: 54.5vh; 
+	  left: 49.4%;
+	  z-index: 2;
+	  float: left; 
+	  background: linear-gradient(to right, #db8888, #ffce8e);
+    }
+/* No ".drift" class*/
+.mast {
+  animation: mast 1s;
+}
+.pop {
+  animation: pop 0.3s;
+}
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.lashl, .lashr {
+  animation: blink 3s infinite;
+}
+@keyframes drift {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+    transform: translate(-50%, -45%) rotate(5deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}
+@keyframes mast {
+  0% {
+    transform: translate(0%, 0%);
+  }
+  25% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0%, -5px);
+  }
+  75% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0%, 0%);
+  }
+}
+@keyframes pop {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    transform: translate(-50%, -60%);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+@keyframes rotateEyes {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(360deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="hip"><div class="navel">T</div></div>
+  <div class="collar"></div>
+  <div class="breast"><div class="nipple"></div></div>
+  <div class="breast"><div class="mole"></div><div class="nipple"></div></div>
+  <div class="neck"></div>
+  <div class="hair"></div>
+  <div class="head">
+	<div class="lashl"></div>
+	<div class="eyel"><div class="eyeli"><br></div></div>
+	<div class="lashr"></div>
+	<div class="eyer"><div class="eyeri"><br></div></div>
+	<div class="lips"></div>
+  </div>
+  <div class="handl"></div>
+  <div class="handr"></div>
+  <div class="vaginal"><div class="publichair"></div><div class="vagina"></div></div>	
+  <div class="buttl"></div>
+  <div class="buttr"></div>
+  <div class="thighabove left">
+	<br><br><br><br><br><br>
+	<p style="color:#00563f;">&nbsp; Sexy <span>&#9829;</span></p>
+  </div>
+  <div class="thighabove right"></div>
+  <div class="thighbelow left"></div>
+  <div class="thighbelow right"></div>
+  <div class="feetl"></div>
+  <div class="feetr"></div>
+  <div class="square"></div>
+<script>
+let password = "MOMOS";
+function checkPassword(inputPassword) {
+  if (inputPassword === password) {
+    alert("Password is correct! Welcome!");
+  } else {
+    window.location.href = "error.html";
+  }
+}
+let userInput = prompt("Enter your password:");
+checkPassword(userInput);
+function changeLipsColor() {
+  lips.style.background = 'linear-gradient(to bottom, #8b0a0a, #b30000)';
+  setTimeout(() => {
+    lips.style.background = 'linear-gradient(to bottom, #ff1493, #facce5, #ff1493)';
+  }, 1000);
+}
+function pauseEyelashes() {
+  document.querySelector('.lashl').style.animationPlayState = 'paused';
+  document.querySelector('.lashr').style.animationPlayState = 'paused';
+}
+function resumeEyelashes() {
+  document.querySelector('.lashl').style.animationPlayState = 'running';
+  document.querySelector('.lashr').style.animationPlayState = 'running';
+}
+const breasts = document.querySelectorAll('.breast');
+breasts.forEach(breast => {
+  breast.addEventListener('click', () => {
+    breast.classList.add('pop');
+    pauseEyelashes();
+	changeLipsColor();
+	setTimeout(() => {
+      breast.classList.remove('pop');
+      resumeEyelashes();
+    }, 1000);
+	setTimeout(() => {
+      breast.classList.remove('pop');
+    }, 1000);
+  });
+});
+const buttl = document.querySelector('.buttl');
+buttl.addEventListener('click', () => {
+  buttl.classList.add('pop');
+  changeLipsColor();
+  pauseEyelashes();
+  setTimeout(() => {
+    buttl.classList.remove('pop');
+  }, 1000);
+  setTimeout(() => {
+    buttl.classList.remove('pop');
+    resumeEyelashes();
+  }, 1000);
+});
+const buttr = document.querySelector('.buttr');
+buttr.addEventListener('click', () => {
+  buttr.classList.add('pop');
+  changeLipsColor();
+  pauseEyelashes();
+  setTimeout(() => {
+    buttr.classList.remove('pop');
+  }, 1000);
+  setTimeout(() => {
+    buttr.classList.remove('pop');
+    resumeEyelashes();
+  }, 1000);
+});
+const vaginal = document.querySelector('.vaginal');
+vaginal.addEventListener('click', () => {
+  vaginal.classList.add('mast');
+  pauseEyelashes();
+  setTimeout(() => {
+    vaginal.classList.remove('mast');
+    resumeEyelashes();
+  }, 1000);
+  setTimeout(() => {
+    vaginal.classList.remove('mast');
+  }, 1000);
+});
+let handl = document.querySelector('.handl');
+let handr = document.querySelector('.handr');
+let palml = document.querySelector('.palml');
+let palmr = document.querySelector('.palmr');
+let isDragging = false;
+let draggingElement = null;
+let startX = 0;
+let initialAngle = 0;
+let maxAngle = 150;
+function handleDragStart(e) {
+  isDragging = true;
+  draggingElement = this;
+  startX = e.clientX;
+  initialAngle = getAngle(draggingElement);
+}
+function handleDrag(e) {
+  if (isDragging) {
+    let deltaX = e.clientX - startX;
+    let angle = initialAngle + deltaX * 0.5; 
+    angle = Math.max(-maxAngle, Math.min(angle, maxAngle)); 
+    if (draggingElement === handl) {
+      setAngle(handl, angle);
+      palml.style.transform = `translateX(${angle}px)`;
+    } else {
+      setAngle(handr, angle);
+      palmr.style.transform = `translateX(${angle}px)`;
+    }
+  }
+}
+function handleDragEnd() {
+  isDragging = false;
+  draggingElement = null;
+}
+function getAngle(element) {
+  let transform = element.style.transform;
+  let match = transform.match(/rotate\(([^)]+)\)/);
+  return match ? parseFloat(match[1]) : 0;
+}
+function setAngle(element, angle) {
+  element.style.transform = `rotate(${angle}deg)`;
+  element.style.transformOrigin = 'top center';
+}
+handl.addEventListener('mousedown', handleDragStart);
+handr.addEventListener('mousedown', handleDragStart);
+document.addEventListener('mousemove', handleDrag);
+document.addEventListener('mouseup', handleDragEnd);
+const lips = document.querySelector('.lips');
+lips.addEventListener('click', () => {
+  lips.classList.add('clicked');
+  setTimeout(() => {
+    lips.classList.remove('clicked');
+  }, 3000);
+});
+const square = document.querySelector('.square');
+let isSquareDragging = false;
+let squareStartX = 0;
+let squareCurrentX = 0;
+square.addEventListener('mousedown', (e) => {
+  isSquareDragging = true;
+  squareStartX = e.clientX;
+  squareCurrentX = square.offsetLeft;
+  square.style.cursor = 'grabbing';
+});
+document.addEventListener('mousemove', (e) => {
+  if (isSquareDragging) {
+    const deltaX = e.clientX - squareStartX;
+    square.style.left = `${squareCurrentX + deltaX}px`;
+  }
+});
+document.addEventListener('mouseup', () => {
+  isSquareDragging = false;
+  square.style.cursor = 'grab';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Translate Page</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    text-align: center;
+  }
+  #google_translate_element {
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+  <h1>Welcome to My Website</h1>
+  <p>This page can be translated into any language using the dropdown below.</p>
+  
+  <!-- Google Translate Dropdown will appear here -->
+  <div id="google_translate_element"></div>
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'af,sq,ar,az,bn,bg,zh-CN,zh-TW,cs,da,nl,en,fr,de,el,gu,he,hi,hu,id,it,ja,kn,ko,la,lv,lt,ms,ml,mr,ne,no,pa,fa,pl,pt,ro,ru,si,sk,sl,es,sv,ta,te,th,tr,uk,ur,vi,cy',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+    }
+  </script>
+
+  <!-- Use HTTPS explicitly -->
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
