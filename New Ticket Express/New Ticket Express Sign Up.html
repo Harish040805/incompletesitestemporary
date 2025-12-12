@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="NewGreatProject.css">
+	<title>New Ticket Express Sign Up </title>
+</head>
+<body>
+<!-- Splash screen container -->
+<div id="splash-screen" style="display: none;">
+    <div class="splash-image-container">
+      <img src="C:\Users\HP\Downloads\ticket-express-high-resolution-logo.png" alt="Splash Image" class="splash-image">
+    </div>
+  </div>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("splash-screen").style.display = "flex";
+  setTimeout(function () {
+    document.getElementById("splash-screen").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+  }, 3000);
+});
+
+  </script>
+<!-- Splash screen container close -->
+
+
+
+
+
+        <a href="file:///C:/Users/HP/OneDrive/Desktop/New%20Ticket%20Express.html" class="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  style = "margin-left: 30px; margin-top: 30px;" width="16" height="16" fill="White" class="bi bi-house-fill" viewBox="0 0 16 16">
+                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+                <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+              </svg>
+            </a>
+        <div class="login-container">
+            <br><br><br><br><br>
+            <center>
+            <h2>Sign Up</h2>
+            </center>
+            <br><br><br><br><br>
+    
+		<form>
+            <center>
+			<div class="input-field">
+				<label for="name">Name:</label>
+				<input type="text" id="name" placeholder="Enter your name">
+			</div>
+			<div class="input-field">
+				<label for="email">Email:</label>
+				<input type="email" id="email" placeholder="Enter your email">
+			</div>
+			<div class="input-field">
+				<label for="password">Password:</label>
+				<input type="password" id="password" placeholder="Enter your password">
+			</div>
+			<div class="input-field">
+				<label for="confirm-password">Confirm Password:</label>
+				<input type="password" id="confirm-password" placeholder="Confirm your password">
+			</div>
+            <a href= "file:///C:/Users/HP/OneDrive/Desktop/New%20Ticket%20Express.html"<button class="button" type="submit">Sign Up</button></a>
+		</form>
+	</div>
+</center>
+</body>
+</html>

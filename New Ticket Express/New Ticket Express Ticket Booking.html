@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Ticket Express Ticket Booking</title>
+    <link
+        href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Materials+Icons+Round|Materials+Icons+Sharp|Materials+Icons+Two+Tone" rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?
+    family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="NewGreatProject.css">
+
+</head>
+<body>
+<!-- Splash screen container -->
+<div id="splash-screen" style="display: none;">
+    <div class="splash-image-container">
+      <img src="C:\Users\HP\Downloads\ticket-express-high-resolution-logo.png" alt="Splash Image" class="splash-image">
+    </div>
+  </div>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("splash-screen").style.display = "flex";
+  setTimeout(function () {
+    document.getElementById("splash-screen").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+  }, 3000);
+});
+
+  </script>
+<!-- Splash screen container close -->
+<a href="file:///C:/Users/HP/OneDrive/Desktop/New%20Ticket%20Express.html" class="button">
+<svg xmlns="http://www.w3.org/2000/svg" style = "margin-left: 30px; margin-top: 30px;" width="16" height="16" fill="White" class="bi bi-house-fill" viewBox="0 0 16 16">
+    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+    <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+  </svg>
+</a>
+    <br><br>
+            <center><h2>Book Bus Tickets</h2></center>
+    <br><br>
+<section class="bus-list-section">
+    <h2>Available Buses</h2>
+    <ul id="bus-list">
+        <li> Harish Travels </li>
+        <li> Shakthi Transports </li>
+        <li> Deva Travels </li>
+        <li> Varun Travels and Tourism </li>
+        <li> Robert Travels </li>
+        <li> Sankara Travels </li>
+        <li> Praveen Transports </li>
+    </ul>
+</section>
+<br><br>
+            <section class="search-section">
+            <form>
+                <label for="from-city">From: &nbsp &nbsp </label>
+                    <select id="from-city" name="from-city" class="city-select">
+                        <option value="">Select City</option>
+                        <option value="Madurai">Madurai</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Thiruchy">Thiruchy</option>
+                        <option value="Tanjavur">Tanjavur</option>
+                        <option value="Sreerangam">Sreerangam</option>
+                        <option value="Coimbatore">Coimbatore</option>
+                    </select>
+                    <span style="margin: 0 10px;">&nbsp &nbsp<button> &#8644; </button> &nbsp &nbsp </span>
+                <label for="to-city">To: &nbsp &nbsp </label>
+                    <select id="to-city" name="to-city" class="city-select">
+                        <option value="">Select City</option>
+                        <option value="Madurai">Madurai</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Thiruchy">Thiruchy</option>
+                        <option value="Tanjavur">Tanjavur</option>
+                        <option value="Sreerangam">Sreerangam</option>
+                        <option value="Coimbatore">Coimbatore</option>                            
+                    </select>
+                    <button class="btn-today">Today</button>
+                    <button class="btn-tomorrow">Tomorrow</button>
+                    <a href="search-results.html">
+                    <button class="btn-search">Search</button>
+                    </a>
+                    <br><br>
+                    <label for="journey-date">Journey Date:</label>
+                    <input type="date" id="journey-date" name="journey-date" class="date-input">
+                    <br><br>
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time"><br><br>
+                    <label for="seats">No. of Seats:</label>
+                    <input type="number" id="seats" name="seats">
+                </div>
+            </form>         
+        </section>
+<br><br><br><br><br><br>
+            <h2 style="margin-bottom: 20px;">Why Choose Ticket Express for Bus Transportation?</h2>
+            <div class="text-box">
+                <p> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Ticket Express is India’s fastest growing online ticket booking platform. Ticket Express is the official ticketing partner of several State Road Transport Corporation (SRTC) operators and over 4000+ private patners of Buses, Trains and Aeroplanes covering more than 3,50,000 bus routes.</p>
+            </div>
+        <br><br>
+        <p><b>Book Bus Tickets at Ticket Express</b></p>
+        <br><br>        
+        <h2 style="margin-top: 20px; margin-bottom: 20px;">Our Bus Partners</h2>
+        
+        <div class="flex-containero">
+            <img src="https://upload.wikimedia.org/wikipedia/en/c/c4/Andhra_Pradesh_State_Road_Transport_Corporation_logo.png" alt="APSRTC" width="200" height="200">
+            <br><div class="image-description"><h3>APSRTC</h3></div>
+            <img src="https://upload.wikimedia.org/wikipedia/en/0/05/TSRTC_LOGO.png" alt="TSRTC" width="200" height="200">
+            <br><div class="image-description"><h3>TSRTC</h3></div>
+            <img src="C:\Users\HP\Downloads\SRTC.png" alt="SRTC" width="200" height="200">
+            <br><div class="image-description"><h3>SRTC</h3></div>
+            <img src="C:\Users\HP\Downloads\RSRTC.png" alt="RSRTC" width="200" height="200">
+            <br><div class="image-description"><h3>RSRTC</h3></div>
+            <img src="C:\Users\HP\Downloads\UPSRTC.webp" alt="UPSRTC" width="200" height="200">
+            <br><div class="image-description"><h3>UPSRTC</h3></div>
+        </div>
+    <br><br><br><br>
+    <center><h2>Book Your Ticket</h2></center><br>
+    <section class="booking-section">
+    <div class="center">
+        <div class="tickets">
+            <div class="ticket-selector">
+                <div class="head">
+                    <div class="title">Ticket Express</div>
+                </div>
+                <div class="seats">
+                    <script>
+                        var totalSeats = 20;
+                        var bookedSeats = Math.floor(Math.random() * totalSeats);
+                        var selectedSeats = Math.floor(Math.random() * bookedSeats);
+                        var availableSeats = totalSeats - bookedSeats;
+                      </script>                      
+                      <div class="ABS">
+                        <div class="item">
+                            Total Seats <br> 20
+                            <br> 
+                        </div>
+                        <div class="item">
+                          Available 
+                          <br> 
+                          <script>document.write(availableSeats);</script>
+                        </div>
+                        <div class="item">
+                          Booked 
+                          <br>
+                          <script>document.write(bookedSeats);</script>
+                        </div>
+                        <div class="item">
+                          Selected 
+                          <br>
+                          <script>document.write(selectedSeats);</script>
+                        </div>
+                      </div>
+                        <br>
+                    <div class="status">
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="status">
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="status">
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    </div>
+                </div>
+                <br>
+                <div class="status">
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="l1" />
+                        <label for="l1" class="seat booked"></label>
+                    </div>
+                </div>
+                </div>
+                <div class="timings">
+                    <div class="dates">
+                        <input type="radio" name="date" id="d1" 
+                        checked />
+                            <label class="data-item" for="d1">
+                                <div class="day">Sun</div>
+                                <div class="date">15</div>
+                            </label>
+                        <input type="radio" name="date" id="d2" 
+                        checked />    
+                            <label class="data-item" for="d2">
+                                <div class="day">Mon</div>
+                                <div class="date">16</div>
+                            </label>
+                        
+                        <input type="radio" name="date" id="d3" 
+                        checked />       
+                            <label class="data-item" for="d3">
+                                <div class="day">Tue</div>
+                                <div class="date">17</div>
+                            </label>
+                        <input type="radio" name="date" id="d4" 
+                        checked />  
+                            <label class="data-item" for="d4">
+                                <div class="day">Wed</div>
+                                <div class="date">18</div>
+                            </label>
+                        <input type="radio" name="date" id="d2" 
+                        checked />  
+                            <label class="data-item" for="d5">
+                                <div class="day">Thu</div>
+                                <div class="date">19</div>
+                            </label>
+                        <input type="radio" name="date" id="d2" 
+                        checked />               
+                            <label class="data-item" for="d6">
+                                <div class="day">Fri</div>
+                                <div class="date">20</div>
+                            </label>
+                        <input type="radio" name="date" id="d2" 
+                        checked />            
+                            <label class="data-item" for="d7">
+                                <div class="day">Sat</div>
+                                <div class="date">21</div>
+                            </label>
+                    </div>
+                    <div class="times">
+                        <input type="radio" name="time" id="t1" 
+                        checked>
+                        <label for="t1" class="time">11:00</label>
+                        <input type="radio" name="time" id="t2" 
+                        checked>
+                        <label for="t2" class="time">15:00</label>
+                        <input type="radio" name="time" id="t3" 
+                        checked>
+                        <label for="t3" class="time">18:00</label>
+                        <input type="radio" name="time" id="t4" 
+                        checked>
+                        <label for="t4" class="time">21:00</label>
+                    </div>
+                </div>
+                <br>
+<p style="text-align: left;" id="ticket-info">
+  Tickets<br>
+  Available: <span id="available-seats"></span><br>  
+</p>
+<script>
+  var availableSeats = availableSeats;
+  document.getElementById("available-seats").innerHTML = availableSeats;
+</script>
+            </div>
+        </div>
+    </div>
+    </section>
+<br><br>
+    <div class="ticket-rates" style = "margin-left: 30px; margin-top: 30px;">
+        <center>
+        <h2>Bus Ticket Rates</h2><br>
+        </center>
+        <ul>
+          <li>
+            <span>AC Sleeper</span><br>
+            <span>₹ 1,200</span> &nbsp &nbsp 
+            <input type="radio" id="ac-sleeper" name="ticket-rate">
+            <label for="ac-sleeper">Choose</label>
+          </li>
+          <br>
+          <li>
+            <span>Non-AC Sleeper</span><br>
+            <span>₹ 800</span> &nbsp &nbsp
+            <input type="radio" id="non-ac-sleeper" name="ticket-rate">
+            <label for="non-ac-sleeper">Choose</label>
+          </li>
+          <br>
+          <li>
+            <span>AC Seater</span><br>
+            <span>₹ 1,000</span> &nbsp &nbsp 
+            <input type="radio" id="ac-seater" name="ticket-rate">
+            <label for="ac-seater">Choose</label>
+          </li>
+          <br>
+          <li>
+            <span>Non-AC Seater</span><br>
+            <span>₹ 600</span> &nbsp &nbsp
+            <input type="radio" id="non-ac-seater" name="ticket-rate">
+            <label for="non-ac-seater">Choose</label>
+          </li>
+          <br>
+        </ul>
+        <center>
+            <a href="C:\Users\HP\OneDrive\Desktop\New Ticket Express Payment.html">
+        <button class="book-now">Book Now</button>
+            </a>
+        </center>
+      </div>
+      <br><br>
+        <footer>
+            <center>
+                <p>&copy; 2024 Bus Ticket Reservation</p><br><br>
+            </center>
+        </footer>
+
+</body>
+</html>
+
+
+<!-- From 2.30 https://www.youtube.com/watch?v=zhwgLIyC97U -->
+

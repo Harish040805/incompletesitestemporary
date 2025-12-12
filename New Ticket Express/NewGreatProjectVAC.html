@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Express</title>
+    <link rel="stylesheet" href="NewGreatProject.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <ul class="list">
+                <li class="item"><a class="link" href="#">Home</a></li>
+                <li class="item"><a class="link" href="#">Track Tickets</a></li>
+                <li class="item"><a class="link" href="#">Login</a></li>
+                <li class="item"><a class="link" href="#">Signup</a></li>
+                <li class="item"><a class="link link--active" href="#">Buses</a></li>
+                <li class="item"><a class="link" href="#">Trains</a></li>
+                <li class="item"><a class="link" href="#">Aeroplanes</a></li>
+            </ul>
+        </nav>
+    </header>
+    <br><br>
+    <main>
+        <section class="search-section">
+            <center>
+                <h2>Book Bus Tickets</h2>
+            </center>
+            <br><br>
+            <form>
+                <div class="search-box">
+                    <div class="search-for-bus-tickets">
+                        <div class="form-group to-city" style="display: flex; align-items: center; justify-content: space-between;">
+                            <label for="from-city">From: &nbsp &nbsp </label>
+                            <select id="from-city" name="from-city" class="city-select">
+                                <option value="">Select City</option>
+                                <option value="Madurai">Madurai</option>
+                                <option value="Chennai">Chennai</option>
+                                <option value="Thiruchy">Thiruchy</option>
+                                <option value="Tanjavur">Tanjavur</option>
+                                <option value="Sreerangam">Sreerangam</option>
+                                <option value="Coimbatore">Coimbatore</option>
+                            </select>
+                            <span style="margin: 0 10px;">&nbsp &nbsp<button> &#8644; </button> &nbsp &nbsp </span>
+                            <label for="to-city">To: &nbsp &nbsp </label>
+                            <select id="to-city" name="to-city" class="city-select">
+                                <option value="">Select City</option>
+                                <option value="Madurai">Madurai</option>
+                                <option value="Chennai">Chennai</option>
+                                <option value="Thiruchy">Thiruchy</option>
+                                <option value="Tanjavur">Tanjavur</option>
+                                <option value="Sreerangam">Sreerangam</option>
+                                <option value="Coimbatore">Coimbatore</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn-today">Today</button>
+                    <button class="btn-tomorrow">Tomorrow</button>
+                    <button class="btn-search">Search</button>
+                    <br><br>
+                    <label for="journey-date">Journey Date:</label>
+                    <input type="date" id="journey-date" name="journey-date" class="date-input">
+                    <br><br>
+                </div>
+            </form>
+                           
+        </section>
+
+        <p>
+            Why Choose Ticket Express for Ticket Booking ?
+Ticket Express is India’s fastest growing online ticket booking platform. Ticket Express is the official ticketing partner of several State Road Transport Corporation (SRTC) operators and over 4000+ private bus partners covering more than 3,50,000 bus routes
+        </p>
+
+
+        <section class="bus-list-section">
+            <h2>Available Buses</h2>
+            <ul id="bus-list">
+                <li> Harish Travels </li>
+                <li> Shakthi Transports </li>
+                <li> Deva Travels </li>
+                <li> Varun Travels and Tourism </li>
+                <li> Sachin Travels </li>
+                <li> Santhosh Kumar Travels </li>
+                <li> Karna Transports </li>
+            </ul>
+        </section>
+        <br><br>
+        <section class="booking-section">
+            <h2>Book Your Ticket</h2>
+            <form>
+                <label for="bus-id">Select Bus: &nbsp </label>
+                <select id="bus-id" name="bus-id">
+                    <option> --- Select Bus --- </option>
+                    <option> Harish Travels </option>
+                    <option> Shakthi Transports </option>
+                    <option> Deva Travels </option>
+                    <option> Varun Travels and Tourism </option>
+                    <options> Sachin Travels </options>
+                    <option> Santhosh Kumar Travels </option>
+                    <option> Karna Transports </option>
+                </select>
+                <br><br>
+                <label for="name">Name: &nbsp &nbsp &nbsp &nbsp &nbsp </label>
+                <input type="text" id="name" name="name">
+                <br><br>
+                <label for="email">Email: &nbsp &nbsp &nbsp &nbsp &nbsp </label>
+                <input type="email" id="email" name="email">
+                <br><br>
+                <label for="phone">Phone: &nbsp &nbsp &nbsp &nbsp &nbsp </label>
+                <input type="tel" id="phone" name="phone">
+                <br><br><br>
+                <button>Book Now</button>
+            </form>
+        </section>
+    </main>
+    <br><br><br><br>
+    <footer>
+        <center>
+            <p>&copy; 2024 Bus Ticket Reservation</p>
+        </center>
+    </footer>
+    <br><br><br><br>
+</body>
+</html>

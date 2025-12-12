@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Express</title>
+    <style>
+        body {
+            width: 100%;
+            height: 85vh;
+            background-image: url('https://media.licdn.com/dms/image/C5612AQFOEuMCdHxCvA/article-cover_image-shrink_600_2000/0/1520140521229?e=2147483647&v=beta&t=7Kyc36XG35Z_AVgDQybx37ffPJeWbSyq8gzyFxllovQ');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #ADD8E6; /* Light blue */
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            width: 350px;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        
+.login-signup {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+        }
+        .login-signup button {
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            width: 45%;
+            font-size: 16px;
+			    color: #fff; /* White text color */
+    background-color: #87CEEB;
+        }
+        .login-signup button:hover {
+            background-color: #73b6d1;
+        }
+        .dynamic-text {
+            font-size: 40px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px #000;
+            opacity: 1;
+            transition: opacity 1s;
+            text-align: center;
+        }
+        
+        .get-tickets {
+            background-color: #ADD8E6;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+		.get-tickets:hover {
+            background-color: #87CEEB;
+        }
+		.Ticket-Express{
+			font-weight: bold;
+			font-size: 25px;
+		}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="Ticket-Express">Ticket Express</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About Us</a>
+            <a href="#">Services</a>
+            <a href="#">Contact Us</a>
+        </nav>
+        <div class="login-signup">
+            <button class="Login">Login</button>
+            <button class="Login">Sign Up</button>
+        </div>
+    </header>
+    <div style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
+        <div id="dynamic-text" class="dynamic-text">Welcome to Our Site</div>
+        <button class="get-tickets">Get Your Tickets</button>
+    </div>
+
+    <script>
+        let dynamicText = document.getElementById('dynamic-text');
+        let messages = ['Welcome to Our Site', 'Your Safe Journey Is Our Main Goal'];
+        let currentIndex = 0;
+
+        setInterval(() => {
+            dynamicText.style.opacity = 0;
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % messages.length;
+                dynamicText.textContent = messages[currentIndex];
+                dynamicText.style.opacity = 1;
+            }, 1000);
+        }, 5000);
+    </script>
+</body>
+</html>

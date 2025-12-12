@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Express</title>
+    <link rel="stylesheet" href="NewGreatProject.css">
+</head>
+<body>
+    
+    <br><br>
+    <main>
+        <section class="search-section">
+            <center>
+                <h2>Book Bus Tickets</h2>
+            </center>
+            <br><br>
+            <form>
+                <div class="search-box">
+                    <div class="search-for-bus-tickets">
+                        <div class="form-group to-city" style="display: flex; align-items: center; justify-content: space-between;">
+                            <label for="from-city">From: &nbsp &nbsp </label>
+                            <select id="from-city" name="from-city" class="city-select">
+                                <option value="">Select City</option>
+                                <option value="Madurai">Madurai</option>
+                                <option value="Chennai">Chennai</option>
+                                <option value="Thiruchy">Thiruchy</option>
+                                <option value="Tanjavur">Tanjavur</option>
+                                <option value="Sreerangam">Sreerangam</option>
+                                <option value="Coimbatore">Coimbatore</option>
+                            </select>
+                            <span style="margin: 0 10px;">&nbsp &nbsp<button> &#8644; </button> &nbsp &nbsp </span>
+                            <label for="to-city">To: &nbsp &nbsp </label>
+                            <select id="to-city" name="to-city" class="city-select">
+                                <option value="">Select City</option>
+                                <option value="Madurai">Madurai</option>
+                                <option value="Chennai">Chennai</option>
+                                <option value="Thiruchy">Thiruchy</option>
+                                <option value="Tanjavur">Tanjavur</option>
+                                <option value="Sreerangam">Sreerangam</option>
+                                <option value="Coimbatore">Coimbatore</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn-today">Today</button>
+                    <button class="btn-tomorrow">Tomorrow</button>
+                    <a href="search-results.html">
+                    <button class="btn-search">Search</button>
+                    </a>
+                    <br><br>
+                    <label for="journey-date">Journey Date:</label>
+                    <input type="date" id="journey-date" name="journey-date" class="date-input">
+                    <br><br>
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time"><br><br>
+                    <label for="seats">No. of Seats:</label>
+                    <input type="number" id="seats" name="seats">
+                    <br><br>
+                    <button class="book-now-btn">Book Now</button>
+                    
+                    <br><br>
+                    
+                </div>
+            </form>
+                           
+        </section>
+       
+        
+        
+<br><br>
+        <section class="text-box-section">
+            <h2>Why Choose Ticket Express for Bus Transportation?</h2>
+            <div class="text-box">
+                <p> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Ticket Express is India’s fastest growing online ticket booking platform. Ticket Express is the official ticketing partner of several State Road Transport Corporation (SRTC) operators and over 4000+ private patners of Buses, Trains and Aeroplanes covering more than 3,50,000 bus routes.</p>
+            </div>
+        </section>
+        <center>
+        <img src = "https://media.licdn.com/dms/image/C5612AQFOEuMCdHxCvA/article-cover_image-shrink_600_2000/0/1520140521229?e=2147483647&v=beta&t=7Kyc36XG35Z_AVgDQybx37ffPJeWbSyq8gzyFxllovQ" width="350" height="250">
+        </center>
+
+        <p> 
+            <b>
+                Book Bus Tickets at Ticket Express
+            </b>
+        </p>
+
+        <section class="carousel-section">
+            <h2>Our Bus Partners</h2>
+            <div class="carousel-box">
+                <div class="carousel-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/c/c4/Andhra_Pradesh_State_Road_Transport_Corporation_logo.png" alt="APSRTC" width="200" height="200">
+                    <h3>APSRTC</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/0/05/TSRTC_LOGO.png" alt="TSRTC" width="200" height="200">
+                    <h3>TSRTC</h3>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="srtc-logo.png" alt="SRTC">
+                    <h3>SRTC</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="rsrtc-logo.png" alt="RSRTC">
+                    <h3>RSRTC</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="upsrtc-logo.png" alt="UPSRTC">
+                    <h3>UPSRTC</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="hrtc-logo.png" alt="HRTC">
+                    <h3>HRTC</h3>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="bus-list-section">
+            <h2>Available Buses</h2>
+            <ul id="bus-list">
+                <li> Harish Travels </li>
+                <li> Shakthi Transports </li>
+                <li> Deva Travels </li>
+                <li> Varun Travels and Tourism </li>
+                <li> Sachin Travels </li>
+                <li> Santhosh Kumar Travels </li>
+                <li> Karna Transports </li>
+            </ul>
+        </section>
+        <br><br>
+        <section class="booking-section">
+            <h2>Book Your Ticket</h2>
+            
+        </section>
+    </main>
+    <br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="carousel-container">
+        <div class="carousel-box">
+          <!-- Carousel items will go here -->
+        </div>
+        <div class="carousel-controls">
+          <button class="prev-btn">Prev</button>
+          <button class="next-btn">Next</button>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <footer>
+        <center>
+            <p>&copy; 2024 Bus Ticket Reservation</p>
+        </center>
+    </footer>
+    <br><br><br><br>
+</body>
+</html>
