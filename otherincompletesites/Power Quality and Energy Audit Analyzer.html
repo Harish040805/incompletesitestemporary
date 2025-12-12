@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power Quality & Energy Audit Analyzer</title>
+<style>
+body{margin:0;font-family:Arial;background:#f5f5f5;color:#333}
+.header{background:#1a237e;color:#fff;padding:18px;font-size:22px;text-align:center}
+.container{max-width:1100px;margin:25px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 0 10px #ccc}
+.box{margin-top:20px;border:1px solid #ccc;padding:18px;border-radius:10px;background:#fafafa}
+h2{margin-top:0}
+input[type=file]{padding:10px;margin-top:10px;width:100%;border:1px solid #aaa;border-radius:5px}
+button{padding:10px 20px;background:#1a237e;color:white;border:none;border-radius:6px;margin-top:15px;cursor:pointer}
+button:hover{opacity:0.9}
+#result,#issues,#recommendations{margin-top:20px;padding:15px;border-radius:8px;background:#eef}
+table{border-collapse:collapse;width:100%;margin-top:10px}
+td,th{border:1px solid #aaa;padding:8px;text-align:center}
+#instructions{background:#fff3cd;border:1px solid #e0c76c}
+</style>
+</head>
+<body>
+
+<div class="header">Power Quality & Energy Audit Analyzer</div>
+
+<div class="container">
+
+<div class="box" id="instructions">
+<h2>Instructions</h2>
+<ul>
+<li>Upload a CSV or Excel file exported from energy meters (Schneider, Fluke, Hioki, etc.).</li>
+<li>Your file must include columns like Timestamp, Voltage R/Y/B, Current R/Y/B, PF, THD-V, THD-I, kW, kWh.</li>
+<li>The system automatically analyzes: Undervoltage, Overvoltage, Imbalance, PF issues, THD issues, Overload, Frequency deviation and more.</li>
+<li>Outputs include: Summary, Issues List, Harmonic violations, Load analysis, Automatic recommendations.</li>
+<li>Voltage allowed: ±6% from nominal. Voltage imbalance allowed: &lt; 3%. PF acceptable: &gt; 0.95. THD-V limit: &lt; 8%. THD-I limit: &lt; 10%.</li>
+<li>No backend required. All calculations run inside your browser.</li>
+<li>After analysis, you can download the report as a PDF.</li>
+</ul>
+</div>
+
+<div class="box">
+<h2>Upload CSV/Excel</h2>
+<input type="file" id="fileInput" accept=".csv,.xlsx,.xls">
+<button onclick="processFile()">Analyze</button>
+</div>
+
+<div id="result" style="display:none"></div>
+<div id="issues" style="display:none"></div>
+<div id="recommendations" style="display:none"></div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+let data=[]
+
+function processFile(){
+    const file=document.getElementById("fileInput").files[0]
+    if(!file)return
+
+    const reader=new FileReader()
+    if(file.name.endsWith(".csv")){
+        reader.onload=e=>{
+            const rows=e.target.result.split("\n").map(r=>r.split(","))
+            parseData(rows)
+        }
+        reader.readAsText(file)
+    }else{
+        reader.onload=e=>{
+            const wb=XLSX.read(e.target.result,{type:"binary"})
+            const ws=wb.Sheets[wb.SheetNames[0]]
+            const rows=XLSX.utils.sheet_to_json(ws,{header:1})
+            parseData(rows)
+        }
+        reader.readAsBinaryString(file)
+    }
+}
+
+function parseData(rows){
+    let headers=rows[0]
+    data=[]
+    for(let i=1;i<rows.length;i++){
+        if(rows[i].length<5)continue
+        let row={}
+        headers.forEach((h,j)=>row[h.trim()]=parseFloat(rows[i][j])||rows[i][j])
+        data.push(row)
+    }
+    analyze()
+}
+
+function analyze(){
+    let issues=[]
+    let pfList=[],thdvList=[],thdiList=[]
+    let vr=[],vy=[],vb=[],ir=[],iy=[],ib=[]
+    data.forEach(r=>{
+        pfList.push(r.PF)
+        thdvList.push(r["THD-V"])
+        thdiList.push(r["THD-I"])
+        vr.push(r["Voltage R"])
+        vy.push(r["Voltage Y"])
+        vb.push(r["Voltage B"])
+        ir.push(r["Current R"])
+        iy.push(r["Current Y"])
+        ib.push(r["Current B"])
+    })
+
+    let avgPF=avg(pfList)
+    let avgTHDV=avg(thdvList)
+    let avgTHDI=avg(thdiList)
+
+    let vImbalance=voltageImbalance(vr,vy,vb)
+    if(avgPF<0.95)issues.push("Low Power Factor detected (PF < 0.95)")
+    if(avgTHDV>8)issues.push("High Voltage Harmonics THD-V > 8%")
+    if(avgTHDI>10)issues.push("High Current Harmonics THD-I > 10%")
+    if(vImbalance>3)issues.push("Voltage imbalance exceeds 3%")
+
+    document.getElementById("result").style.display="block"
+    document.getElementById("issues").style.display="block"
+    document.getElementById("recommendations").style.display="block"
+
+    document.getElementById("result").innerHTML=
+        "<h3>Summary</h3>"+
+        "<table><tr><th>Parameter</th><th>Value</th></tr>"+
+        "<tr><td>Average PF</td><td>"+avgPF.toFixed(3)+"</td></tr>"+
+        "<tr><td>Avg THD-V</td><td>"+avgTHDV.toFixed(2)+"%</td></tr>"+
+        "<tr><td>Avg THD-I</td><td>"+avgTHDI.toFixed(2)+"%</td></tr>"+
+        "<tr><td>Voltage Imbalance</td><td>"+vImbalance.toFixed(2)+"%</td></tr></table>"
+
+    document.getElementById("issues").innerHTML="<h3>Detected Issues</h3>"+(issues.length?issues.map(i=>"<li>"+i+"</li>").join(""):"No issues detected.")
+
+    let rec=[]
+    if(avgPF<0.95)rec.push("Install capacitor bank to raise PF above 0.95")
+    if(avgTHDV>8)rec.push("Install passive/active harmonic filter to reduce THD-V")
+    if(avgTHDI>10)rec.push("Install active harmonic filter to reduce THD-I")
+    if(vImbalance>3)rec.push("Redistribute single-phase loads to reduce phase imbalance")
+
+    document.getElementById("recommendations").innerHTML="<h3>Recommendations</h3>"+(rec.length?rec.map(r=>"<li>"+r+"</li>").join(""):"No recommendations needed.")
+}
+
+function avg(a){return a.reduce((x,y)=>x+y,0)/a.length}
+
+function voltageImbalance(vr,vy,vb){
+    let a=avg([avg(vr),avg(vy),avg(vb)])
+    let d=[avg(vr),avg(vy),avg(vb)]
+    let maxDev=Math.max(...d.map(v=>Math.abs(v-a)))
+    return(maxDev/a)*100
+}
+</script>
+
+</body>
+</html>

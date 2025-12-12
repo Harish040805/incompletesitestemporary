@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matrix Generator SPA</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        padding: 20px;
+    }
+    .container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 600px;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+        color: #555;
+    }
+    input[type="text"], select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+    button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 12px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #45a049;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 8px;
+    }
+    th {
+        background: #4caf50;
+        color: white;
+    }
+    .note {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Matrix Generator</h1>
+    <label for="matrixInput">Enter matrix size:</label>
+    <input type="text" id="matrixInput" placeholder="Example: m,n or m">
+    <div class="note">
+        Input format 1: m,n → normal/row/column matrix<br>
+        Input format 2: m → square/spiral/symmetric/skew-symmetric matrix
+    </div>
+
+    <label for="matrixType">Select Matrix Type:</label>
+    <select id="matrixType">
+        <option value="normal">Normal Matrix</option>
+        <option value="square">Square Matrix</option>
+        <option value="spiral">Spiral Matrix</option>
+        <option value="row">Row Matrix</option>
+        <option value="column">Column Matrix</option>
+        <option value="singleton">Singleton Matrix</option>
+        <option value="symmetric">Symmetric Matrix</option>
+        <option value="skew">Skew Symmetric Matrix</option>
+    </select>
+
+    <button onclick="generateMatrix()">Generate Matrix</button>
+
+    <div id="matrixContainer"></div>
+</div>
+
+<script>
+function generateMatrix() {
+    const input = document.getElementById('matrixInput').value.trim();
+    const type = document.getElementById('matrixType').value;
+    const numbers = input.split(',').map(x => x.trim()).filter(x => x !== '');
+    let rows, cols;
+
+    if(numbers.length === 1){
+        rows = cols = parseInt(numbers[0]);
+        if(isNaN(rows) || rows < 1){
+            alert('Invalid input. Please enter a positive number.');
+            return;
+        }
+        if(['normal','row','column'].includes(type)){
+            alert('This matrix type requires format m,n');
+            return;
+        }
+    } else if(numbers.length === 2){
+        rows = parseInt(numbers[0]);
+        cols = parseInt(numbers[1]);
+        if(isNaN(rows) || isNaN(cols) || rows < 1 || cols < 1){
+            alert('Invalid input. Please enter positive numbers.');
+            return;
+        }
+        if(['square','spiral','symmetric','skew','singleton'].includes(type)){
+            alert('This matrix type requires a single number input');
+            return;
+        }
+    } else {
+        alert('Invalid input format. Use m or m,n');
+        return;
+    }
+
+    let matrix = [];
+
+    if(type === 'singleton'){
+        if(rows !== 1) { alert('Singleton matrix must be 1x1'); return; }
+        matrix = [[1]];
+    } else if(type === 'row'){
+        matrix = [Array.from({length: cols}, (_, i) => i + 1)];
+    } else if(type === 'column'){
+        matrix = Array.from({length: rows}, (_, i) => [i + 1]);
+    } else if(type === 'symmetric' || type === 'skew'){
+        matrix = Array.from({length: rows}, () => Array(cols).fill(0));
+        for(let i = 0; i < rows; i++){
+            for(let j = i; j < cols; j++){
+                let val = i === j ? 0 : i * cols + j + 1;
+                matrix[i][j] = val;
+                matrix[j][i] = type === 'symmetric' ? val : -val;
+            }
+        }
+    } else if(type === 'spiral'){
+        matrix = Array.from({length: rows}, () => Array(cols).fill(0));
+        let top = 0, bottom = rows - 1, left = 0, right = cols - 1, num = 1;
+        while(top <= bottom && left <= right){
+            for(let i = left; i <= right; i++) matrix[top][i] = num++;
+            top++;
+            for(let i = top; i <= bottom; i++) matrix[i][right] = num++;
+            right--;
+            if(top <= bottom){
+                for(let i = right; i >= left; i--) matrix[bottom][i] = num++;
+                bottom--;
+            }
+            if(left <= right){
+                for(let i = bottom; i >= top; i--) matrix[i][left] = num++;
+                left++;
+            }
+        }
+    } else {
+        matrix = Array.from({length: rows}, (_, i) => Array.from({length: cols}, (_, j) => i * cols + j + 1));
+    }
+
+    renderMatrix(matrix);
+}
+
+function renderMatrix(matrix) {
+    const container = document.getElementById('matrixContainer');
+    let html = '<table><tbody>';
+    matrix.forEach(row => {
+        html += '<tr>';
+        row.forEach(cell => html += `<td>${cell}</td>`);
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+</script>
+</body>
+</html>

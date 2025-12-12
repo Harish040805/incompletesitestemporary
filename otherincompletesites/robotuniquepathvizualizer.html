@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Robot — Unique Paths Visualizer</title>
+  <style>
+    :root{
+      --cell-size: 48px;
+      --gap: 6px;
+      --bg: #0f172a;
+      --card: #0b1220;
+      --accent: #06b6d4;
+      color-scheme: dark;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial; background:linear-gradient(180deg,#041124 0%, #071226 60%); color:#e6eef8}
+    .wrap{max-width:980px;margin:32px auto;padding:20px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{margin:0 0 16px;color:#a9c0d9}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+    label{font-size:13px;color:#bcd6ea}
+    input[type=number]{width:80px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    button{padding:8px 12px;border-radius:10px;border:none;background:var(--accent);color:#022;cursor:pointer;font-weight:600}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#cfe9f3}
+    .grid-wrap{margin-top:20px;display:flex;gap:20px;align-items:flex-start}
+    .board{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px}
+    .board .grid{display:grid;gap:var(--gap);}
+    .cell{width:var(--cell-size);height:var(--cell-size);display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:8px;background:rgba(255,255,255,0.01);box-shadow:inset 0 -6px 12px rgba(0,0,0,0.25)}
+    .cell.start{background:linear-gradient(180deg,#153b4a,#0b2430)}
+    .cell.end{background:linear-gradient(180deg,#3a1f3a,#1b0e1b)}
+    .cell.path{outline:3px solid rgba(6,182,212,0.12)}
+    .info{min-width:260px}
+    .stat{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;margin-bottom:12px}
+    .small{font-size:13px;color:#9fcbe0}
+    .controls-row{display:flex;gap:8px;align-items:center}
+    .steps{display:flex;gap:8px}
+    footer{margin-top:18px;color:#8fb8d4;font-size:13px}
+    @media (max-width:720px){.grid-wrap{flex-direction:column}.info{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Robot — Unique Paths Visualizer</h1>
+    <p class="lead">Use emojis to represent the robot and the goal. Change the grid size, compute the number of unique paths (combination), and animate sample paths.</p>
+
+    <div class="controls">
+      <label>Rows (m): <input id="m" type="number" min="1" max="12" value="3"></label>
+      <label>Cols (n): <input id="n" type="number" min="1" max="12" value="3"></label>
+
+      <div class="controls-row">
+        <button id="build">Build Grid</button>
+        <button id="random" class="ghost">Random Path</button>
+        <button id="animate" class="ghost">Animate</button>
+        <button id="stepPrev" class="ghost">◀ Prev</button>
+        <button id="stepNext" class="ghost">Next ▶</button>
+      </div>
+
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <div class="small">Robot: <span style="font-size:18px">🤖</span></div>
+        <div class="small">Goal: <span style="font-size:18px">🎯</span></div>
+      </div>
+    </div>
+
+    <div class="grid-wrap">
+      <div class="board">
+        <div id="grid" class="grid"></div>
+      </div>
+
+      <div class="info">
+        <div class="stat">
+          <div style="font-weight:700;font-size:16px">Grid Info</div>
+          <div class="small" id="dims">3 × 3</div>
+          <div style="margin-top:8px">Unique paths: <strong id="paths">6</strong></div>
+        </div>
+
+        <div class="stat">
+          <div style="font-weight:700">Current Path</div>
+          <div class="small" id="pathStr">—</div>
+          <div style="margin-top:8px" class="steps"><div class="small">Step <span id="stepIndex">0</span> / <span id="stepTotal">0</span></div></div>
+        </div>
+
+        <div class="stat">
+          <div style="font-weight:700">Controls</div>
+          <div class="small">Set rows and columns (max 12). Click <em>Random Path</em> to create a sample path. Use <em>Animate</em> to play it. Use <em>Prev/Next</em> to step.</div>
+        </div>
+
+        <footer>Made with emojis — have fun exploring paths! 👾</footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Helper: compute nCr without huge factorials using multiplicative method
+    function nCr(n, r){
+      r = Math.min(r, n - r);
+      if (r < 0) return 0;
+      let num = 1;
+      let den = 1;
+      for (let i = 1; i <= r; i++){
+        num *= (n - r + i);
+        den *= i;
+      }
+      return Math.round(num / den);
+    }
+
+    const gridEl = document.getElementById('grid');
+    const mInput = document.getElementById('m');
+    const nInput = document.getElementById('n');
+    const buildBtn = document.getElementById('build');
+    const randomBtn = document.getElementById('random');
+    const animateBtn = document.getElementById('animate');
+    const stepNext = document.getElementById('stepNext');
+    const stepPrev = document.getElementById('stepPrev');
+    const dims = document.getElementById('dims');
+    const pathsEl = document.getElementById('paths');
+    const pathStr = document.getElementById('pathStr');
+    const stepIndex = document.getElementById('stepIndex');
+    const stepTotal = document.getElementById('stepTotal');
+
+    let m=3,n=3;
+    let cells = [];
+    let samplePath = [];
+    let animTimer = null;
+    let currentStep = 0;
+
+    function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+
+    function buildGrid(){
+      m = clamp(parseInt(mInput.value)||3,1,12);
+      n = clamp(parseInt(nInput.value)||3,1,12);
+      gridEl.innerHTML = '';
+      gridEl.style.gridTemplateColumns = `repeat(${n}, ${getComputedStyle(document.documentElement).getPropertyValue('--cell-size') || '48px'})`;
+      cells = [];
+
+      for (let r=0;r<m;r++){
+        for (let c=0;c<n;c++){
+          const div = document.createElement('div');
+          div.className = 'cell';
+          if (r===0 && c===0){ div.classList.add('start'); div.textContent = '🤖' }
+          else if (r===m-1 && c===n-1){ div.classList.add('end'); div.textContent = '🎯' }
+          else div.textContent = '◻️';
+          gridEl.appendChild(div);
+          cells.push(div);
+        }
+      }
+
+      dims.textContent = `${m} × ${n}`;
+      const total = nCr(m + n - 2, m - 1);
+      pathsEl.textContent = total.toLocaleString();
+      clearPathDisplay();
+    }
+
+    function clearPathDisplay(){
+      samplePath = [];
+      currentStep = 0;
+      updateCells();
+      pathStr.textContent = '—';
+      stepIndex.textContent = 0;
+      stepTotal.textContent = 0;
+      stopAnim();
+    }
+
+    function indexOf(r,c){ return r*n + c }
+
+    function updateCells(){
+      // reset
+      cells.forEach((el,idx)=>{
+        el.classList.remove('path');
+        const r = Math.floor(idx/n), c = idx % n;
+        if (r===0 && c===0) el.textContent = '🤖';
+        else if (r===m-1 && c===n-1) el.textContent = '🎯';
+        else el.textContent = '◻️';
+      });
+
+      // mark path up to currentStep
+      for (let i=0;i<currentStep && i<samplePath.length;i++){
+        const [r,c] = samplePath[i];
+        const el = cells[indexOf(r,c)];
+        el.classList.add('path');
+        // show small robot on latest
+        if (i === currentStep-1){ el.textContent = '🤖' }
+      }
+
+      // ensure start shows robot if no steps taken
+      if (currentStep === 0){ cells[0].textContent = '🤖' }
+      // ensure end is goal
+      cells[indexOf(m-1,n-1)].textContent = '🎯';
+    }
+
+    function makeRandomPath(){
+      // create an array with (m-1) D and (n-1) R, shuffle
+      const moves = [];
+      for (let i=0;i<m-1;i++) moves.push('D');
+      for (let j=0;j<n-1;j++) moves.push('R');
+      // simple Fisher-Yates shuffle
+      for (let i=moves.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [moves[i],moves[j]] = [moves[j],moves[i]];
+      }
+      // convert to coordinates
+      const path = [[0,0]];
+      let r=0,c=0;
+      for (const mv of moves){
+        if (mv==='D') r++;
+        else c++;
+        path.push([r,c]);
+      }
+      samplePath = path;
+      currentStep = 0;
+      stepIndex.textContent = 0;
+      stepTotal.textContent = samplePath.length - 1;
+      pathStr.textContent = moves.join('');
+      updateCells();
+    }
+
+    function animatePath(){
+      if (!samplePath || samplePath.length===0) return;
+      stopAnim();
+      currentStep = 0;
+      const total = samplePath.length - 1;
+      animTimer = setInterval(()=>{
+        currentStep++;
+        if (currentStep > total){ stopAnim(); return; }
+        stepIndex.textContent = currentStep;
+        updateCells();
+      }, 350);
+    }
+
+    function stopAnim(){ if (animTimer){ clearInterval(animTimer); animTimer = null } }
+
+    buildBtn.addEventListener('click', ()=>{ buildGrid(); });
+    randomBtn.addEventListener('click', ()=>{ makeRandomPath(); });
+    animateBtn.addEventListener('click', ()=>{ animatePath(); });
+
+    stepNext.addEventListener('click', ()=>{
+      if (!samplePath || samplePath.length===0) return;
+      if (currentStep < samplePath.length - 1){ currentStep++; stepIndex.textContent = currentStep; updateCells(); }
+    });
+    stepPrev.addEventListener('click', ()=>{
+      if (!samplePath || samplePath.length===0) return;
+      if (currentStep > 0){ currentStep--; stepIndex.textContent = currentStep; updateCells(); }
+    });
+
+    // build initial
+    buildGrid();
+  </script>
+</body>
+</html>

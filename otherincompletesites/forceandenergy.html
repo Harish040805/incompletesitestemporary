@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2x2 Square Buttons at Bottom</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 99vw;
+    height: 99vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background-color: #fff;
+    font-family: Arial, sans-serif;
+  }
+
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 100px);
+    grid-template-rows: repeat(2, 100px);
+    gap: 20px;
+    background: radial-gradient(#ebdc5c, #ebd613, #a46d06);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+  }
+
+  .button-container button {
+    width: 100px;
+    height: 100px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: radial-gradient(#ebdc5c, #ebd613, #a46d06);
+    color: white;
+    transition: background 0.3s;
+  }
+
+  .button-container button:hover {
+    background: radial-gradient(#ebd613, #ddcc35, #a46d06);
+    border: 3px solid gold;
+  }
+
+.rightside-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 95%;
+  background: linear-gradient(to bottom, #ebd613, #ddcc35, #a46d06);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.rightside-bar button {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 2px solid transparent;   /* base border */
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: border 0.25s, transform 0.2s;
+}
+
+/* Hover effect (only if not selected) */
+.rightside-bar button:hover:not(.selected) {
+  border-color: gold;
+  transform: scale(1.03);
+}
+
+/* Selected state */
+.rightside-bar button.selected {
+  border-color: gold !important;
+  transform: scale(1.05);
+}
+
+/* SELECTED STATE (gold border) */
+.rightside-bar button.selected {
+  border: 3px solid gold !important;
+}
+
+/* 1. Normal Force */
+.rightside-bar button:nth-child(1) {
+  background: linear-gradient(to bottom, #ffffff, #f4f4f4);
+  color: #333;
+}
+
+/* 2. Gravitational */
+.rightside-bar button:nth-child(2) {
+  background: linear-gradient(to bottom, #b36bff, #8e2fff);
+  color: white;
+}
+
+/* 3. Electric */
+.rightside-bar button:nth-child(3) {
+  background: linear-gradient(to bottom, #66b2ff, #0066ff);
+  color: white;
+}
+
+/* 4. Magnetic */
+.rightside-bar button:nth-child(4) {
+  background: linear-gradient(to bottom, #ff7a7a, #d14646);
+  color: white;
+}
+
+/* 5. Electromagnetic */
+.rightside-bar button:nth-child(5) {
+  background: linear-gradient(to bottom, #76b7ff, #1e60ff);
+  color: white;
+}
+
+/* 6. Electrostatic */
+.rightside-bar button:nth-child(6) {
+  background: linear-gradient(to bottom, #ffffff, #ccffe6);
+  color: green;
+}
+
+/* 7. Elastic */
+.rightside-bar button:nth-child(7) {
+  background: linear-gradient(to bottom, #fffddb, #fff7a2);
+  color: #4c4a18;
+}
+
+/* 8. Tension */
+.rightside-bar button:nth-child(8) {
+  background: linear-gradient(to bottom, #a6a6a6, #7b7b7b);
+  color: white;
+}
+
+/* 9. Spring */
+.rightside-bar button:nth-child(9) {
+  background: linear-gradient(to bottom, #d5ff66, #7cff00);
+  color: white;
+}
+
+/* 10. Buoyance */
+.rightside-bar button:nth-child(10) {
+  background: linear-gradient(to bottom, #80bdff, #004cff);
+  color: black;
+}
+
+/* 11. Air Resistance */
+.rightside-bar button:nth-child(11) {
+  background: linear-gradient(to bottom, #ffffff, #ededed);
+  color: #bfbfbf;
+}
+
+/* 12. Frictional */
+.rightside-bar button:nth-child(12) {
+  background: linear-gradient(to bottom, #c9965c, #9c6d3a);
+  color: black;
+}
+
+/* 13. Drag */
+.rightside-bar button:nth-child(13) {
+  background: linear-gradient(to bottom, #ffffff, #e1e1e1);
+  color: gray;
+}
+
+/* 14. Collision */
+.rightside-bar button:nth-child(14) {
+  background: linear-gradient(to bottom, #d69cff, #c27cff);
+  color: white;
+}
+
+/* 15. Nuclear */
+.rightside-bar button:nth-child(15) {
+  background: linear-gradient(to bottom, #76b7ff, #1e60ff);
+  color: red;
+}
+
+#stone {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #9b9b9b, #6f6f6f, #4a4a4a);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: none; /* hidden initially */
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+</style>
+</head>
+<body>
+<div id="stone"></div>
+
+<div class="button-container">
+  <button>Pause/Play</button>
+  <button>Restart</button>
+  <button>Foreward</button>
+  <button>Backward</button>
+  <label for="">Speed</label><input type="range">
+</div>
+
+<div class="rightside-bar">
+    <button>Normal Force</button>
+    <button>Gravitational Force</button>
+    <button>Electric Force</button>
+    <button>Magnetic Force</button>
+    <button>Electromagnetic</button>
+    <button>Electrostratic Force</button>
+    <button>Elastic Force</button>
+    <button>Tension Force</button>
+    <button>Spring Force</button>
+    <button>Boyance Force</button>
+    <button>Air Resistance Force</button>
+    <button>Frictional Force</button>
+    <button>Drag Force</button>
+    <button>Collision Force</button>
+    <button>Nuclear Force</button>
+</div>
+
+<script>
+const stone = document.getElementById("stone");
+const pausePlayBtn = document.querySelector(".button-container button:nth-child(1)");
+const restartBtn = document.querySelector(".button-container button:nth-child(2)");
+const forwardBtn = document.querySelector(".button-container button:nth-child(3)");
+const backwardBtn = document.querySelector(".button-container button:nth-child(4)");
+const speedRange = document.querySelector(".button-container input[type='range']");
+const rightButtons = Array.from(document.querySelectorAll(".rightside-bar button"));
+const buttonContainer = document.querySelector(".button-container");
+
+const STONE = 120;
+const PADDING = 8;
+
+let selectedForces = new Set();
+let vy = 0, vx = 0;
+let anim = null;
+let dragging = false;
+let dragOffset = { x:0, y:0 };
+let speedFactor = 1;
+
+function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+function screenBounds(){ return { left:PADDING, top:PADDING, right:window.innerWidth-PADDING, bottom:window.innerHeight-PADDING }; }
+function rect(el){ return el.getBoundingClientRect(); }
+function setStoneXY(x,y){ const b = screenBounds(); x=clamp(x,b.left,b.right-STONE); y=clamp(y,b.top,b.bottom-STONE); stone.style.left=x+"px"; stone.style.top=y+"px"; }
+function isGravity(){ for(const s of selectedForces) if(s.toLowerCase().includes("gravit")) return true; return false; }
+
+(function init(){
+  stone.style.transform="none";
+  stone.style.display="none";
+  stone.style.left=(window.innerWidth/2 - STONE/2)+"px";
+  stone.style.top=-(STONE+30)+"px";
+})();
+
+rightButtons.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const name = btn.innerText.trim();
+    const active = btn.classList.toggle("selected");
+    if(active) selectedForces.add(name); else selectedForces.delete(name);
+  });
+});
+
+stone.addEventListener("pointerdown",e=>{
+  dragging=true;
+  stone.setPointerCapture(e.pointerId);
+  const r = rect(stone);
+  dragOffset.x=e.clientX-r.left;
+  dragOffset.y=e.clientY-r.top;
+  vx=vy=0;
+});
+
+window.addEventListener("pointermove",e=>{
+  if(!dragging) return;
+  setStoneXY(e.clientX - dragOffset.x, e.clientY - dragOffset.y);
+});
+
+window.addEventListener("pointerup",e=>{
+  if(!dragging) return;
+  dragging=false;
+  stone.releasePointerCapture(e.pointerId);
+  if(isGravity()) startAnim();
+});
+
+speedRange.addEventListener("input", e => {
+  let val = parseFloat(e.target.value); // 0 to 100
+  speedFactor = 0.1 + (val / 100) * 1.9; // maps 0→0.1, 100→2
+});
+
+pausePlayBtn.addEventListener("click",()=>{
+  if(stone.style.display==="none"){
+    stone.style.display="block";
+    stone.style.left=(window.innerWidth/2 - STONE/2)+"px";
+    stone.style.top=-(STONE+40)+"px";
+    vy=0;
+  }
+  if(isGravity()) startAnim();
+});
+
+restartBtn.addEventListener("click",()=>{
+  stone.style.left=(window.innerWidth/2 - STONE/2)+"px";
+  stone.style.top=-(STONE+40)+"px";
+  vy=vx=0;
+});
+
+forwardBtn.addEventListener("click",()=>{
+  vy += 5 * speedFactor;
+});
+
+backwardBtn.addEventListener("click",()=>{
+  vy -= 5 * speedFactor;
+});
+
+function startAnim(){
+  if(anim) return;
+  function step(){
+    anim=requestAnimationFrame(step);
+    if(!isGravity()){ stopAnim(); return; }
+    if(dragging) return;
+
+    const s=rect(stone);
+    const bc=rect(buttonContainer);
+    const bounds=screenBounds();
+
+    vy = clamp(vy + 0.6 * speedFactor, -40 * speedFactor, 40 * speedFactor);
+    let nextX = s.left;
+    let nextY = s.top + vy;
+
+    if(nextY + STONE >= bounds.bottom){
+      nextY = bounds.bottom - STONE;
+      vy = 0;
+    }
+
+    const stoneBottom = nextY + STONE;
+    const sameHorizontal = s.left < bc.right && (s.left + STONE) > bc.left;
+    if(sameHorizontal){
+      if(stoneBottom >= bc.top && s.top < bc.top){
+        nextY = bc.top - STONE;
+        if(Math.abs(vy) > 6*speedFactor){ vy = -vy * 0.3; if(Math.abs(vy)<1) vy=0; } else { vy=0; }
+      }
+    }
+
+    if(nextX <= bounds.left) nextX = bounds.left;
+    if(nextX + STONE >= bounds.right) nextX = bounds.right - STONE;
+
+    setStoneXY(nextX,nextY);
+  }
+  step();
+}
+
+function stopAnim(){ cancelAnimationFrame(anim); anim=null; }
+window.addEventListener("resize",()=>{ const r=rect(stone); setStoneXY(r.left,r.top); });
+
+</script>
+
+
+</body>
+</html>
