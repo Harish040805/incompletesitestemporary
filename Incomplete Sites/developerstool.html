@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Developers' Tool — HTML/CSS/JS</title>
+
+<style>
+:root{
+  --blue:#0b63d6;
+  --blue-2:#0a53b4;
+  --muted:#6b7280;
+  --bg:#fff;
+  --card:#fff;
+  --radius:8px;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  background:#fff;
+  color:#0b2540;
+}
+
+.container{
+  min-height:100vh;
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-width:1200px;
+  margin:auto;
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.title{
+  font-size:24px;
+  font-weight:600;
+  color:var(--blue-2);
+}
+
+.grid{
+  flex:1;
+  display:grid;
+  grid-template-rows:1fr 1fr;
+  gap:8px;
+}
+
+.panel{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height: 27vh;
+}
+
+.top{
+  display:flex;
+  gap:8px;
+}
+
+.left{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.controls{
+  width:260px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.select-wrap{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.select-wrap select{
+  width:100%;
+  padding:6px;
+  border-radius:6px;
+  font-size:15px;
+  font-weight:600;
+  background:#fff;
+}
+
+.textarea{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+textarea#code{
+  width:100%;
+  min-height:220px;
+  border-radius:6px;
+  padding:8px;
+  font-family:ui-monospace,Menlo,Monaco,"Roboto Mono",monospace;
+  font-size:15px;
+  resize:vertical;
+  line-height:1.35;
+}
+
+.row{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.btn{
+  background:var(--blue);
+  color:#fff;
+  padding:6px 10px;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:600;
+}
+
+.btn.small{
+  padding:5px 10px;
+}
+
+.btn.secondary{
+  background:#f2f6ff;
+  color:var(--blue-2);
+}
+
+.bottom-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.card{
+  background:#fff;
+  padding:8px;
+  border-radius:6px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.card h4{
+  margin:0;
+  font-size:15px;
+  font-weight:700;
+  color:var(--blue-2);
+}
+
+.card p{
+  margin:0;
+  font-size:15px;
+  color:var(--muted);
+}
+
+.input-row{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.select-inline{
+  padding:5px;
+  border-radius:5px;
+  font-size:15px;
+  background:#fff;
+}
+
+.checkbox-label{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:15px;
+  color:var(--muted);
+}
+
+.footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:15px;
+  color:var(--muted);
+}
+
+@media(max-width:900px){
+  .bottom-grid{grid-template-columns:1fr;}
+  .controls{width:100%;}
+  textarea#code{min-height:180px;}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+<br>
+  <div class="header">
+    <div class="title">Developers' Tool - Quick dev-focused transforms for HTML / CSS / JS</div>
+  </div>
+<br>
+  <div class="grid">
+
+    <div class="panel top">
+      <div class="left">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-weight:700;color:var(--blue-2);font-size:13px;">Code Input</div>
+          <div style="font-size:11px;color:var(--muted);">Paste source & apply transforms.</div>
+        </div>
+
+        <div class="textarea">
+          <textarea id="code" spellcheck="false" placeholder="Paste your HTML, CSS or JS code here..."></textarea>
+
+          <div class="row" style="justify-content:space-between;">
+            <div class="select-wrap" style="flex:1;max-width:360px;">
+              <select id="mode">
+                <option value="">-- Select --</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="js">JS</option>
+              </select>
+              <button class="btn secondary small" id="formatBtn">Trim</button>
+              <button class="btn secondary small" id="undoBtn">Undo</button>
+			  <button class="btn small" id="copyBtn">Copy</button>
+              <button class="btn small" id="downloadBtn">Download</button>
+            </div>
+
+            <div style="display:flex;gap:6px;">
+            <button class="btn small" id="removeCommentsBtn">Remove Comments</button>
+            <button class="btn small" id="convertQuotesBtn"></button>
+            <button class="btn small" id="addRemoveQuotesBtn"></button>
+            <button class="btn small" id="slashInvertBtn">Invert Slashes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+
+      <div style="font-weight:700;color:var(--blue-2);font-size:13px;">Transforms & Options</div>
+
+      <div class="bottom-grid">
+
+        <div class="card" id="commentsCard">
+          <h4>Comment Remover</h4>
+          <p>Remove HTML, // and /* */ comments.</p>
+
+          <div class="input-row">
+            <label class="checkbox-label"><input type="checkbox" id="keepHtmlComments">Keep HTML</label>
+            <label class="checkbox-label"><input type="checkbox" id="keepLineComments">Keep //</label>
+            <label class="checkbox-label"><input type="checkbox" id="keepBlockComments">Keep /* */</label>
+          </div>
+
+          <div class="input-row">
+            <button class="btn small" id="runRemove">Run</button>
+            <button class="btn secondary small" id="previewComments">Preview</button>
+          </div>
+        </div>
+
+        <div class="card" id="quotesCard">
+          <h4>Quote Converter</h4>
+          <p>Convert ' to " or vice-versa.</p>
+
+          <div class="input-row">
+            <select id="quoteConvertMode" class="select-inline">
+              <option value="s2d">' → "</option>
+              <option value="d2s">" → '</option>
+            </select>
+
+            <label class="checkbox-label"><input type="checkbox" id="applyToSelectionQuotes">Selection only</label>
+
+            <button class="btn small" id="runConvertQuotes">Run</button>
+          </div>
+
+          <div class="input-row">
+            <select id="addRemoveChoice" class="select-inline">
+              <option value="add">Add</option>
+              <option value="remove">Remove</option>
+            </select>
+
+            <select id="quoteChar" class="select-inline">
+              <option value="'">Single</option>
+              <option value='"'>Double</option>
+            </select>
+
+            <button class="btn small" id="runAddRemove">Apply</button>
+          </div>
+        </div>
+
+        <div class="card" id="slashCard">
+          <h4>Slash Inverter</h4>
+          <p>Swap / and \ characters.</p>
+
+          <div class="input-row">
+            <label class="checkbox-label"><input type="checkbox" id="applyToSelectionSlash">Selection only</label>
+            <label class="checkbox-label"><input type="checkbox" id="preserveInStrings">Preserve strings</label>
+          </div>
+
+          <div class="input-row">
+            <button class="btn small" id="runSlashInvert">Run</button>
+            <button class="btn secondary small" id="countSlashes">Count</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer">
+        <div>Mode: <span id="modeLabel" style="font-weight:700;color:var(--blue-2)">--</span> • Length: <span id="lenLabel" style="font-weight:700;color:var(--muted)">0</span></div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+let historyStack = []
+function pushHistory(text){
+  historyStack.push(text)
+  if(historyStack.length>50) historyStack.shift()
+}
+const textarea = document.getElementById('code')
+const modeSelect = document.getElementById('mode')
+const modeLabel = document.getElementById('modeLabel')
+const lenLabel = document.getElementById('lenLabel')
+modeSelect.addEventListener('change',()=>{modeLabel.textContent = modeSelect.value||'-- Select --'})
+textarea.addEventListener('input',()=>{lenLabel.textContent = textarea.value.length})
+document.getElementById('copyBtn').addEventListener('click',()=>{navigator.clipboard.writeText(getTargetText()); flash('Copied')})
+function flash(msg){const el=document.createElement('div');el.textContent=msg;el.style.position='fixed';el.style.right='18px';el.style.bottom='18px';el.style.padding='10px 14px';el.style.background='var(--accent)';el.style.color='#fff';el.style.borderRadius='8px';el.style.zIndex=9999;document.body.appendChild(el);setTimeout(()=>el.remove(),1100)}
+document.getElementById('downloadBtn').addEventListener('click',()=>{
+  const blob=new Blob([textarea.value],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const ext=(modeSelect.value==='html')?'.html':(modeSelect.value==='css')?'.css':(modeSelect.value==='js')?'.js':'.txt';a.download='code'+ext;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)
+})
+document.getElementById('undoBtn').addEventListener('click',()=>{
+  if(historyStack.length>0){textarea.value = historyStack.pop(); lenLabel.textContent = textarea.value.length} else {flash('No history')}
+})
+document.getElementById('formatBtn').addEventListener('click',()=>{
+  pushHistory(textarea.value)
+  textarea.value = textarea.value.replace(/[ \t]+$/gm,'').replace(/\r\n/g,'\n').trim()
+  lenLabel.textContent = textarea.value.length
+  flash('Trimmed')
+})
+function getSelectionRange(){return {start:textarea.selectionStart,end:textarea.selectionEnd}}
+function getTargetText(){const sel=getSelectionRange();return (sel.start===sel.end)?textarea.value:textarea.value.slice(sel.start,sel.end)}
+function replaceTargetText(newText){const sel=getSelectionRange();if(sel.start===sel.end){pushHistory(textarea.value);textarea.value=newText}else{pushHistory(textarea.value);const before=textarea.value.slice(0,sel.start);const after=textarea.value.slice(sel.end);textarea.value = before + newText + after;textarea.selectionStart = sel.start;textarea.selectionEnd = sel.start + newText.length}lenLabel.textContent = textarea.value.length}
+function isAlphaMode(){return modeSelect.value}
+function countMatches(regex,str){const m=str.match(regex);return m?m.length:0}
+function removeCommentsFromCode(code,opts){
+  const keepHtml = !!opts.keepHtml
+  const keepLine = !!opts.keepLine
+  const keepBlock = !!opts.keepBlock
+  let out = ''
+  let i=0, len=code.length
+  let state = {inSingle:false,inDouble:false,inTemplate:false,escaped:false}
+  while(i<len){
+    const ch = code[i]
+    const next = code[i+1]
+    if(state.escaped){
+      out += ch
+      state.escaped = false
+      i++; continue
+    }
+    if(state.inSingle){
+      if(ch==='\\'){out+=ch; state.escaped=true; i++; continue}
+      if(ch==="'"){out+=ch; state.inSingle=false; i++; continue}
+      out += ch; i++; continue
+    }
+    if(state.inDouble){
+      if(ch==='\\'){out+=ch; state.escaped=true; i++; continue}
+      if(ch==='"'){out+=ch; state.inDouble=false; i++; continue}
+      out += ch; i++; continue
+    }
+    if(state.inTemplate){
+      if(ch==='\\'){out+=ch; state.escaped=true; i++; continue}
+      if(ch==='`'){out+=ch; state.inTemplate=false; i++; continue}
+      out += ch; i++; continue
+    }
+    if(ch==="'" ){ out += ch; state.inSingle=true; i++; continue }
+    if(ch==='"' ){ out += ch; state.inDouble=true; i++; continue }
+    if(ch==='`' ){ out += ch; state.inTemplate=true; i++; continue }
+    if(ch==='/' && next==='/' && !keepLine){
+      i += 2
+      while(i<len && code[i] !== '\n'){ i++ }
+      continue
+    }
+    if(ch==='/' && next==='*' && !keepBlock){
+      i += 2
+      while(i<len){
+        if(code[i]==='*' && code[i+1]==='/'){ i += 2; break }
+        i++
+      }
+      continue
+    }
+    if(ch==='<' && code.slice(i, i+4)==='<!--' && !keepHtml){
+      i += 4
+      while(i<len){
+        if(code.slice(i, i+3)==='-->'){ i += 3; break }
+        i++
+      }
+      continue
+    }
+    out += ch
+    i++
+  }
+  return out
+}
+function convertQuotesAcross(code,mode){
+  let i=0, len=code.length, out=''
+  while(i<len){
+    const ch = code[i]
+    if(ch==="'"){
+      let j=i+1, str='', escaped=false
+      while(j<len){
+        const c = code[j]
+        if(escaped){ str += c; escaped=false; j++; continue}
+        if(c==='\\'){ str += c; escaped=true; j++; continue}
+        if(c==="'"){ j++; break}
+        str += c; j++
+      }
+      if(mode==='s2d'){
+        const unescaped = str.replace(/\\'/g,"'").replace(/\\"/g,'"')
+        const escapedDouble = unescaped.replace(/"/g,'\\"')
+        out += '"' + escapedDouble + '"'
+      } else {
+        out += "'"+str+"'" 
+      }
+      i = j; continue
+    }
+    if(ch==='"'){
+      let j=i+1, str='', escaped=false
+      while(j<len){
+        const c = code[j]
+        if(escaped){ str += c; escaped=false; j++; continue}
+        if(c==='\\'){ str += c; escaped=true; j++; continue}
+        if(c==='"'){ j++; break}
+        str += c; j++
+      }
+      if(mode==='d2s'){
+        const unescaped = str.replace(/\\"/g,'"').replace(/\\'/g,"'")
+        const escapedSingle = unescaped.replace(/'/g,"\\'")
+        out += "'" + escapedSingle + "'"
+      } else {
+        out += '"' + str + '"'
+      }
+      i = j; continue
+    }
+    out += ch; i++
+  }
+  return out
+}
+function addRemoveWrapSelection(code,choice,quoteChar,selectionRange){
+  if(selectionRange.start===selectionRange.end){
+    return code
+  }
+  const before = code.slice(0,selectionRange.start)
+  const sel = code.slice(selectionRange.start, selectionRange.end)
+  const after = code.slice(selectionRange.end)
+  if(choice==='add'){
+    const wrapped = quoteChar + sel.replace(new RegExp(quoteChar,'g'), '\\'+quoteChar) + quoteChar
+    return before + wrapped + after
+  } else {
+    let s = sel
+    if(s.length>=2 && s[0]===quoteChar && s[s.length-1]===quoteChar){
+      const inner = s.slice(1,-1)
+      const unescaped = inner.replace(new RegExp('\\\\'+quoteChar,'g'),quoteChar)
+      return before + unescaped + after
+    }
+    return code
+  }
+}
+function invertSlashesInRange(code, preserveInStrings, selectionRange){
+  let i=0,len=code.length,out=''
+  let inSingle=false,inDouble=false,escaped=false
+  while(i<len){
+    const ch = code[i]
+    if(i>=selectionRange.start && i<selectionRange.end){
+      if(escaped){ out += ch; escaped=false; i++; continue }
+      if(inSingle){
+        if(ch==='\\'){ out+=ch; escaped=true; i++; continue }
+        if(ch==="'"){ out+=ch; inSingle=false; i++; continue }
+        if(!preserveInStrings){
+			if(ch === '/') out += '\\';
+			else if(ch === '\\') out += '/';
+			else out += ch;
+		}
+        i++; continue
+      }
+      if(inDouble){
+        if(ch==='\\'){ out+=ch; escaped=true; i++; continue }
+        if(ch==='"'){ out+=ch; inDouble=false; i++; continue }
+        if(!preserveInStrings){
+          if(ch==='/' ) out+='\\' ; else if(ch==='\\') out+='/' ; else out+=ch
+        } else { out+=ch }
+        i++; continue
+      }
+      if(ch==="'"){ out += ch; inSingle=true; i++; continue }
+      if(ch==='"'){ out += ch; inDouble=true; i++; continue }
+      if(ch==='/' ) { out += '\\'; i++; continue }
+      if(ch==='\\'){ out += '/'; i++; continue }
+      out += ch; i++; continue
+    } else {
+      if(ch==='\\'){ out += '/'; i++; continue }
+      if(ch==='/' ){ out += '\\'; i++; continue }
+      out += ch; i++; continue
+    }
+  }
+  return out
+}
+document.getElementById('removeCommentsBtn').addEventListener('click',()=>{
+  const keepHtml = document.getElementById('keepHtmlComments').checked
+  const keepLine = document.getElementById('keepLineComments').checked
+  const keepBlock = document.getElementById('keepBlockComments').checked
+  const source = textarea.value
+  pushHistory(source)
+  const result = removeCommentsFromCode(source,{keepHtml:keepHtml,keepLine:keepLine,keepBlock:keepBlock})
+  textarea.value = result
+  lenLabel.textContent = textarea.value.length
+  flash('Comments removed')
+})
+document.getElementById('runRemove').addEventListener('click',()=>{
+  document.getElementById('removeCommentsBtn').click()
+})
+document.getElementById('previewComments').addEventListener('click',()=>{
+  const source = getTargetText()
+  const counts = {html:countMatches(/<!--[\s\S]*?-->/g,source), line:countMatches(/(^|[^:])\/\/.*$/gm,source), block:countMatches(/\/\*[\s\S]*?\*\//g,source)}
+  alert('Found comments:\n<!-- --> : '+counts.html+'\n// : '+counts.line+'\n/* */ : '+counts.block)
+})
+document.getElementById('convertQuotesBtn').addEventListener('click',()=>{document.getElementById('runConvertQuotes').click()})
+document.getElementById('runConvertQuotes').addEventListener('click',()=>{
+  const mode = document.getElementById('quoteConvertMode').value
+  const applyToSelection = document.getElementById('applyToSelectionQuotes').checked
+  const sel=getSelectionRange()
+  if(applyToSelection && sel.start===sel.end){ flash('No selection'); return }
+  pushHistory(textarea.value)
+  if(applyToSelection){
+    const before = textarea.value.slice(0,sel.start)
+    const mid = textarea.value.slice(sel.start,sel.end)
+    const after = textarea.value.slice(sel.end)
+    const converted = convertQuotesAcross(mid, mode)
+    textarea.value = before + converted + after
+  } else {
+    textarea.value = convertQuotesAcross(textarea.value, mode)
+  }
+  lenLabel.textContent = textarea.value.length
+  flash('Quotes converted')
+})
+document.getElementById('addRemoveQuotesBtn').addEventListener('click',()=>{document.getElementById('runAddRemove').click()})
+document.getElementById('runAddRemove').addEventListener('click',()=>{
+  const choice = document.getElementById('addRemoveChoice').value
+  const qc = document.getElementById('quoteChar').value
+  const sel = getSelectionRange()
+  if(sel.start===sel.end){ flash('Select text first'); return }
+  pushHistory(textarea.value)
+  textarea.value = addRemoveWrapSelection(textarea.value, choice, qc, sel)
+  lenLabel.textContent = textarea.value.length
+  flash('Add/Remove applied')
+})
+document.getElementById('slashInvertBtn').addEventListener('click',()=>{document.getElementById('runSlashInvert').click()})
+document.getElementById('runSlashInvert').addEventListener('click',()=>{
+  const onlySelection = document.getElementById('applyToSelectionSlash').checked
+  const preserveInStrings = document.getElementById('preserveInStrings').checked
+  const sel = getSelectionRange()
+  if(onlySelection && sel.start===sel.end){ flash('No selection'); return }
+  pushHistory(textarea.value)
+  if(onlySelection){
+    const before = textarea.value.slice(0,sel.start)
+    const mid = textarea.value.slice(sel.start,sel.end)
+    const after = textarea.value.slice(sel.end)
+    const processed = invertSlashesInRange(before+mid+after, preserveInStrings, {start:sel.start,end:sel.end})
+    textarea.value = processed
+  } else {
+    const processed = invertSlashesInRange(textarea.value, preserveInStrings, {start:0,end:textarea.value.length})
+    textarea.value = processed
+  }
+  lenLabel.textContent = textarea.value.length
+  flash('Slashes inverted')
+})
+document.getElementById('countSlashes').addEventListener('click',()=>{
+  const txt = getTargetText()
+  const fwd = countMatches(/\//g,txt)
+  const back = countMatches(/\\/g,txt)
+  alert('Selection counts:\n/ → '+fwd+'\n\\ → '+back)
+})
+document.getElementById('copyBtn').addEventListener('click',()=>{})
+window.addEventListener('keydown',(e)=>{
+  if(e.ctrlKey && e.key==='z'){return}
+})
+</script>
+</body>
+</html>

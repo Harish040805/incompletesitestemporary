@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Table Scheduler</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+body{margin:0;font-family:sans-serif;background:#f0f2f5;color:#002b5c;padding:20px}input,select,button{margin:5px;padding:5px;font-size:14px}table{border-collapse:collapse;width:100%;margin-top:10px}td,th{border:1px solid #ccc;padding:5px;text-align:center}th{background:#002b5c;color:#fff}tr:hover{background:#dbe6f2}button{cursor:pointer}#container{max-width:1200px;margin:auto}
+</style>
+</head>
+<body>
+<div id="container">
+<h2>Time Table Scheduler</h2>
+<div>
+<input id="subject" placeholder="Subject Name">
+<br><br>
+<input id="totalHours" type="number" placeholder="Total Hours">
+<select id="totalHoursUnit"><option value="hrs">Hours</option><option value="mins">Minutes</option></select>
+<input id="periodDuration" type="number" placeholder="Period Duration">
+<select id="periodDurationUnit"><option value="hrs">Hours</option><option value="mins">Minutes</option></select>
+<input id="periodsPerDay" type="number" placeholder="Periods/Day" value="8" min="1" onclick="alert('Not recommended to fill this field unless it is necessary to avoid confusions.')">
+</div>
+<div>
+<label><input type="checkbox" id="includeSaturday"> Include Saturday</label>
+<label><input type="checkbox" id="includeSunday"> Include Sunday</label>
+</div>
+<div>
+<h4>Sections</h4>
+<button id="addSection">Add Section</button>
+<div id="sectionsList"></div>
+</div>
+<div>
+<button id="generate">Generate Timetable</button>
+<button id="exportPDF">Export PDF</button>
+<button id="exportExcel">Export Excel</button>
+</div>
+<table id="timetable"></table>
+</div>
+<script>
+const totalHoursInput=document.getElementById('totalHours');
+const totalHoursUnit=document.getElementById('totalHoursUnit');
+const periodDurationInput=document.getElementById('periodDuration');
+const periodDurationUnit=document.getElementById('periodDurationUnit');
+const periodsPerDayInput=document.getElementById('periodsPerDay');
+const includeSaturday=document.getElementById('includeSaturday');
+const includeSunday=document.getElementById('includeSunday');
+const subjectInput=document.getElementById('subject');
+const addSectionBtn=document.getElementById('addSection');
+const sectionsList=document.getElementById('sectionsList');
+const generateBtn=document.getElementById('generate');
+const timetableTable=document.getElementById('timetable');
+const exportPDFBtn=document.getElementById('exportPDF');
+const exportExcelBtn=document.getElementById('exportExcel');
+
+let sections=JSON.parse(localStorage.getItem('sections')||'[]');
+let baseDays=['Mon','Tue','Wed','Thu','Fri'];
+
+function saveData(){
+  localStorage.setItem('subject',subjectInput.value);
+  localStorage.setItem('totalHours',totalHoursInput.value);
+  localStorage.setItem('totalHoursUnit',totalHoursUnit.value);
+  localStorage.setItem('periodDuration',periodDurationInput.value);
+  localStorage.setItem('periodDurationUnit',periodDurationUnit.value);
+  localStorage.setItem('periodsPerDay',periodsPerDayInput.value);
+  localStorage.setItem('sections',JSON.stringify(sections));
+  localStorage.setItem('includeSaturday',includeSaturday.checked);
+  localStorage.setItem('includeSunday',includeSunday.checked);
+}
+
+function renderSections(){
+  sectionsList.innerHTML='';
+  sections.forEach((s,i)=>{
+    const div=document.createElement('div'); div.textContent=s+' ';
+    const btn=document.createElement('button'); btn.textContent='Remove'; btn.onclick=()=>{sections.splice(i,1);saveData();renderSections();}
+    div.appendChild(btn);
+    sectionsList.appendChild(div);
+  });
+}
+
+function addSection(){
+  const name=prompt('Enter section name');
+  if(name){sections.push(name);saveData();renderSections();}
+}
+
+function convertToHours(value,unit){return unit==='hrs'?parseFloat(value):parseFloat(value)/60;}
+
+function generateTimetable(){
+  const totalHrs=convertToHours(totalHoursInput.value,totalHoursUnit.value);
+  const periodDuration=convertToHours(periodDurationInput.value||1,periodDurationUnit.value);
+  const periodsPerDay=parseInt(periodsPerDayInput.value)||8;
+  let totalPeriods=Math.floor(totalHrs/periodDuration);
+  let days=[...baseDays];
+  if(includeSaturday.checked) days.push('Sat');
+  if(includeSunday.checked) days.push('Sun');
+  const numRows=days.length;
+  const numCols=periodsPerDay;
+
+  // Initialize empty grid
+  let grid=Array(numRows).fill(0).map(()=>Array(numCols).fill(''));
+
+  // Flatten sections for distribution
+  let periodAssignments=[];
+  let sectionIndex=0;
+  while(periodAssignments.length<totalPeriods){
+    periodAssignments.push(sections[sectionIndex%sections.length]);
+    sectionIndex++;
+  }
+
+  // Fill grid row by row, column by column
+  let assignIndex=0;
+  for(let r=0;r<numRows;r++){
+    for(let c=0;c<numCols;c++){
+      if(assignIndex<periodAssignments.length){
+        grid[r][c]=periodAssignments[assignIndex];
+        assignIndex++;
+      }
+    }
+  }
+
+  renderGrid(grid,days,numCols);
+  saveData();
+}
+
+function renderGrid(grid,days,numCols){
+  timetableTable.innerHTML='';
+  const thead=document.createElement('thead'); const trHead=document.createElement('tr');
+  const thEmpty=document.createElement('th'); thEmpty.textContent='x'; trHead.appendChild(thEmpty);
+  for(let c=1;c<=numCols;c++){const th=document.createElement('th'); th.textContent=c; trHead.appendChild(th);}
+  thead.appendChild(trHead); timetableTable.appendChild(thead);
+
+  const tbody=document.createElement('tbody');
+  for(let r=0;r<grid.length;r++){
+    const tr=document.createElement('tr');
+    const tdDay=document.createElement('td'); tdDay.textContent=days[r]; tr.appendChild(tdDay);
+    for(let c=0;c<numCols;c++){
+      const td=document.createElement('td'); td.textContent=grid[r][c]; tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  timetableTable.appendChild(tbody);
+}
+
+// Initialize values from localStorage
+subjectInput.value=localStorage.getItem('subject')||'';
+totalHoursInput.value=localStorage.getItem('totalHours')||'';
+totalHoursUnit.value=localStorage.getItem('totalHoursUnit')||'hrs';
+periodDurationInput.value=localStorage.getItem('periodDuration')||'';
+periodDurationUnit.value=localStorage.getItem('periodDurationUnit')||'hrs';
+periodsPerDayInput.value=localStorage.getItem('periodsPerDay')||8;
+includeSaturday.checked=localStorage.getItem('includeSaturday')==='true';
+includeSunday.checked=localStorage.getItem('includeSunday')==='true';
+renderSections();
+
+subjectInput.oninput=totalHoursInput.oninput=periodDurationInput.oninput=totalHoursUnit.onchange=periodDurationUnit.onchange=periodsPerDayInput.oninput=includeSaturday.onchange=includeSunday.onchange=saveData;
+addSectionBtn.onclick=addSection; generateBtn.onclick=generateTimetable;
+
+exportPDFBtn.onclick=()=>{
+  const { jsPDF } = window.jspdf; const doc=new jsPDF();
+  const rows=timetableTable.querySelectorAll('tr');
+  rows.forEach((tr,i)=>{
+    const cells=[...tr.querySelectorAll('th,td')].map(td=>td.textContent).join(' | ');
+    doc.text(cells,10,10+i*10);
+  });
+  doc.save('timetable.pdf');
+};
+
+exportExcelBtn.onclick=()=>{
+  const ws_data=[];
+  const rows=timetableTable.querySelectorAll('tr');
+  rows.forEach(tr=>{
+    const row=[...tr.querySelectorAll('th,td')].map(td=>td.textContent);
+    ws_data.push(row);
+  });
+  const ws=XLSX.utils.aoa_to_sheet(ws_data);
+  const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Timetable'); XLSX.writeFile(wb,'timetable.xlsx');
+};
+</script>
+</body>
+</html>

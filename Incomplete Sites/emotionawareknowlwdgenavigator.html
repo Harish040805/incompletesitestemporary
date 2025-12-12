@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Emotion-Aware Knowledge Navigator</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { margin:0; font-family:sans-serif; background:#0f1724; color:#e6eef6; }
+    #root { padding:20px; max-width:900px; margin:auto; }
+    .card { background:#162033; padding:20px; border-radius:10px; margin-bottom:20px; }
+    .btn { cursor:pointer; padding:10px 14px; margin:4px; font-size:28px; border:none; border-radius:8px; }
+    .btn:hover { transform:scale(1.2); transition:0.2s; }
+    h2 { margin-top:0; }
+    img { max-width:100%; border-radius:10px; margin-top:10px; }
+    input[type="text"] { width:70%; padding:10px; border-radius:6px; border:none; margin-right:8px; }
+    .search-btn { padding:10px 16px; border:none; border-radius:6px; cursor:pointer; font-size:16px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+const AI_API_KEY = "AIzaSyC5ab-HZmvtoTEXMRBMb4-tPpwD2yMVF1A";
+
+// Gemini AI call
+async function callGemini(prompt) {
+  const res = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + AI_API_KEY,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    }
+  );
+  if (!res.ok) throw new Error("API error");
+  const data = await res.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response.";
+}
+
+// Mood → Unsplash keyword
+const moodImages = {
+  happy: "joy",
+  sad: "comfort",
+  angry: "calm",
+  shame: "hope",
+  wonder: "discovery",
+  fear: "courage",
+  pride: "achievement",
+  love: "romance",
+  indifference: "neutral"
+};
+
+function App() {
+  const [output, setOutput] = useState("Pick an emoji to see content!");
+  const [imageUrl, setImageUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  async function handleEmoji(mode, emoji) {
+    setLoading(true);
+    let prompt = "";
+    switch (mode) {
+      case "happy":  prompt = `The user is feeling happy ${emoji}. Share a cheerful and fun piece of content.`; break;
+      case "sad":    prompt = `The user is feeling sad ${emoji}. Share something comforting and uplifting.`; break;
+      case "angry":  prompt = `The user is feeling angry ${emoji}. Share calming, useful information.`; break;
+      case "shame":  prompt = `The user is feeling ashamed ${emoji}. Share encouraging, supportive knowledge.`; break;
+      case "wonder": prompt = `The user is feeling wonder ${emoji}. Share something amazing or curious.`; break;
+      case "fear":   prompt = `The user is feeling fear ${emoji}. Share something reassuring and insightful.`; break;
+      case "pride":  prompt = `The user is feeling proud ${emoji}. Share something inspiring and positive.`; break;
+      case "love":   prompt = `The user is feeling love ${emoji}. Share thoughtful, warm information.`; break;
+      case "indifference": prompt = `The user feels indifferent ${emoji}. Share something neutral yet interesting.`; break;
+      default:       prompt = "Share something informative.";
+    }
+
+    try {
+      const result = await callGemini(prompt);
+      setOutput(result);
+
+      // Random Unsplash image
+      const keyword = moodImages[mode] || "emotion";
+      const imgUrl = await fetchImage(keyword);
+      setImageUrl(imgUrl);
+    } catch (e) {
+      setOutput("Error fetching from AI.");
+      setImageUrl(null);
+    }
+    setLoading(false);
+  }
+
+  async function fetchImage(query) {
+  const accessKey = "YOUR_UNSPLASH_ACCESS_KEY";  // sign up at unsplash.com/developers
+  const res = await fetch(
+    `https://api.unsplash.com/photos/random?query=${encodeURIComponent(query)}&client_id=${accessKey}`
+  );
+  if (!res.ok) throw new Error("Image fetch error");
+  const data = await res.json();
+  return data.urls.small;
+}
+
+  async function handleSearch() {
+    if (!searchText.trim()) return;
+    setLoading(true);
+    try {
+      const result = await callGemini(`Give me informative and useful content about: ${searchText}`);
+      setOutput(result);
+
+      const imgUrl = `https://source.unsplash.com/600x400/?${encodeURIComponent(searchText)}&sig=${Math.random()}`;
+      setImageUrl(imgUrl);
+    } catch (e) {
+      setOutput("Error fetching from AI.");
+      setImageUrl(null);
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div>
+      {/* Mood Section */}
+      <div className="card">
+        <h2>Pick Your Mood</h2>
+        <div>
+          <button className="btn" onClick={() => handleEmoji("happy","😄")}>😄</button>
+          <button className="btn" onClick={() => handleEmoji("sad","😢")}>😢</button>
+          <button className="btn" onClick={() => handleEmoji("angry","😡")}>😡</button>
+          <button className="btn" onClick={() => handleEmoji("shame","😳")}>😳</button>
+          <button className="btn" onClick={() => handleEmoji("wonder","🤯")}>🤯</button>
+          <button className="btn" onClick={() => handleEmoji("fear","😱")}>😱</button>
+          <button className="btn" onClick={() => handleEmoji("pride","😌")}>😌</button>
+          <button className="btn" onClick={() => handleEmoji("love","❤️")}>❤️</button>
+          <button className="btn" onClick={() => handleEmoji("indifference","😐")}>😐</button>
+        </div>
+      </div>
+
+      {/* Search Section */}
+      <div className="card">
+        <h2>Search Your Own Topic</h2>
+        <div>
+          <input 
+            type="text" 
+            placeholder="Enter your topic..." 
+            value={searchText} 
+            onChange={e => setSearchText(e.target.value)} 
+          />
+          <button className="search-btn" onClick={handleSearch}>Search</button>
+        </div>
+      </div>
+
+      {/* Output Section */}
+      <div className="card">
+        <h2>Output</h2>
+        {loading ? <p>Loading...</p> : <p>{output}</p>}
+        {imageUrl && <img src={imageUrl} alt="Result visual" />}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

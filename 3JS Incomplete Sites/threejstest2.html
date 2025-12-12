@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Three.js Non-Module Working Example</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#000}
+</style>
+</head>
+<body>
+<a href="https://www.google.com/search?sa=X&sca_esv=a63806a710cbffd6&sxsrf=AE3TifOMWPRy8RUmQnvImmmmRdYhAEIxxQ:1764354918333&udm=7&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ59Aj-dkSgmXWKpa2HWaBZFiTO0ouTWmFCwDJPeX-aDMCsMI9RWqivCWMi7WnO9CCUrTnEJkCZ8PxC3SMwhszqfBl_TVyu1yLLBVpVptr35yXP40U0katmlL2dUQ1rG4ubIc-knfHutxIbGQx7zLhVZl2ypHdLmvCnQ4xLqsTyKrxvbZvcbXxMnqv9PiA3XArYmUuXg&q=how+to+create+a+laptop+model+using+three+js%3F&ved=2ahUKEwi_16ihvpWRAxVV2DgGHVXNE6EQtKgLegQIExAB&biw=1536&bih=730&dpr=1.25#fpstate=ive&vld=cid:5c5e5ac9,vid:QCS1DOu2IzU,st:0" style="color: #fff">https://www.google.com/search?sa=X&sca_esv=a63806a710cbffd6&sxsrf=AE3TifOMWPRy8RUmQnvImmmmRdYhAEIxxQ:1764354918333&udm=7&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ59Aj-dkSgmXWKpa2HWaBZFiTO0ouTWmFCwDJPeX-aDMCsMI9RWqivCWMi7WnO9CCUrTnEJkCZ8PxC3SMwhszqfBl_TVyu1yLLBVpVptr35yXP40U0katmlL2dUQ1rG4ubIc-knfHutxIbGQx7zLhVZl2ypHdLmvCnQ4xLqsTyKrxvbZvcbXxMnqv9PiA3XArYmUuXg&q=how+to+create+a+laptop+model+using+three+js%3F&ved=2ahUKEwi_16ihvpWRAxVV2DgGHVXNE6EQtKgLegQIExAB&biw=1536&bih=730&dpr=1.25#fpstate=ive&vld=cid:5c5e5ac9,vid:QCS1DOu2IzU,st:0</a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/controls/OrbitControls.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000000);
+
+  const camera = new THREE.PerspectiveCamera(
+    60, window.innerWidth/window.innerHeight, 0.1, 1000
+  );
+  camera.position.z = 3;
+
+  const renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const geometry = new THREE.BoxGeometry(1,1,1);
+  const material = new THREE.MeshBasicMaterial({color:0x000fff});
+  const cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+
+  function animate(){
+    requestAnimationFrame(animate);
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+</body>
+</html>

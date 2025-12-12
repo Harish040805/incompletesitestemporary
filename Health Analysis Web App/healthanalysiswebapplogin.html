@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Welcome & Login</title>
+<style>
+body {
+    overflow: hidden; /* disables scrolling initially */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f9b0f, #ffffff);
+    scroll-behavior: smooth;
+}
+.section {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+}
+h1, h2{
+    color: #fff;
+}
+h2 {
+    margin-bottom: 20px;
+}
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 8px;
+    background: #fff;
+    border: 2px solid #0f9b0f;
+    color: #0f9b0f;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+button:hover {
+    background: #0c7b0d;
+    color: #fff;
+}
+.container {
+    width: 1220px;
+    max-width: 90%;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 200px;
+}
+.content {
+    width: 350px;
+    max-width: 90%;
+    background: #ffffff1b;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+input {
+    width: 92%;
+    padding: 12px;
+    margin: 5px 0;
+    border: 2px solid #0f9b0f;
+    border-radius: 8px;
+    outline: none;
+}
+input:focus {
+    border-color: #0c7b0d;
+}
+a {
+    text-decoration: none;
+    color: #0f9b0f;
+    margin-top: 10px;
+}
+
+/* Floating Back Button */
+.back-button {
+    position: fixed;
+    top: 20px;      /* distance from top */
+    left: 20px;     /* distance from left */
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    z-index: 1000;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 30px 20px;
+    }
+    button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Welcome Section -->
+<div class="section" id="welcome">
+        <span style="font-size: 50px; color: #fff;">(❤️)</span>
+    <h1>Welcome to Health Analyzer</h1>
+    <p>Your personalized health assistant</p>
+    <a href="#login"><button>Enter the Site</button></a>
+</div>
+
+<!-- Login Section -->
+<div class="section" id="login">
+    <div class="container">
+        <a href="#welcome"><button class="back-button">Back</button></a>
+        <br><br><br><br><br><br>
+        <div class="content">
+<form id="loginForm" action="C:/Users/HP/OneDrive/Desktop/Health Analysis Web App/newhealthanalysiswebapp.html">
+            <h2>Login</h2>
+    <input type="text" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+</form>
+            <a href="#">Forgot Password?</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

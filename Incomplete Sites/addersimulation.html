@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half Adder Circuit</title>
+	<link rel="stylesheet" href="addersimulationcss.css">
+</head>
+<body>
+<h1>Half Adder Simulation</h1>
+  <div class="circuit">
+    <div class="gate-container">
+      <p>A &nbsp; <input type="number" min="0" max="1" value="0"></p>
+	  <span class="tt"></span>
+	  &nbsp; &nbsp; &nbsp; &nbsp;
+	  |___________________________
+      <br><br><br>
+	  <p>B &nbsp; <input type="number" min="0" max="1" value="0"></p>
+	  &nbsp; &nbsp; &nbsp; 
+	  &nbsp;
+	  |__________________________________
+    </div>
+    <div class="gate-container">
+	  <div class="gate and-gate">
+	  <br><p><span class="onpntet"></span>AND</p>
+      </div>
+      <div class="gate xor-gate">
+	  <br><p><span class="onpntet"></span>XOR</p>
+      </div>
+    </div>
+	<div class="output" style="top: 240px;">.........SUM</div>
+	<div class="output" style="top: 410px;">.........CARRY</div>
+  </div>
+<script>
+const inputA = document.querySelectorAll('input')[0];
+const inputB = document.querySelectorAll('input')[1];
+const sumOutput = document.querySelectorAll('.output')[1];
+const carryOutput = document.querySelectorAll('.output')[0];
+
+function calculateHalfAdder() {
+  const a = parseInt(inputA.value);
+  const b = parseInt(inputB.value);
+  const sum = (a + b) % 2;
+  const carry = (a === 1 && b === 1) ? 1 : 0;
+
+  sumOutput.innerHTML = sum;
+  carryOutput.innerHTML = carry;
+
+  sumOutput.style.background = sum === 1 ? 'green' : 'black';
+  sumOutput.style.color = sum === 1 ? 'white' : 'white';
+  carryOutput.style.background = carry === 1 ? 'green' : 'black';
+  carryOutput.style.color = carry === 1 ? 'white' : 'white';
+  sumOutput.style.width = '40px';
+  sumOutput.style.height = '40px';
+  sumOutput.style.textAlign = 'center';
+  sumOutput.style.lineHeight = '40px';
+  carryOutput.style.width = '40px';
+  carryOutput.style.height = '40px';
+  carryOutput.style.textAlign = 'center';
+  carryOutput.style.lineHeight = '40px';
+}
+
+inputA.addEventListener('input', calculateHalfAdder);
+inputB.addEventListener('input', calculateHalfAdder);
+</script>
+<br><br>
+<h1>Diagram</h1>
+<center>
+	<img src="https://thvnext.bing.com/th/id/OIP.--tkFtQmym0ftfvKMAwLVAHaDq?cb=thvnext&rs=1&pid=ImgDetMain">
+</center>
+<h1>Truth Table</h1>
+<center>
+<table border="1">
+  <tr>
+    <th>A</th>
+    <th>B</th>
+    <th>Sum</th>
+    <th>Carry</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+  </tr>
+</table>
+</center>
+</body>
+</html>

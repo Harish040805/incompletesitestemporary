@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Chess</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        display: flex;
+        place-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+        background-color: #c6c6c6;
+        height: 100vh;
+    }
+    .container {
+        display: grid;
+        place-items: center;
+        justify-content: center;
+    }
+    .div {
+        display: flex;
+    }
+    ul {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    li {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+        text-transform: capitalize;
+    }
+    .box {
+        margin: 0.5px;
+        width: 60px;
+        height: 60px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+        text-align: center;
+    }
+    h1 {
+        margin: 20px;
+        font-size: 2.5rem;
+        text-align: center;
+        color: black;
+        border: 2px solid black;
+        padding: 10px;
+        background-color: gray;
+        border-radius: 5px;
+    }
+    #tog {
+        margin: 20px;
+        font-size: 1.5rem;
+        text-align: left;
+        background-color: #fff;
+        color: black;
+        border: 2px solid #fff;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    #reset-btn {
+        background-color: #4CAF50;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        text-align: center;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 4px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    @media(max-width:650px) {
+        .box {
+            width: 11vw;
+            height: 11vw;
+        }
+        li {
+            font-size: 2.5vw;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>CHESS</h1>
+        <ul>
+            <div class="div" id="row8">
+                <li class="box" id="b801">♜</li>
+                <li class="box" id="b802">♞</li>
+                <li class="box" id="b803">♝</li>
+                <li class="box" id="b804">♛</li>
+                <li class="box" id="b805">♚</li>
+                <li class="box" id="b806">♝</li>
+                <li class="box" id="b807">♞</li>
+                <li class="box" id="b808">♜</li>
+            </div>
+            <div class="div" id="row7">
+                <li class="box" id="b701">♟</li>
+                <li class="box" id="b702">♟</li>
+                <li class="box" id="b703">♟</li>
+                <li class="box" id="b704">♟</li>
+                <li class="box" id="b705">♟</li>
+                <li class="box" id="b706">♟</li>
+                <li class="box" id="b707">♟</li>
+                <li class="box" id="b708">♟</li>
+            </div>
+            <div class="div" id="row6">
+                <li class="box"></li><li class="box"></li><li class="box"></li><li class="box"></li>
+                <li class="box"></li><li class="box"></li><li class="box"></li><li class="box"></li>
+            </div>
+            <div class="div" id="row5">
+                <li class="box"></li><li class="box"></li><li class="box"></li><li class="box"></li>
+                <li class="box"></li><li class="box"></li><li class="box"></li><li class="box"></li>
+            </div>
+            <div class="div" id="row4">
+                <li class="box"></li><li class="box"></li><li class="box"></li><li class="box"></li>
+                <li class="box"></li><li class="box"></li><li class="box"></li><li class="box"></li>
+            </div>
+            <div class="div" id="row3">
+                <li class="box"></li><li class="box"></li><li class="box"></li><li class="box"></li>
+                <li class="box"></li><li class="box"></li><li class="box"></li><li class="box"></li>
+            </div>
+            <div class="div" id="row2">
+                <li class="box" id="b201">♙</li>
+                <li class="box" id="b202">♙</li>
+                <li class="box" id="b203">♙</li>
+                <li class="box" id="b204">♙</li>
+                <li class="box" id="b205">♙</li>
+                <li class="box" id="b206">♙</li>
+                <li class="box" id="b207">♙</li>
+                <li class="box" id="b208">♙</li>
+            </div>
+            <div class="div" id="row1">
+                <li class="box" id="b101">♖</li>
+                <li class="box" id="b102">♘</li>
+                <li class="box" id="b103">♗</li>
+                <li class="box" id="b104">♕</li>
+                <li class="box" id="b105">♔</li>
+                <li class="box" id="b106">♗</li>
+                <li class="box" id="b107">♘</li>
+                <li class="box" id="b108">♖</li>
+            </div>
+        </ul>
+        <h2 id="tog">White's Turn</h2>
+        <h2 id="reset-btn">Reset</h2>
+    </div>
+<script>
+function coloring() {
+    const color = document.querySelectorAll('.box');
+    color.forEach(box => {
+        const id = box.id;
+        if(id) {
+            const row = parseInt(id[1]);
+            const col = parseInt(id[3]);
+            if((row + col) % 2 === 0){
+                box.style.backgroundColor = 'rgb(232 235 239)';
+            } else {
+                box.style.backgroundColor = 'rgb(125 135 150)';
+            }
+        }
+    });
+}
+coloring();
+</script>
+</body>
+</html>
+<!-- https://www.youtube.com/watch?v=ku0lcfbakXo 18.30 min function insertImage() -->
+<!-- 20: 30 -->
+<!-- Two functions defined check them you merged them into one dont do that --> 

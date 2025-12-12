@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Forensics Site</title>
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(to bottom right, #001f4d, #004080);
+            font-family: Arial, sans-serif;
+        }
+
+        .container-left {
+            width: 50%;
+            height: 100vh;
+            float: left;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 columns */
+            grid-template-rows: 1fr 1fr;   /* 2 rows */
+            gap: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .container-left div {
+            background-color: #003366;
+            border: 2px solid #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .container-right {
+            width: 50%;
+            height: 100vh;
+            float: left;
+            background-color: #004080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-left">
+        <div>Left Top 1</div>
+        <div>Left Top 2</div>
+        <div>Left Bottom 1</div>
+        <div>Left Bottom 2</div>
+    </div>
+
+    <div class="container-right">
+        Right Container
+    </div>
+
+    <script>
+        console.log("Webpage loaded with 5 containers");
+    </script>
+
+</body>
+</html>

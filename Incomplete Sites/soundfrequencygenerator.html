@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔊 Sound Frequency Generator 📣</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            color: #fff;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+        }
+
+        button {
+            padding: 15px 35px;
+            margin: 10px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #f0f0f0, #dadada);
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔊 Sound Frequency Generator 📣</h1>
+        <p>Realistic sound frequency generator that could make the surround temperature hot or cool when the sound is played. <br>
+        The time duration and sound frequency oscillation are added with care after research. <br>
+        It is not 100% accurate to change the whether conditions. <br>
+        Still, it is designed to produce heat waves or chillness that can cause effects in the real world's evironmental conditions.</p>
+        <button onclick="createSound(100)">🌧️ Rain</button>
+        <button onclick="createSound(8000)">♨️ Heat</button>
+        <button onclick="createSound(440)">🍃 Neutral</button>
+    </div>
+<script>
+alert("This site to be used with care for the users. Do not use this site over 25% of volume.")
+    const audioContext = new AudioContext();
+    function createSound(frequency){
+        const oscillator = audioContext.createOscillator();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = frequency;
+        oscillator.connect(audioContext.destination);
+        oscillator.start();
+    setTimeout(()=>
+{
+    oscillator.stop();
+},5000);
+    }
+</script>
+</body>
+</html>

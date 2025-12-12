@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Analysis Web App</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { height: 98vh; width: 98vw; background: linear-gradient(to bottom right, #0f9b0f, #00b09b); display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: Arial, sans-serif; }
+    nav { position: absolute; top: 0; width: 100%; height: 70px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    nav h1 { color: white; font-size: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+    .container-wrapper { display: flex; gap: 40px; margin-top: 55px; }
+    .healthrate { width: 585px; height: 565px; background: rgba(255, 255, 255, 0.208); border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 15px; }
+    .healthrateinner { width: 585px; height: 48px; background: rgb(255, 255, 255); margin-top: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: bold; }
+    .userinputs { width: 585px; height: 565px; background: rgba(255, 255, 255, 0.5); border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); padding: 20px; overflow-y: auto; }
+    .field { margin-bottom: 0px; font-size: 16px; font-weight: bold; display: flex; flex-direction: row; color: #000; }
+    .field input, .field select { margin-top: 8px; padding: 8px; font-size: 15px; border-radius: 6px; border: none; outline: none; width:90%; }
+    .field label { margin-right: 12px; font-weight: normal; }
+    .fieldbp { display: flex; align-items: center; width: 100%; margin-top: 8px; }
+    .bp-wrapper { display: flex; justify-content: space-between; width: 90%; gap: 10px; }
+    .bp-wrapper input { width: 50%; padding: 8px; font-size: 15px; border-radius: 6px; border: none; outline: none; }
+    .fieldbp .indicator { width: 7%; height: 36px; background: rgba(0,0,0,0.1); border-radius: 6px; margin-left: 5px; display: flex; justify-content: center; align-items: center; font-size: 12px; color: #333; }
+    .fieldbc { display: flex; align-items: center; width: 100%; margin-top: 8px; }
+    .bc-wrapper { display: flex; justify-content: space-between; width: 90%; gap: 10px; }
+    .bc-wrapper input { width: 50%; padding: 8px; font-size: 15px; border-radius: 6px; border: none; outline: none; }
+    .fieldbc .indicator { width: 7%; height: 36px; background: rgba(0,0,0,0.1); border-radius: 6px; margin-left: 5px; display: flex; justify-content: center; align-items: center; font-size: 12px; color: #333; }
+    .fieldtemp { display: flex; align-items: center; width: 100%; margin-top: 8px; }
+    .temp-wrapper { display: flex; justify-content: space-between; width: 90%; gap: 10px; }
+    .temp-wrapper input { width: 50%; padding: 8px; font-size: 15px; border-radius: 6px; border: none; outline: none; }
+    .fieldtemp .indicator { width: 7%; height: 36px; background: rgba(0,0,0,0.1); border-radius: 6px; margin-left: 5px; display: flex; justify-content: center; align-items: center; font-size: 12px; color: #333; }
+    .final input { margin-top: 8px; padding: 8px; font-size: 15px; border-radius: 6px; border: none; outline: none; width:50%; }
+    .indicator { width: 7%; height: 36px; background: rgba(0,0,0,0.1); border-radius: 6px; display: flex; justify-content: center; align-items: center; font-size: 12px; color: #333; }
+    #searchbar { position: absolute; top: 115px; right: 270px; padding: 10px 15px; width: 460px; font-size: 16px; border-radius: 8px; border: none; outline: none; background: rgba(255,255,255,0.8); }
+    .circle-meter { background-color: #ffffff63; border-radius: 50%; width: 460px; height: 460px; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .circle-meter svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .meter-bg { fill: none; stroke: rgb(255, 255, 255); stroke-width: 10; }
+    .meter-ring { fill: none; stroke: #ff4b4b; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 339.292; stroke-dashoffset: 339.292; transition: stroke-dashoffset 1s ease; }
+    .heart { position: absolute; font-size: 70px; pointer-events: none; }
+    #floating-datetime-container { position: fixed; top: 20px; left: 20px; width: 250px; height: 150px; background: rgba(255, 255, 255, 0.9); border: 2px solid #0f9b0f; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); padding: 15px; overflow: auto; z-index: 1000; }
+    #floating-datetime-container h3 { margin-bottom: 10px; text-align: center; }
+    .gender-group { margin-top: 12px; display: flex; gap: 32px; align-items: center; }
+    .gender-group label { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+    .gender-group input[type="radio"] { width: 18px; height: 24px; cursor: pointer; accent-color: #009f28; }
+
+@media (max-width: 480px) {
+    .container {
+        width: 100%;
+        max-width: 320px;
+        padding: 25px;
+    }
+    h2 {
+        font-size: 22px;
+    }
+    input, button {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 80%;
+        max-width: 360px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 400px;
+        padding: 35px;
+    }
+}
+</style>
+</head>
+<body>
+<div id="floating-datetime-container">
+    <h3>📆 Live Date Time 🕰️</h3>
+    <br>
+    <div id="datetime" style="font-size:18px; color:#000;"></div>
+</div>
+<nav><h1>Health Analysis Web App</h1></nav>
+    <input type="text" id="searchbar" placeholder="🔍 Search your desired field">
+<div class="container-wrapper">
+<div class="healthrate">
+    <div class="circle-meter">
+        <svg viewBox="0 0 120 120">
+            <circle class="meter-bg" cx="60" cy="60" r="54"></circle>
+            <circle class="meter-ring" cx="60" cy="60" r="54"></circle>
+        </svg>
+        <div class="heart">❤️</div>
+    </div>
+    <div class="healthrateinner">Health Status:</div>
+</div>
+    <div class="userinputs">
+        <br><br>
+        <div class="field"><input type="text" id="fullname" placeholder="Enter full name"></div>
+        <div class="field"><input type="number" id="age" placeholder="Age (in numbers)"></div>
+        <div class="field">
+    <div class="gender-group">
+        <label style="display:flex;align-items:center;gap:6px;">
+            <input type="radio" name="gender" value="Male"> Male
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;">
+            <input type="radio" name="gender" value="Female"> Female
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;">
+            <input type="radio" name="gender" value="Other"> Other
+        </label>
+    </div>
+        </div>
+        <div class="field">
+            <input type="number" id="height" placeholder="Height (cm)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="weight" placeholder="Weight (kg)"> &nbsp; <div class="indicator"></div>
+        </div>
+<div class="fieldbp">
+    <label for="bp-sys"></label>
+    <div class="bp-wrapper">
+        <input type="number" id="bp-sys" placeholder="Systolic (mmHg) e.g., 120">
+        <input type="number" id="bp-dia" placeholder="Diastolic (mmHg) e.g., 80">
+    </div>
+    <div class="indicator"></div>
+</div>
+        <div class="field">
+            <input type="number" id="pulse" placeholder="Pulse Rate (bpm)"> &nbsp; <div class="indicator"></div>
+        </div>
+<div class="fieldtemp">
+    <label for="bp-sys"></label>
+    <div class="bp-wrapper">
+        <input type="number" step="0.1" id="temp-cel" placeholder="Temperature (°C)">
+        <input type="number" step="0.1" id="temp-fah" placeholder="Temperature (°F)">
+    </div>
+    <div class="indicator"></div>
+</div>
+        <div class="field">
+            <input type="number" id="respiratoryrate" placeholder="Respiratory Rate (bpm)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="spo2" placeholder="Oxygen Saturation (SpO2) (%)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="bmi" placeholder="Body Mass Index (BMI) (kg/m2)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="hemoglobin" placeholder="Hemoglobin (g/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="fieldbc">
+            <div class="bc-wrapper">
+                <input type="number" step="0.01" id="rbc" placeholder="RBC Count (millions/µL)">
+                <input type="number" step="0.1" id="wbc" placeholder="WBC Count (thousands/µL)">
+            </div>
+            <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="1" id="platelets" placeholder="Platelet Count (thousands/µL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="fbs" placeholder="Fasting Blood Sugar (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="ppbs" placeholder="Postprandial Blood Sugar (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="cholesterol" placeholder="Total Cholesterol (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="hdl" placeholder="HDL (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="ldl" placeholder="LDL (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="vldl" placeholder="VLDL (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="triglycerides" placeholder="Triglycerides (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="text" id="hematocrit" placeholder="Hematocrit (PCV)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="text" id="mch" placeholder="MCH"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="text" id="mcv" placeholder="MCV"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="mchc" placeholder="MCHC"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="bilirubin" placeholder="Bilirubin (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="ast" placeholder="AST (SGOT)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="alt" placeholder="ALT (SGPT)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="alkaline" placeholder="Alkaline Phosphatase (U/L)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="albumin" placeholder="Albumin (g/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="globulin" placeholder="Globulin (g/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="urea" placeholder="Urea (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="creatinine" placeholder="Creatinine (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" id="uricacid" placeholder="Uric Acid (mg/dL)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="sodium" placeholder="Sodium (mEq/L)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="potassium" placeholder="Potassium (mEq/L)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="chloride" placeholder="Chloride (mEq/L)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="hba1c" placeholder="HbA1c (%)"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="text" id="urinesugar" placeholder="Urine Sugar"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="number" step="0.01" id="urineph" placeholder="Urine pH"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="text" id="urinealbumin" placeholder="Urine Albumin"> &nbsp; <div class="indicator"></div>
+        </div>
+        <br>
+        <div class="field">
+<label>Urine Color</label>
+<div id="urineColorPanel" style="display:flex;gap:10px;">
+  <div class="urine-box" data-value="transparent" style="width:30px;height:30px;background:#ffffffc8;border-radius:6px;cursor:pointer;"></div>
+  <div class="urine-box" data-value="pale_yellow" style="width:30px;height:30px;background:#f7f7b2c8;border-radius:6px;cursor:pointer;"></div>
+  <div class="urine-box" data-value="light_yellow" style="width:30px;height:30px;background:#fff799c8;border-radius:6px;cursor:pointer;"></div>
+  <div class="urine-box" data-value="dark_yellow" style="width:30px;height:30px;background:#ffd200c8;border-radius:6px;cursor:pointer;"></div>
+  <div class="urine-box" data-value="amber" style="width:30px;height:30px;background:#e2a300c8;border-radius:6px;cursor:pointer;"></div>
+  <div class="urine-box" data-value="brownish" style="width:30px;height:30px;background:#bb3d3dc8;border-radius:6px;cursor:pointer;"></div>
+</div>
+<span id="urineIndicator">&nbsp; -</span>
+<input type="hidden" id="urineColor">
+        </div>
+        <div class="field">
+            <input type="text" id="urineprotein" placeholder="Urine Protein"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="field">
+            <input type="text" id="urinespecificgravity" placeholder="Urine Specific Gravity"> &nbsp; <div class="indicator"></div>
+        </div>
+        <div class="final"><input type="text" id="disease" placeholder="Name of Disease Predicted"></div>
+    </div>
+</div>
+<script>
+document.getElementById("searchbar").addEventListener("input", function () {
+    const query = this.value.trim().toLowerCase();
+    const fields = document.querySelectorAll(".userinputs .field, .userinputs .fieldbp");
+    if (!query) {
+        fields.forEach(f => f.style.display = "flex");
+        return;
+    }
+    fields.forEach(field => {
+        const text = (field.innerText || "").toLowerCase();
+        const placeholders = Array.from(field.querySelectorAll("input, select, textarea"))
+                                 .map(i => (i.placeholder || "") + " " + (i.value || ""))
+                                 .join(" ").toLowerCase();
+        const matches = text.includes(query) || placeholders.includes(query);
+        field.style.display = matches ? "flex" : "none";
+    });
+});
+function updateDateTime() {
+    const now = new Date();
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    document.getElementById("datetime").innerText = now.toLocaleDateString('en-US', options);
+}
+updateDateTime();
+setInterval(updateDateTime, 1000);
+const categoryRanges = {
+    vitals: ["height","weight","pulse","temperature","respiratoryrate","spo2","bmi"],
+    blood: ["hemoglobin","rbc","wbc","platelets"],
+    sugar: ["fbs","ppbs","hba1c"],
+    lipids: ["cholesterol","hdl","ldl","vldl","triglycerides"],
+    liver: ["bilirubin","ast","alt","alkaline","albumin","globulin"],
+    kidney: ["urea","creatinine","uricacid"],
+    electrolytes: ["sodium","potassium","chloride"],
+    urine: ["urineph","urinesugar","urinealbumin","urineprotein","urinespecificgravity"]
+};
+const ageGroups = [
+    { name: "child", minAge: 0, maxAge: 12 },
+    { name: "teen", minAge: 13, maxAge: 17 },
+    { name: "adult", minAge: 18, maxAge: 59 },
+    { name: "senior", minAge: 60, maxAge: 120 }
+];
+const ageBasedIndicators = {
+    height: {
+        child: { min: 70, max: 140 },
+        teen: { min: 130, max: 170 },
+        adult: { min: 140, max: 180 },
+        senior: { min: 140, max: 180 }
+    },
+    weight: {
+        child: { min: 10, max: 30 },
+        teen: { min: 25, max: 60 },
+        adult: { min: 50, max: 80 },
+        senior: { min: 50, max: 75 }
+    },
+    bmi: {
+        child: { min: 14, max: 18 },
+        teen: { min: 17, max: 23 },
+        adult: { min: 18.5, max: 24.9 },
+        senior: { min: 18.5, max: 26 }
+    }
+};
+function getAgeGroup(age) {
+    for (let group of ageGroups) {
+        if (age >= group.minAge && age <= group.maxAge) return group.name;
+    }
+    return "adult"; 
+}
+function normalizeValueAge(val, min, max) {
+    if (val < min) return (val / min) * 0.5;
+    if (val > max) return max / val * 0.5;
+    return 1;
+}
+function calculateHealthScore() {
+    const ageInput = parseInt(document.getElementById("age").value);
+    const ageGroup = getAgeGroup(ageInput);
+    let totalScore = 0;
+    let categoryCount = 0;
+Object.keys(categoryRanges).forEach(category => {
+    let fields = categoryRanges[category];
+    let categoryScore = 0;
+    let categoryItems = 0;
+    fields.forEach(id => {
+        const inputEl = document.getElementById(id);
+        if (!inputEl || !inputEl.value) return;
+        let val = parseFloat(inputEl.value);
+        let range;
+        if (["height","weight","bmi"].includes(id)) {
+            const ageInput = parseInt(document.getElementById("age").value) || 25;
+            const ageGroup = getAgeGroup(ageInput);
+            range = ageBasedIndicators[id][ageGroup];
+        } else {
+            range = indicators[id];
+        }
+        if (!range) return;
+        categoryScore += normalizeValueAge(val, range.min, range.max);
+        categoryItems++;
+    });
+    if(categoryItems > 0){
+        totalScore += categoryScore / categoryItems;
+        categoryCount++;
+    }
+});
+    if (categoryCount === 0) return 0;
+    return (totalScore / categoryCount) * 100;
+}
+function updateHealthMeter() {
+    const percent = Math.min(100, Math.round(calculateHealthScore()));
+    const healthColors = ["red","orange","yellow","lime","green","lime","yellow","orange","red"];
+    const meterRing = document.querySelector(".meter-ring");
+    const colorIndex = Math.min(healthColors.length - 1, Math.floor(percent / 10));
+    meterRing.style.strokeDashoffset = 339.292 - (339.292 * percent / 100);
+    meterRing.style.stroke = healthColors[colorIndex];
+}
+const indicators = {
+    height: {min: 140, max: 180},
+    weight: {min: 50, max: 80},
+    "bp-sys": {min: 90, max: 120},
+    "bp-dia": {min: 60, max: 80},
+    pulse: {min: 60, max: 100},
+    temperature: {min: 36.1, max: 37.2},
+    respiratoryrate: {min: 12, max: 20},
+    spo2: {min: 95, max: 100},
+    bmi: {min: 18.5, max: 24.9},
+    hemoglobin: {
+        male: { min: 13.5, max: 17.5 },
+        female: { min: 12.0, max: 15.5 },
+        other: { min: 12.0, max: 17.5 }
+    },
+    wbc: {min: 4, max: 11},
+    platelets: {min: 150, max: 450},
+    fbs: {min: 70, max: 99},
+    ppbs: {min: 70, max: 139},
+    cholesterol: {min: 125, max: 200},
+    hdl: {min: 40, max: 60},
+    ldl: {min: 0, max: 100},
+    triglycerides: {min: 0, max: 150},
+    mchc: {min: 32, max: 36},
+    bilirubin: {min: 0.1, max: 1.2},
+    ast: {min: 10, max: 40},
+    alt: {min: 7, max: 56},
+    alkaline: {min: 44, max: 147},
+    albumin: {min: 3.4, max: 5.4},
+    globulin: {min: 2.0, max: 3.5},
+    urea: {min: 7, max: 20},
+    creatinine: {min: 0.6, max: 1.3},
+    uricacid: {min: 3.5, max: 7.2},
+    sodium: {min: 135, max: 145},
+    potassium: {min: 3.5, max: 5.1},
+    chloride: {min: 98, max: 107},
+    hba1c: {min: 4, max: 5.6},
+    vldl: {min: 5, max: 40},
+    urineph: {min: 4.6, max: 8},
+    urinesugar: {min: 0, max: 0},  
+    urinealbumin: {min: 0, max: 20},   
+};
+function getSelectedGender(){
+  const g = document.querySelector('input[name="gender"]:checked');
+  return g ? g.value.toLowerCase() : 'other';
+}
+function getIndicatorRange(id, age){
+  const gender = getSelectedGender();
+  const def = indicators[id];
+  if (!def) return null;
+  if (def.male && def.female){
+    return def[gender] || def.other || def.male;
+  }
+  return def; // numeric range object {min,max}
+}
+const bpField = document.querySelector(".fieldbp");
+const bpIndicator = bpField.querySelector(".indicator");
+const bpSys = document.getElementById("bp-sys");
+const bpDia = document.getElementById("bp-dia");
+function updateBPIndicator(){
+    const sys = parseFloat(bpSys.value);
+    const dia = parseFloat(bpDia.value);
+    if(isNaN(sys) && isNaN(dia)){ bpIndicator.style.background = "rgba(0,0,0,0.1)"; return; }
+    if (sys < 90 || dia < 60) bpIndicator.style.background = "darkblue";
+    else if (sys < 110 || dia < 70) bpIndicator.style.background = "lightblue";
+    else if (sys < 120 || dia < 80) bpIndicator.style.background = "aqua";
+    else if (sys <= 120 && dia <= 80) bpIndicator.style.background = "green";
+    else if (sys <= 130 || dia <= 85) bpIndicator.style.background = "yellow";
+    else if (sys <= 140 || dia <= 90) bpIndicator.style.background = "#FF9933";
+    else if (sys <= 160 || dia <= 100) bpIndicator.style.background = "orange";
+    else bpIndicator.style.background = "red";
+}
+bpSys.addEventListener("input", updateBPIndicator);
+bpDia.addEventListener("input", updateBPIndicator);
+const colors = ["darkblue","lightblue","aqua","lime","green","yellow","#FF9933","orange","red"];
+function getColor(value, min, max) {
+    const colors = ["darkblue","lightblue","aqua","lime","green","yellow","#FF9933","orange","red"];
+    let percent = (value - min) / (max - min);
+    percent = Math.max(0, Math.min(1, percent));
+    const idx = Math.floor(percent * (colors.length - 1));
+    return colors[idx];
+}
+const fields = document.querySelectorAll(".userinputs .field input");
+document.querySelector(".userinputs").addEventListener("input", e => {
+    if (e.target.tagName !== "INPUT") return;
+    const input = e.target;
+    const indicator = input.parentElement.querySelector(".indicator");
+    if (indicator) {
+        if (!input.value) {
+            indicator.style.background = "rgba(0,0,0,0.1)";
+            return;
+        }
+        const val = parseFloat(input.value);
+        const id = input.id.toLowerCase();
+        let range;
+        if (["height", "weight", "bmi"].includes(id)) {
+            const ageInput = parseInt(document.getElementById("age").value) || 25;
+            const ageGroup = getAgeGroup(ageInput);
+            range = ageBasedIndicators[id][ageGroup];
+        } else {
+            range = indicators[id];
+        }
+        if (!range) {
+            indicator.style.background = "rgba(0,0,0,0.1)";
+            return;
+        }
+        indicator.style.background = getColor(val, range.min, range.max);
+    }
+    updateHealthMeter();
+});
+const urineBoxes = document.querySelectorAll(".urine-box");
+const urineHidden = document.getElementById("urineColor");
+const urineIndicator = document.getElementById("urineIndicator");
+urineBoxes.forEach(box => {
+  box.addEventListener("click", () => {
+    urineBoxes.forEach(b => b.style.outline = "none");
+    box.style.outline = "3px solid black";
+    const c = box.dataset.value;
+    urineHidden.value = c;
+    if (c === "pale_yellow" || c === "transparent" || c === "light_yellow") {
+      urineIndicator.style.color = "green";
+      urineIndicator.textContent = " Good";
+    } else if (c === "dark_yellow") {
+      urineIndicator.style.color = "orange";
+      urineIndicator.textContent = " Moderate";
+    } else {
+      urineIndicator.style.color = "red";
+      urineIndicator.textContent = " Poor";
+    }
+  });
+});
+function predictDisease() {
+    let disease = "";
+    const fbs = parseFloat(document.getElementById("fbs").value);
+    const ppbs = parseFloat(document.getElementById("ppbs").value);
+    const hba1c = parseFloat(document.getElementById("hba1c").value);
+    const bpSys = parseFloat(document.getElementById("bp-sys").value);
+    const bpDia = parseFloat(document.getElementById("bp-dia").value);
+    const cholesterol = parseFloat(document.getElementById("cholesterol").value);
+    const triglycerides = parseFloat(document.getElementById("triglycerides").value);
+    if (hba1c > 6.4 || fbs > 125 || ppbs > 180) {
+        disease = "Possible Diabetes Mellitus";
+    } else if (bpSys > 140 || bpDia > 90) {
+        disease = "Possible Hypertension";
+    } else if (cholesterol > 240 || triglycerides > 200) {
+        disease = "Possible Hyperlipidemia";
+    } else {
+        disease = "Normal / No Disease Detected";
+    }
+    document.getElementById("disease").value = disease;
+}
+document.querySelector(".userinputs").addEventListener("input", predictDisease);
+
+function displayHealthPercentage() {
+    const meterPercent = Math.min(100, Math.round(calculateHealthScore()));
+    let healthPercent;
+
+    if (meterPercent >= 45 && meterPercent <= 55) healthPercent = 100; // optimal range
+    else if ((meterPercent >= 40 && meterPercent < 45) || (meterPercent > 55 && meterPercent <= 60)) healthPercent = 80; // slightly off
+    else if ((meterPercent >= 30 && meterPercent < 40) || (meterPercent > 60 && meterPercent <= 70)) healthPercent = 60; // average
+    else healthPercent = 30; // very low or very high
+
+    const displayEl = document.querySelector(".healthrateinner");
+    displayEl.textContent = `Health Status: ${healthPercent}%`;
+}
+
+document.querySelector(".userinputs").addEventListener("input", displayHealthPercentage);
+displayHealthPercentage();
+
+
+</script>
+</body>
+</html>

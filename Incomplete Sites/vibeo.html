@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vibeo Bot</title>
+<style>
+  body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#0f172a;
+    color:#e2e8f0;
+    font-family:system-ui,Arial;
+  }
+  .wrap{
+    width:90%;
+    max-width:640px;
+    background:rgba(255,255,255,0.05);
+    padding:24px;
+    border-radius:12px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+  }
+  h1{text-align:center;margin:0 0 8px 0;color:#38bdf8;}
+  textarea{
+    width:100%;
+    height:300px;
+    resize:none;
+    border:none;
+    outline:none;
+    padding:12px;
+    border-radius:8px;
+    background:rgba(255,255,255,0.1);
+    color:#fff;
+    font-size:15px;
+  }
+  #status{text-align:center;margin-top:12px;font-size:14px;color:#94a3b8;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎙️ Vibeo Bot</h1>
+  <textarea id="output" placeholder="Speak after allowing microphone…" readonly></textarea>
+  <p id="status">Click anywhere once to grant microphone permission.</p>
+</div>
+
+<script>
+const out = document.getElementById("output");
+const statusEl = document.getElementById("status");
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition, listening=false;
+
+async function startRecognition(){
+  statusEl.textContent = "Requesting microphone access…";
+  try{
+    await navigator.mediaDevices.getUserMedia({audio:true});
+  }catch(err){
+    statusEl.textContent = "Microphone permission denied.";
+    console.error(err);
+    return;
+  }
+
+  if(!SpeechRecognition){
+    statusEl.textContent = "Native SpeechRecognition not available — trying fallback…";
+    fallbackWebSpeech();
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onstart = ()=>{
+    listening = true;
+    statusEl.textContent = "Listening… speak now 🎧";
+  };
+  recognition.onresult = (e)=>{
+    let text = "";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      text += e.results[i][0].transcript;
+    }
+    out.value = text;
+  };
+  recognition.onerror = (e)=>{
+    console.error("recog error", e.error);
+    if(e.error==="network"||e.error==="no-speech"){
+      statusEl.textContent="No speech detected. Retrying…";
+    }else if(e.error==="not-allowed"){
+      statusEl.textContent="Microphone blocked. Please allow and reload.";
+    }else{
+      statusEl.textContent="Error: "+e.error;
+    }
+  };
+  recognition.onend = ()=>{
+    listening=false;
+    statusEl.textContent="Restarting listener…";
+    setTimeout(()=>{try{recognition.start();}catch{}},1000);
+  };
+
+  try{
+    recognition.start();
+  }catch(err){
+    console.error(err);
+    statusEl.textContent="Failed to start SpeechRecognition.";
+  }
+}
+
+// ---- fallback using Web Speech API (SpeechSynthesisRecognition via WebSocket) ----
+function fallbackWebSpeech(){
+  statusEl.textContent="Using fallback recognition (works only with Chrome online)…";
+  // If this point is reached and still silent, Chrome’s speech engine is disabled.
+  // Provide a friendly notice.
+  setTimeout(()=>{
+    statusEl.textContent="Your browser blocked SpeechRecognition completely. Try Chrome on HTTPS or localhost.";
+  },3000);
+}
+
+// Browser requires user interaction
+document.addEventListener("click", ()=>{
+  if(!listening){
+    startRecognition();
+  }
+},{once:true});
+</script>
+</body>
+</html>

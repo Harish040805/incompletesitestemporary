@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HC3 - Home Construction Cost Calculator</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#0b0c2c;
+  color:#fff;
+  margin:20px;
+}
+.container {
+  background:#1a1b40;
+  padding:25px;
+  border-radius:12px;
+  max-width:75vw;
+  margin:auto;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);
+}
+h1.centero {
+  text-align:center;
+  color:#00ffcc;
+  margin-bottom:30px;
+}
+.row {
+  display:flex;
+  gap:15px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.row select, .row input {
+  padding:10px;
+  font-size:16px;
+  flex:1;
+  border-radius:6px;
+  border:none;
+  background:#2a2b55;
+  color:#fff;
+}
+.materials table {
+  width:100%;
+  border-collapse:collapse;
+  margin-bottom:20px;
+}
+.materials td {
+  padding:10px;
+  vertical-align:middle;
+}
+.materials input {
+  width:100%;
+  padding:8px;
+  background:#2a2b55;
+  color:#fff;
+  border:none;
+  border-radius:5px;
+  font-size:14px;
+}
+.materials span {
+  color:#00ffcc;
+  font-weight:bold;
+}
+.total {
+  font-weight:bold;
+  font-size:20px;
+  text-align:right;
+  margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<h1 class="centero">HC3 - Home Construction Cost Calculator</h1>
+
+<div class="container">
+
+  <div class="row">
+    <select id="unitSelect">
+      <option value="cent">Cent</option>
+      <option value="acre">Acre</option>
+    </select>
+    <input type="number" id="areaInput" placeholder="No.of cent / Acre" min="0" step="0.01">
+    <input type="number" id="budgetInput" placeholder="Maximum Budget" min="0" step="0.01">
+  </div>
+
+  <div class="row">
+    <select id="countrySelect"></select>
+    <select id="stateSelect"></select>
+    <select id="citySelect"></select>
+  </div>
+
+  <div class="materials">
+    <table>
+      <tr>
+        <td><label>Bricks Needed</label></td>
+        <td><input type="number" id="bricksInput" min="0" placeholder="Number of Bricks"></td>
+        <td><span id="bricksValue"></span></td>
+      </tr>
+      <tr>
+        <td><label>Cement Needed</label></td>
+        <td><input type="number" id="cementInput" min="0" placeholder="Number of Cement"></td>
+        <td><span id="cementValue"></span></td>
+      </tr>
+      <tr>
+        <td><label>Glass Needed</label></td>
+        <td><input type="number" id="glassInput" min="0" placeholder="Number of Glass"></td>
+        <td><span id="glassValue"></span></td>
+      </tr>
+      <tr>
+        <td><label>TMP Needed</label></td>
+        <td><input type="number" id="tmpInput" min="0" placeholder="Number of TMP"></td>
+        <td><span id="tmpValue"></span></td>
+      </tr>
+      <tr>
+        <td><label>Paint Needed</label></td>
+        <td><input type="number" id="paintInput" min="0" placeholder="Quantity of Paint"></td>
+        <td><span id="paintValue"></span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="total">Total Construction Cost: <span id="totalCost">0</span></div>
+
+</div>
+
+<script>
+// Country, state, city data
+const countryData = {
+  "India":{"Tamilnadu":["Chennai","Coimbatore"],"Odissa":["Bhubaneswar","Cuttack"],"Arunachal Pradesh":["Itanagar","Tawang"],"Assam":["Guwahati","Silchar"],"Mizoram":["Aizawl","Lunglei"]},
+  "USA":{"California":["Los Angeles","San Francisco"],"Texas":["Houston","Dallas"],"Florida":["Miami","Orlando"],"New York":["New York City","Buffalo"]},
+  "Japan":{"Tokyo":["Shinjuku","Shibuya"],"Osaka":["Kita","Naniwa"]},
+  "Canada":{"Ontario":["Toronto","Ottawa"],"Quebec":["Montreal","Quebec City"]},
+  "Mexico":{"Jalisco":["Guadalajara","Puerto Vallarta"],"Yucatan":["Merida","Valladolid"]},
+  "France":{"Ile-de-France":["Paris","Versailles"],"Provence":["Marseille","Nice"]}
+};
+const currencyRates = {"India":1,"USA":82,"Japan":0.62,"Canada":60,"Mexico":4,"France":90};
+const currencySymbols = {"India":"₹","USA":"$","Japan":"¥","Canada":"C$","Mexico":"MX$","France":"€"};
+
+// DOM elements
+const countrySelect=document.getElementById("countrySelect");
+const stateSelect=document.getElementById("stateSelect");
+const citySelect=document.getElementById("citySelect");
+const areaInput=document.getElementById("areaInput");
+const unitSelect=document.getElementById("unitSelect");
+const budgetInput=document.getElementById("budgetInput");
+const bricksInput=document.getElementById("bricksInput");
+const cementInput=document.getElementById("cementInput");
+const glassInput=document.getElementById("glassInput");
+const tmpInput=document.getElementById("tmpInput");
+const paintInput=document.getElementById("paintInput");
+const totalCostSpan=document.getElementById("totalCost");
+
+let userFixedBudget=false;
+
+// Populate country select
+for(let c in countryData){
+  let opt=document.createElement("option");
+  opt.value=c;
+  opt.text=c;
+  countrySelect.add(opt);
+}
+
+function populateStates(){
+  stateSelect.innerHTML="";
+  citySelect.innerHTML="";
+  let states=countryData[countrySelect.value];
+  for(let s in states){
+    let opt=document.createElement("option");
+    opt.value=s;
+    opt.text=s;
+    stateSelect.add(opt);
+  }
+  populateCities();
+}
+function populateCities(){
+  citySelect.innerHTML="";
+  let cities=countryData[countrySelect.value][stateSelect.value];
+  cities.forEach(city=>{
+    let opt=document.createElement("option");
+    opt.value=city;
+    opt.text=city;
+    citySelect.add(opt);
+  });
+}
+countrySelect.addEventListener("change",populateStates);
+stateSelect.addEventListener("change",populateCities);
+populateStates();
+
+// Update material value spans
+function updateMaterialValues(){
+  document.getElementById("bricksValue").textContent = bricksInput.value;
+  document.getElementById("cementValue").textContent = cementInput.value;
+  document.getElementById("glassValue").textContent = glassInput.value;
+  document.getElementById("tmpValue").textContent = tmpInput.value;
+  document.getElementById("paintValue").textContent = paintInput.value;
+}
+[bricksInput, cementInput, glassInput, tmpInput, paintInput].forEach(input=>{
+  input.addEventListener("input", updateMaterialValues);
+});
+areaInput.addEventListener("input", updateMaterialValues);
+unitSelect.addEventListener("change", updateMaterialValues);
+budgetInput.addEventListener("input", updateMaterialValues);
+
+// Calculate materials and total cost
+function calculateMaterials(){
+  let area=parseFloat(areaInput.value)||0;
+  let multiplier=unitSelect.value==="acre"?100:1;
+  let factor=area*multiplier;
+  let country=countrySelect.value;
+  let rate=currencyRates[country];
+  let maxBudget=parseFloat(budgetInput.value)||Infinity;
+  if(!userFixedBudget && budgetInput.value!="") userFixedBudget=true;
+
+  let bricks=factor*100;
+  let cement=factor*50;
+  let glass=factor*30;
+  let tmp=factor*20;
+  let paint=factor*10;
+
+  let total=bricks+cement+glass+tmp+paint;
+  let ratio=maxBudget/total;
+  if(ratio<1){
+    bricks*=ratio;
+    cement*=ratio;
+    glass*=ratio;
+    tmp*=ratio;
+    paint*=ratio;
+  }
+
+  bricksInput.value=Math.round(bricks);
+  cementInput.value=Math.round(cement);
+  glassInput.value=Math.round(glass);
+  tmpInput.value=Math.round(tmp);
+  paintInput.value=Math.round(paint);
+  totalCostSpan.textContent=currencySymbols[country]+Math.round(total*rate);
+}
+
+areaInput.addEventListener("input",calculateMaterials);
+unitSelect.addEventListener("change",calculateMaterials);
+budgetInput.addEventListener("input",()=>{if(!userFixedBudget) calculateMaterials();});
+[bricksInput,cementInput,glassInput,tmpInput,paintInput].forEach(input=>{
+  input.addEventListener("input",()=>{
+    let bricks=parseFloat(bricksInput.value)||0;
+    let cement=parseFloat(cementInput.value)||0;
+    let glass=parseFloat(glassInput.value)||0;
+    let tmp=parseFloat(tmpInput.value)||0;
+    let paint=parseFloat(paintInput.value)||0;
+    let total=bricks+cement+glass+tmp+paint;
+    let country=countrySelect.value;
+    totalCostSpan.textContent=currencySymbols[country]+Math.round(total*currencyRates[country]);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="https://static.vecteezy.com/system/resources/previews/018/794/378/non_2x/chip-processor-logo-vector.jpg">
+    <title>Adders and Subtractors</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHlzjpKhso3UK6JmTtspbOTieRAmu1ioiw1w&s');
+	background-image: linear-gradient(to right, blue, pink);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    text-align: center;
+    margin-top: 7vh;
+    background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+    padding: 50px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.rules-container {
+    display: flex;
+    justify-content: space-between;
+}
+.columnpano {
+    width: 45%;
+    padding: 20px;
+}
+h1,h3 {
+    color: #ffffff;
+    text-shadow: 2px 2px 5px #000000;
+    margin-bottom: 20px;
+}
+h1{
+    font-size: 38px;
+}
+h3{
+    font-size: 30px;
+}
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+.btn {
+    text-decoration: none;
+    color: #fff;
+    background-color: #0f7cbf;
+    padding: 15px 30px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.btn:hover {
+    background-color: #14689c;
+}
+.btn:active {
+    transform: scale(0.9);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+@media only screen and (max-width: 760px) {
+    .container {
+        margin-top: 20vh;
+        padding: 15px 0;
+    }
+    .button-container {
+        flex-direction: column;
+    }
+    .btn {
+        margin-bottom: 15px;
+    }
+}
+.DPSD-image {
+    width: 300px;
+    height: 200px;
+    margin: 20px auto;
+    border-radius: 50%; 
+}
+.notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #bbb;
+  padding: 20px;
+  width: 80%; 
+  max-width: 800px; 
+  box-sizing: border-box; 
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  display: none;
+}
+.notification.show {
+  display: block;
+  animation: fade-in 0.3s forwards;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.notification-title {
+  font-weight: bold;
+  font-size: 15.5px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #000;
+}
+.notification-message {
+  font-size: 13.5px;
+  margin-bottom: 20px;
+}
+.notification-close {
+  background-color: #7a288a;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.notification-close:hover {
+  background-color: #8b3ab8;
+}
+p {
+    font-size: 12px; 
+}
+	</style>
+</head>
+<body>
+<div id="notification" class="notification">
+  <div class="notification-title">Notification</div>
+  <div class="notification-message">
+  
+  <div class="rules-container">
+    <div class="columnpano">
+  	  <p><b>GENERAL RULES</b></p>
+	  <p style="color: red;"> * In the presence of any notification boxes or alert messages, read the message and kindly click "OK" button to pass them.</p>
+		<p>
+		* Read all the instructions for efficient usage of this website <br>
+	    * Digital Circuits includes Adders, Subtractors, Multipiers, Multipluxers (Mux). <br>
+		* Among all the above mentioned circuits, this websites is meant for the simulation of only Adders and Subtractors. <br>
+	  	* Simulation, logic diagram and truth table is given for all the Adder circuit simulations and the Subtractor circuit simulations for user reference. <br>
+	  	* No separate back button for this website. Use browser buttons or functions for navigation. <br>
+		* To use the Adders or Subtractors, click the desired checkboxes on the body of the Adders or Subtractors. <br>
+	  	* Click on any one of the checkboxes or both on the body of the Adders or Subtractors as per the digital logics. <br>
+	  	* Once you click the checkboxes, the output result will be displayed dynamically. <br>
+	    * Ensure the output with the table given below. <br>
+		* Unclick the checkboxes on the Adders or Subtractors as such to reset the input. <br>
+		* No separate reset button. Refresh the page if needed to reset the inputs. <br>
+		* Giving no inputs is also gives output in the concept of Binary Addion or Subtraction. <br>
+		<br>
+		<b>NOTE :</b> This addition (Binary addition) or subtraction (Binary subtraction) is not like normal decimal addition or subtraction. <br>
+		</p>
+	</div>	
+	<div class="columnpano">
+	<p>
+	  <b>RULES FOR ADDER CIRCUITS</b>
+	  <br><br>
+		* The Adders are used only for binary addition (Addition of 0 and 1 only). <br>
+		* Four cases - addition of 0 with 0, 0 with 1, 1 with 0 and 1 with 1. <br>
+		* Adders are of two types - Half Adders, Full Adders. <br>
+		* Usually, two outputs will be given - one for the sum and another for carry in adders. <br>
+	  	* This rule is common for Half Adder and Full Adder. <br>
+	  <br>
+	  <b>RULES FOR SUBTRACTOR CIRCUITS</b>
+	  <br><br>
+	    * The Subtractors are used only for binary subtraction (Subtraction of 0 and 1 only). <br>
+		* Four cases - subtraction of 0 with 0, 0 with 1, 1 with 0 and 1 with 1. <br>
+		* Subtractors are of two types - Half Subtractors, Full Subtractors. <br>
+		* Usually, two outputs will be given - one for the sum and another for remainder in subtractors. <br>
+	  	* This rule is common for Half Subtractors and Full Subtractor. <br>
+		<br>
+	<button class="notification-close">OK</button>	
+	</p>
+	</div>	
+  </div>
+  </div>
+</div>
+<script>
+window.onload = function() {
+    document.getElementById('notification').classList.add('show');
+    document.querySelector('.notification-close').addEventListener('click', function() {
+        document.getElementById('notification').classList.remove('show');
+    });
+    alert("Kindly read all the instructions carefully before using this site");
+};
+
+const buttons = document.querySelectorAll('.btn');
+
+buttons.forEach(button => {
+    button.addEventListener('mouseover', () => {
+        button.style.transform = 'scale(1.1)';
+    });
+
+    button.addEventListener('mouseout', () => {
+        button.style.transform = 'scale(1)';
+    });
+});
+</script>
+    <div class="container">
+        <h1>ADDERS & SUBTRACTORS</h1>
+		<img src="https://c8.alamy.com/comp/TBGEEE/automotive-pcb-circuit-board-in-the-cartoon-TBGEEE.jpg" alt="Circuit" class="DPSD-image">
+		<h3>- Welcome -</h3>
+        <div class="button-container">
+            <a href="https://harish040805.github.io/adderssubtractors/halfadder.html" class="btn">Half Adder</a>
+		    <a href="https://harish040805.github.io/adderssubtractors/fulladder.html" class="btn">Full Adder</a>
+            <a href="https://harish040805.github.io/adderssubtractors/halfsubtractor.html" class="btn">Half Subtractor</a>
+		    <a href="https://harish040805.github.io/adderssubtractors/fullsubtractor.html" class="btn">Full Adder</a>
+			<a href="https://harish040805.github.io/flipflops/" class="btn">Flip Flops Simulation</a>
+        </div>
+    </div>
+    <br><br><br><br>
+    <script>
+window.onload = function() {
+    alert("Kindly read all the instructions carefully before using this site");
+};
+
+const buttons = document.querySelectorAll('.btn');
+
+buttons.forEach(button => {
+    button.addEventListener('mouseover', () => {
+        button.style.transform = 'scale(1.1)';
+    });
+
+    button.addEventListener('mouseout', () => {
+        button.style.transform = 'scale(1)';
+    });
+});
+	</script>
+</body>
+</html>
