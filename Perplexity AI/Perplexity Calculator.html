@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+.calculator {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #66d3fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#display {
+    width: 95%;
+    height: 40px;
+    font-size: 24px;
+    text-align: right;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.keys {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 10px;
+    margin-top: 20px;
+}
+button {
+    height: 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #fff;
+	color:#000;
+}
+.operator {
+    background-color: #0f5298;
+	color: #fff;
+}
+.arithoperator {
+    background-color: #000080;
+	color: #fff;
+}
+.grksymbol {
+    background-color: #032b44;
+	color: #fff;
+}
+.trigsymbol {
+    background-color: #24a0ed;
+	color: #fff;
+}
+.number {
+    background-color: #6495ed;
+	color: #fff;
+}
+.delclear {
+    background-color: #0000cd;
+	color: #fff;
+}
+	</style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <div class="keys">
+  <button class="delclear" onclick="clearDisplay()">AC</button>
+  <button class="delclear" onclick="deleteChar()">DEL</button>
+  <button class="operator" onclick="addValue('(')">(</button>
+  <button class="operator" onclick="addValue(')')">)</button>
+  <button class="arithoperator" onclick="addValue('%')">%</button>
+  <button class="grksymbol" onclick="addValue('α')">α</button>
+  <button class="trigsymbol" onclick="addValue('sin(')">sin</button>
+  <button class="number" onclick="addValue('7')">7</button>
+  <button class="number" onclick="addValue('8')">8</button>
+  <button class="number" onclick="addValue('9')">9</button>
+  <button class="arithoperator" onclick="addValue('/')">/</button>
+  <button class="grksymbol" onclick="addValue('β')">β</button>
+  <button class="trigsymbol" onclick="addValue('cos(')">cos</button>
+  <button class="number" onclick="addValue('4')">4</button>
+  <button class="number" onclick="addValue('5')">5</button>
+  <button class="number" onclick="addValue('6')">6</button>
+  <button class="arithoperator" onclick="addValue('*')">*</button>
+  <button class="grksymbol" onclick="addValue('γ')">γ</button>
+  <button class="trigsymbol" onclick="addValue('tan(')">tan</button>
+  <button class="number" onclick="addValue('1')">1</button>
+  <button class="number" onclick="addValue('2')">2</button>
+  <button class="number" onclick="addValue('3')">3</button>
+  <button class="arithoperator" onclick="addValue('-')">-</button>
+    <button class="grksymbol" onclick="addValue('δ')">δ</button>
+	  <button class="operator" onclick="addValue('log(')">log</button>
+  <button class="number" onclick="addValue('.')">.</button>
+  <button class="number" onclick="addValue('0')">0</button>
+  	<button class="operator" onclick="addValue(',')">,</button>
+  <button class="arithoperator" onclick="addValue('+')">+</button>
+  <button class="operator" onclick="calculate()">=</button>
+<button class="operator" onclick="addValue('ln(')">ln</button>
+<button class="operator" onclick="addValue('!')">!</button>
+  <button class="operator" onclick="addValue('sqrt(')">√</button>
+  <button class="operator" onclick="addValue('pow(')">x^y</button>
+  <button class="operator" onclick="addValue(Math.PI)">π</button>
+  <button class="operator" onclick="addValue('i')">i</button>
+<button class="operator" onclick="addValue(Math.E)">e</button>
+<button class="operator" onclick="addValue('sum(')">Σ</button>
+<button class="operator" onclick="addValue('Infinity')">∞</button>
+<button class="operator" onclick="addValue('θ')">θ</button>
+<button class="operator" onclick="integrate()">∫</button>
+<button class="operator" onclick="differentiate()">d/dx</button>
+        </div>
+    </div>
+<script>
+let display = document.getElementById('display');
+function addValue(value) {
+    display.value += value;
+}
+function clearDisplay() {
+    display.value = '';
+}
+function deleteChar() {
+    display.value = display.value.slice(0, -1);
+}
+function calculate() {
+    try {
+        let result = eval(display.value.replace(/i/g, 'Math.sqrt(-1)'));
+        display.value = result;
+    } catch (error) {
+        display.value = 'Error';
+    }
+}
+function sin(x) {
+    return Math.sin(x * Math.PI / 180);
+}
+function cos(x) {
+    return Math.cos(x * Math.PI / 180);
+}
+function tan(x) {
+    return Math.tan(x * Math.PI / 180);
+}
+function log(x) {
+    return Math.log(x);
+}
+function sqrt(x) {
+    return Math.sqrt(x);
+}
+function ln(x) {
+    return Math.log(x);
+}
+function pow(x, y) {
+    return Math.pow(x, y);
+}
+function factorial(x) {
+    let result = 1;
+    for (let i = 2; i <= x; i++) {
+        result *= i;
+    }
+    return result;
+}
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('operator')) {
+        switch (e.target.textContent) {
+            case 'sin(':
+                display.value = sin(display.value);
+                break;
+            case 'cos(':
+                display.value = cos(display.value);
+                break;
+            case 'tan(':
+                display.value = tan(display.value);
+                break;
+            case 'log(':
+                display.value = log(display.value);
+                break;
+            case 'ln(':
+                display.value = ln(display.value);
+                break;
+            case 'sqrt(':
+                display.value = sqrt(display.value);
+                break;
+            case 'x^y':
+                display.value = pow(display.value, prompt('Enter exponent'));
+                break;
+            case '!':
+                display.value = factorial(display.value);
+                break;
+            default:
+                break;
+        }
+    }
+});
+</script>
+</body>
+</html>

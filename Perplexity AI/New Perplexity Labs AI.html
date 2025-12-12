@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Perplexity Labs AI</title>
+  <link rel="stylesheet" href="New Perplexity Labs AI.css">
+  <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dsht8f3ff/image/upload/v1713806723/perplexity-ai-logo_v3izup.png">
+   <style>
+        #iframe-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        #close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #006aff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<div style="user-select: none;">
+<body style="
+    background-image: url('C:\\Users\\HP\\OneDrive\\Pictures\\Screenshots\\Screenshot%202025-02-27%20104413.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+	position: relative;
+	background-attachment: fixed;
+	z-index: 10;
+">
+<div class="splash-screen" id="splash-screen">
+        <div class="splash-overlay">
+            <img src="https://i0.wp.com/annmichaelsen.com/wp-content/uploads/2024/07/perplexity.gif?fit=640%2C360&ssl=1">
+        </div>
+</div>
+<script>
+function closeSplash() {
+    document.getElementById('splash-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+}
+setTimeout(closeSplash, 3075);
+</script>
+<script>
+    function closeWelcome() {
+        document.getElementById('welcome-iframe').style.display = 'none';
+        document.getElementById('welcome-container').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+    }
+</script>
+<div id="welcome-container" style="
+        ::-webkit-scrollbar { 
+            width: 12px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: #ff2743; 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background-color: #ff748c; 
+            border: 1px solid black; 
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background-color: #ff8da1; 
+        }
+        overflow-y: scroll;
+    "
+	width="100%" height="100%">
+  <iframe id="welcome-iframe" style="
+        ::-webkit-scrollbar { 
+            width: 12px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: #ff2743; 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background-color: #ff748c; 
+            border: 1px solid black; 
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background-color: #ff8da1; 
+        }
+        overflow-y: scroll;
+    " src="C:\Users\HP\OneDrive\Pictures\Perplexity AI.png" frameborder="0" width="100%" height="100%">
+	</iframe>
+  <button class="Perplexity-AI"> Perplexity AI <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2rXl-YOE83cfs-iP61P42Gb1jOsLnpkMUug&s"></button>
+  <button class="welcome-button" onclick="closeWelcome()">Welcome</button>
+</div>
+<div id="overlay">
+<button id="togglesidebar" onclick="toggleSidebar()">=</button>
+<div id="sidebar" style="display: none;">
+<div class="sidebar">
+	<button id="Devil" style="position: absolute; top: 20px; right: 20px;" onclick="closeSidebar()">X</button>
+    <a class="active" href="#home">Close</a>
+<!-- Calculator -->
+<a href="#" onclick="openCalculatorIframe('calculator-iframe', 'C:/Users/HP/OneDrive/Desktop/Perplexity AI/Perplexity Calculator.html')">
+  <!-- SVG icon -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calculator" viewBox="0 0 16 16">
+  <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+  <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
+</svg>
+  &nbsp; &nbsp; 
+  Calculator 
+</a>
+<iframe 
+  id="calculator-iframe" 
+  frameborder="0" 
+  style="width: 100%; height: 350px; display:none;">
+</iframe>
+<script>
+function openCalculatorIframe(iframeId, url) {
+  try {
+    const iframe = document.getElementById(iframeId);
+    iframe.src = url;
+    iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none';
+  } catch (error) {
+    console.error('Error opening calculator iframe:', error);
+  }
+}
+</script>
+<!-- Calculator close -->
+<!-- Weather -->
+<a href="#" onclick="openWeatherIframe('weather-iframe')">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-sun" viewBox="0 0 16 16">
+  <path d="M7 8a3.5 3.5 0 0 1 3.5 3.555.5.5 0 0 0 .624.492A1.503 1.503 0 0 1 13 13.5a1.5 1.5 0 0 1-1.5 1.5H3a2 2 0 1 1 .1-3.998.5.5 0 0 0 .51-.375A3.5 3.5 0 0 1 7 8m4.473 3a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 16h8.5a2.5 2.5 0 0 0 0-5z"/>
+  <path d="M10.5 1.5a.5.5 0 0 0-1 0v1a.5.5 0 0 0 1 0zm3.743 1.964a.5.5 0 1 0-.707-.707l-.708.707a.5.5 0 0 0 .708.708zm-7.779-.707a.5.5 0 0 0-.707.707l.707.708a.5.5 0 1 0 .708-.708zm1.734 3.374a2 2 0 1 1 3.296 2.198q.3.423.516.898a3 3 0 1 0-4.84-3.225q.529.017 1.028.129m4.484 4.074c.6.215 1.125.59 1.522 1.072a.5.5 0 0 0 .039-.742l-.707-.707a.5.5 0 0 0-.854.377M14.5 6.5a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
+</svg>
+  &nbsp; &nbsp; 
+  Weather and Maps
+</a>
+<iframe 
+  id="weather-iframe" 
+  src="https://embed.ventusky.com/?p=49.61;11.31;6&l=temperature-2m&t=20221013/06&w=soft" 
+  frameborder="0" 
+  width="100%" 
+  height="400"
+  style="display: none;">  
+</iframe>
+<script>
+function openWeatherIframe(iframeId) {
+  const iframe = document.getElementById(iframeId);
+  iframe.src += '';
+  iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+<!-- Weather close -->
+<!-- Calender -->
+<a href="#Calender" onclick="openIframe('calender-iframe', 'C:/Users/HP/OneDrive/Desktop/Perplexity AI/Perplexity Calender.html')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg> &nbsp &nbsp Calender</a><iframe src="about:blank" id="calender-iframe" style="width: 100%; height: 350px; display:none;"></iframe>
+<script>
+    function openIframe(iframeId, url) {
+        var iframe = document.getElementById(iframeId);
+        iframe.src = url;
+        iframe.style.display = iframe.style.display === 'block' ? 'none' : 'block';
+    }
+</script>
+<!-- Calender close -->
+</div>
+</div>
+<script>
+  function toggleSidebar() {
+    var sidebar = document.getElementById("sidebar");
+    if (sidebar.style.display === "none") {
+      sidebar.style.display = "block";
+    } else {
+      sidebar.style.display = "none";
+    }
+  }
+  function closeSidebar() {
+    var sidebar = document.getElementById("sidebar");
+    sidebar.style.display = "none";
+  }
+</script>
+</div>
+<!-- Notification overlay and box -->
+<div id="notification-overlay" style="display:block;">
+    <div id="notification-box">
+        <center>
+		<h2 style="color: white;"> Welcome to Perplexity AI</style></h2>
+        <button id="metaAIButton2" onclick="closeNotificationAndPlayMusic()">Let's Go!</button>
+		</center>
+    </div>
+</div>
+<!-- Music -->
+<!-- Audio element -->
+<audio id="AI-Song" src="C:\Users\HP\Downloads\Puthiya-Manidha.mp3" loop></audio>
+<script>
+    function closeNotificationAndPlayMusic() {
+        document.getElementById("notification-overlay").style.display = "none";
+        document.getElementById("AI-Song").play();
+    }
+
+	function pauseMusic() {
+		document.getElementById("notification-overlay").style.display = "none";
+		document.getElementById("AI-Song").pause();
+	}
+</script>
+<!-- Music close -->
+<div id="MetaAI-Splash-Screen" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  background-image: url('https://i.pinimg.com/originals/ae/d1/1d/aed11d6975231b91c8e992c02b8376da.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+">
+  <span>
+    <h2 style="color:#fff;">
+      <center>Perplexity</center>
+    </h2>
+    <br>
+    <h1 style="color:#fff;">
+      <center>AI</center>
+    </h1>
+  </span>
+</div>
+<script>
+  function closeWelcome() {
+    document.getElementById('welcome-container').style.display = 'none';
+    document.getElementById('MetaAI-Splash-Screen').style.display = 'flex';
+    
+    setTimeout(() => {
+      document.getElementById('MetaAI-Splash-Screen').style.opacity = 0;
+    }, 3000);
+    setTimeout(() => {
+      document.getElementById('MetaAI-Splash-Screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    }, 4000);
+  }
+</script>
+  <!-- Not Executable code -->
+  <br><br><br>
+  <center>
+	<img src = "https://assets.bizclikmedia.net/1336/b9c92286e658119663b97a2267aee9d1:b7f93fa59523b14569bb4b668bb2297b/perplexity-logo.webp" style = "width: 10%; height: 15%;"  id="metaAIButton2" onclick="openModal()">
+  </center>
+  <!-- Not Executable code close -->
+	
+	    <img src="https://infyspringboard.onwingspan.com/web/assets/images/common/chatbot/zoiee-gender-neutral.png" 
+         alt="AI Logo" 
+		 id="IdhuButton"
+		onclick="openModal()">
+  <div class="bottom-taskbarnew">
+    <button id="metaAIButton2" onclick="openModal()">Ask Perplexity Labs AI</button>
+  </div>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span><br><br>
+    <a href="#Idhu" style="display: block;">
+      <img src="https://cdn.dribbble.com/users/7421625/screenshots/18722183/media/57f4bd5aea84c23e226069f65e417704.gif" alt="AI Image" style="width: 100%; height: 480px; object-fit: cover;">
+	  <br>
+	  <div style = "background: rgba(255, 255, 255, .25);">
+		<br>
+			<center><button class="chat-button">Click to Chat</button></center>
+		<br>
+	  </div>
+	</a>
+
+    <div style="margin-bottom: 700px;"></div>
+
+    <span class="close" onclick="closeModal()">&times;</span>
+	<br><br>
+    <div style="margin-bottom: 10px;"></div>
+
+    <div class="resp-container" id="Idhu">
+      <iframe id="metaAIIFrame" src="https://labs.perplexity.ai/" frameborder="0"></iframe>
+    </div>
+  </div>
+</div>
+ <script>
+    var modal = document.getElementById("myModal");
+    
+    function openModal() {
+      modal.style.display = "block";
+    }
+    
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    var iframe = document.getElementById("metaAIIFrame");
+
+    iframe.onload = function() {
+        iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+    };
+  </script>
+   <br><br>
+ <div id="clock">
+        <h1 id="date-time">00:00:00</h1>
+ </div> 
+
+  <script>
+  function showTime() {
+    let time = new Date();
+    let hour = time.getHours();
+    let min = time.getMinutes();
+    let sec = time.getSeconds();
+    let am_pm = "AM";
+    if (hour >= 12) {
+        if (hour > 12) hour -= 12;
+        am_pm = "PM";
+    } else if (hour == 0) {
+        hour = 12;
+        am_pm = "AM";
+    }
+    hour = hour < 10 ? "0" + hour : hour;
+    min = min < 10 ? "0" + min : min;
+    sec = sec < 10 ? "0" + sec : sec;
+    let currentTime = hour + ":" + min + ":" + sec + " " + am_pm;
+    document.getElementById("date-time").innerHTML = currentTime;
+}
+setInterval(showTime, 1000);
+showTime();
+</script>
+</div>
+<br>
+</body>
+</html>

@@ -1,0 +1,134 @@
+HTML
+
+<div class="bottom-taskbarnew">
+    <button id="metaAIButton2" onclick="openModal()">Ask Perplexity Labs AI</button>
+	
+    <img src="https://t4.ftcdn.net/jpg/07/80/18/11/360_F_780181141_hg894PMPXdfzc7AA1Xp4ZL4wyF2Cg2V4.jpg" 
+         alt="AI Logo" 
+         style="width: 30px; 
+                height: 30px; 
+                margin-left:30px; 
+                border-radius: 50%; 
+                object-fit: cover;"
+		onclick="openModal()">
+  </div>
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+	  <br><br><br>
+      <div class="resp-container">
+        <iframe src="https://labs.perplexity.ai/" frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>
+  <script>
+    var modal = document.getElementById("myModal");
+    function openModal() {
+      modal.style.display = "block";
+    }
+    function closeModal() {
+      modal.style.display = "none";
+    }
+    var iframe = document.getElementById("metaAIIFrame");
+    iframe.onload = function() {
+        iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+    };
+  </script>
+  
+  
+CSS
+
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      right: 0; 
+      width: 35%; 
+      height: 95%;
+      overflow: auto;
+    }
+    .modal-content {
+      background-image: url("https://i.pinimg.com/originals/92/99/40/929940c7800ad3868b0e7828d53073a7.gif");
+	  background-size: cover; 
+	  background-repeat: no-repeat; 
+	  background-position: center; 
+	  margin: 0 0 0 0; 
+      padding: 10%;
+      border: 1px solid #888;
+      width: 79%; 
+      height: 80%;  
+      max-height: 100%;
+	  overflow-x: auto;
+      overflow-y: auto; 
+    }
+    @media screen and (orientation: portrait) {
+      .modal-content {
+        width: 80%; 
+        max-height: 30%; 
+        margin: 0 0 0 0;
+      }
+      .resp-container {
+        padding-top: 0%;
+		width: 40%;
+		height: 80%;
+      }
+    }
+    #metaAIButton2 {
+      background-color: #6BBBED; 
+      color: white; 
+      padding: 10px 20px; 
+      border: none;
+      cursor: pointer; 
+    }
+    #metaAIButton2:hover {
+      background-color: #3ca9ed; 
+    }
+    .bottom-taskbarnew {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #0038E1;
+      text-align: center;
+      padding: 10px 0;
+    }
+    .bottom-taskbarnew button {
+      margin: auto;
+    }
+    .resp-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+	  height: 30%;
+      padding-top: 100%; 
+    }
+    .resp-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80%;
+      border: none;
+    }
+	.close {
+  background-color: #FF6666; 
+  border: none;
+  border-radius: 50%; 
+  color: #FFFFFF; 
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.close:hover,
+.close:focus {
+  background-color: #FF3333; 
+  color: #FFFFFF;
+  text-decoration: none;
+  cursor: pointer;
+}
