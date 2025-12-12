@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunny Home - Level 3</title>
+  <style>
+    body {
+      margin: 0;
+      background: url('https://media.tenor.com/Vh00VTqyReYAAAAM/summer-beach-beach.gif') no-repeat center / cover;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #game-container {
+      position: relative;
+      width: 1530px;
+      height: 700px;
+      margin: 20px auto;
+      background: rgba(255,255,255,0.15);
+      border: 3px solid #7f00ff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #7f00ff;
+    }
+#player {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  /* Optional: background color or transparent */
+  background: transparent;
+}
+
+.ear {
+  position: absolute;
+  width: 12px;
+  height: 30px;
+  background: #fff;
+  border: 2px solid #aaa;
+  border-radius: 10px 10px 5px 5px;
+  top: 0;
+  z-index: 2;
+}
+
+.left-ear {
+  left: 2px;
+  transform: rotate(-15deg);
+}
+
+.right-ear {
+  right: 2px;
+  transform: rotate(15deg);
+}
+
+.face {
+  position: absolute;
+  top: 15px;
+  left: 5px;
+  width: 40px;
+  height: 35px;
+  background: #fff;
+  border: 2px solid #aaa;
+  border-radius: 50% / 60%;
+  z-index: 3;
+}
+
+.eye {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: black;
+  border-radius: 50%;
+  top: 10px;
+}
+
+.left-eye {
+  left: 10px;
+}
+
+.right-eye {
+  right: 10px;
+}
+
+.nose {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 8px;
+  height: 5px;
+  background: pink;
+  border-radius: 4px / 2.5px;
+  transform: translateX(-50%);
+}
+
+.mouth {
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  width: 14px;
+  height: 4px;
+  border-bottom: 2px solid pink;
+  border-radius: 0 0 14px 14px;
+  transform: translateX(-50%);
+}
+
+    .surface {
+      position: absolute;
+      background: #3e2f63;
+      height: 10px;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+    }
+    .obstacle {
+      position: absolute;
+      width: 80px;
+      height: 30px;
+      background: #9b59b6;
+      border-radius: 5px;
+      top: 0;
+      z-index: 5;
+    }
+    .palace {
+      position: absolute;
+      width: 120px;
+      height: 160px;
+      background: url('https://cdn-icons-png.flaticon.com/512/204/204374.png') no-repeat center / contain;
+      top: 142px;
+      left: 800px;
+      z-index: 3;
+    }
+    .door {
+      position: absolute;
+      width: 50px;
+      height: 80px;
+      background: url('https://cdn-icons-png.flaticon.com/512/190/190411.png') no-repeat center / contain;
+      top: 60px;
+      left: 900px;
+      z-index: 4;
+      cursor: pointer;
+    }
+    #win-notification {
+      position: absolute;
+      width: 300px;
+      height: 200px;
+      background: rgba(255, 215, 0, 0.9);
+      border-radius: 15px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      text-align: center;
+      font-size: 2rem;
+      color: #2d0031;
+      box-shadow: 0 0 20px #7f00ff;
+      z-index: 20;
+      padding-top: 30px;
+    }
+    #win-buttons {
+      margin-top: 20px;
+    }
+    #win-buttons button {
+      margin: 0 10px;
+      padding: 10px 15px;
+      border: none;
+      background-color: #7f00ff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    #win-buttons button:hover {
+      background-color: #e100ff;
+    }
+    .control-panel-container {
+      width: 100%;
+      text-align: center;
+      margin-top: 15px;
+    }
+    .control-panel {
+      display: inline-flex;
+      gap: 10px;
+    }
+    .control-button {
+      width: 50px;
+      height: 50px;
+      background: #7f00ff;
+      color: white;
+      font-size: 2rem;
+      line-height: 50px;
+      cursor: pointer;
+      border-radius: 10px;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+    .control-button:hover {
+      background: #e100ff;
+    }
+    .blank-control {
+      width: 50px;
+      height: 50px;
+      background: transparent;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <nav class="menu-bar">
+      <ul>
+        <li style="color:#7f00ff; font-weight:bold; font-size:1.5rem; padding: 10px;">BUNNY HOME - Level 3</li>
+      </ul>
+    </nav>
+<div id="player">
+  <div class="ear left-ear"></div>
+  <div class="ear right-ear"></div>
+  <div class="face">
+    <div class="eye left-eye"></div>
+    <div class="eye right-eye"></div>
+    <div class="nose"></div>
+    <div class="mouth"></div>
+  </div>
+</div>
+    <div class="surface"></div>
+    <div class="obstacle" style="left: 200px; top: 520px;"></div>
+    <div class="obstacle" style="left: 400px; top: 450px;"></div>
+    <div class="obstacle" style="left: 690px; top: 250px;"></div>
+    <div class="obstacle" style="left: 600px; top: 380px;"></div>
+    <div class="palace"></div>
+    <div class="door"></div>
+    <div id="win-notification">
+      <center>You Win!</center>
+      <div id="win-buttons">
+        <button onclick="location.href='Bunny Home - Front Page.html'">Home</button>
+        <button id="play-again-button">Play Again</button>
+        <button onclick="location.href='Bunny Home - Front Page.html'">Next Level</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="control-panel-container">
+    <div class="control-panel">
+      <div class="blank-control"></div>
+      <div class="control-button" id="up-control">↑</div>
+      <div class="blank-control"></div>
+      <div class="control-button" id="left-control">←</div>
+      <div class="control-button" id="stop-control">&#x25CB;</div>
+      <div class="control-button" id="right-control">→</div>
+    </div>
+  </div>
+
+  <script>
+    const player = document.getElementById('player');
+    const gameContainer = document.getElementById('game-container');
+    const winNotification = document.getElementById('win-notification');
+
+    const upButton = document.getElementById('up-control');
+    const leftButton = document.getElementById('left-control');
+    const stopButton = document.getElementById('stop-control');
+    const rightButton = document.getElementById('right-control');
+
+    upButton.addEventListener('click', () => {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
+    });
+
+    leftButton.addEventListener('click', () => {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+    });
+
+    stopButton.addEventListener('click', () => {
+      playerLeft = player.offsetLeft;
+      playerTop = player.offsetTop;
+      playerVelocity = 0;
+      isJumping = false;
+      isOnObstacle = false;
+    });
+
+    rightButton.addEventListener('click', () => {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+    });
+
+    // Initial positions and state
+    let playerLeft = gameContainer.offsetWidth / 2;
+    let playerTop = gameContainer.offsetHeight - 60;
+    let isJumping = false;
+    let gravity = 6;
+    let isOnObstacle = false;
+    let playerVelocity = 0;
+
+    // Setup obstacles with higher speed for Level 3
+    const obstacles = document.querySelectorAll('.obstacle');
+    obstacles.forEach((obstacle) => {
+      obstacle.speed = Math.random() * 10 + 5; // Speed multiplier increased for level 3
+      obstacle.direction = Math.random() < 0.5 ? -1 : 1;
+    });
+
+    player.style.left = playerLeft + 'px';
+    player.style.top = playerTop + 'px';
+
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          playerLeft = Math.max(0, playerLeft - 10);
+          break;
+        case 'ArrowRight':
+          playerLeft = Math.min(gameContainer.offsetWidth - player.offsetWidth, playerLeft + 10);
+          break;
+        case 'ArrowUp':
+          if (!isJumping && !isOnObstacle) {
+            isJumping = true;
+            playerVelocity = -25;
+          }
+          break;
+      }
+      player.style.left = playerLeft + 'px';
+    });
+
+    const gameLoop = () => {
+      if (isJumping) {
+        playerTop += playerVelocity;
+        playerVelocity += gravity;
+        if (playerVelocity >= 0) isJumping = false;
+      } else {
+        if (!isOnObstacle && playerTop < gameContainer.offsetHeight - player.offsetHeight - 10) {
+          playerTop += gravity;
+        }
+      }
+
+      // Check ground contact
+      if (playerTop >= gameContainer.offsetHeight - player.offsetHeight - 10) {
+        playerTop = gameContainer.offsetHeight - player.offsetHeight - 10;
+        playerVelocity = 0;
+        isOnObstacle = false;
+        isJumping = false;
+      } else {
+        isOnObstacle = false;
+        const playerRect = player.getBoundingClientRect();
+
+        for (let obstacle of obstacles) {
+          const obstacleRect = obstacle.getBoundingClientRect();
+
+          if (
+            playerRect.left < obstacleRect.right &&
+            playerRect.right > obstacleRect.left &&
+            playerRect.bottom > obstacleRect.top &&
+            playerRect.top < obstacleRect.bottom
+          ) {
+            // Bunny stands on obstacle (no jump)
+            if (!isJumping && playerRect.bottom <= obstacleRect.bottom + 10) {
+              playerTop = obstacle.offsetTop - player.offsetHeight;
+              playerVelocity = 0;
+              isOnObstacle = true;
+
+              // Move player along with obstacle
+              playerLeft += obstacle.speed * obstacle.direction;
+              playerLeft = Math.min(Math.max(0, playerLeft), gameContainer.offsetWidth - player.offsetWidth);
+              player.style.left = playerLeft + 'px';
+            }
+          }
+        }
+      }
+
+      player.style.top = playerTop + 'px';
+
+      // Move obstacles
+      obstacles.forEach(obstacle => {
+        let left = parseFloat(obstacle.style.left);
+        left += obstacle.speed * obstacle.direction;
+        if (left < 0) {
+          left = 0;
+          obstacle.direction *= -1;
+        } else if (left > gameContainer.offsetWidth - obstacle.offsetWidth) {
+          left = gameContainer.offsetWidth - obstacle.offsetWidth;
+          obstacle.direction *= -1;
+        }
+        obstacle.style.left = left + 'px';
+      });
+
+      // Check for win (door)
+      const door = document.querySelector('.door');
+      const doorRect = door.getBoundingClientRect();
+      const playerRect = player.getBoundingClientRect();
+
+      if (
+        playerRect.left < doorRect.right &&
+        playerRect.right > doorRect.left &&
+        playerRect.bottom > doorRect.top &&
+        playerRect.top < doorRect.bottom
+      ) {
+        winNotification.style.display = 'block';
+        clearInterval(loopInterval);
+      }
+    };
+
+    const loopInterval = setInterval(gameLoop, 16);
+
+    // Play again button handler
+    document.getElementById('play-again-button').addEventListener('click', () => {
+      location.reload();
+    });
+  </script>
+</body>
+</html>

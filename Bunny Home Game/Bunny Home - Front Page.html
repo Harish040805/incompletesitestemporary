@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunny Home Game - Front Page</title>
+	<link rel="stylesheet" href="Bunny Home.css">
+	<link rel='icon' href='https://i.pinimg.com/736x/bf/80/4a/bf804a1e545c28d7df21f04b1755712d.jpg' />
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #FFCD78;
+}
+.level-button {
+    width: 200px;
+    height: 100px;
+    font-size: 24px;
+    margin: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #FFD700; 
+    color: #03055B; 
+    cursor: pointer;
+    transition: background-color 0.3s; 
+	border: 2px solid black;
+}
+.level-button:hover {
+    background-color: #FFC400; 
+}
+.level-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1px;
+}      
+.level-sidebar {
+    width: 20vw; 
+    background-size: contain; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    height: 100vh; 
+}
+.level-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    justify-content: center;
+}
+.left-image {
+    background-image: url('https://www.clipartmax.com/png/middle/142-1426003_orange-rabbit-clipart.png');
+	transform: scaleX(-1);
+}        
+.right-image {
+    background-image: url('https://www.clipartmax.com/png/middle/142-1426003_orange-rabbit-clipart.png');
+}
+h1 {
+	font-family: Comic Sans MS, cursive;
+	font-size: 48px;
+	font-weight: bold;
+	margin-bottom: 20px;
+	color: blue;
+	text-shadow: 
+    0px 0px 10px #FFD700,
+    2px 2px 5px #FFD700, 
+    -2px -2px 5px #FFD700; 
+	background: #fff;
+}
+    </style>
+</head>
+<body>
+	<div class="splash-screen">
+        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/70ea17107438539.60fdf31a103a4.gif" alt="Splash Screen GIF">
+    </div>
+	<script>
+const splashDuration = 3000;
+
+setTimeout(() => {
+    document.querySelector('.splash-screen').style.display = 'none';
+}, splashDuration);
+	</script>
+<iframe 
+    id="welcome-iframe" 
+    srcdoc="
+    <html>
+      <head>
+        <style>
+          body {
+            background: url('https://img.freepik.com/premium-photo/cute-little-cartoon-rabbit-yellow-solid-background-minimalism-style_155390-2189.jpg') 
+			no-repeat right;
+			background-size: contain;
+            margin: 0;
+            height: 100vh;
+			width: 137vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          }
+ body::-webkit-scrollbar { 
+    display: none;
+  }
+    
+    /* Warning message styles */
+    #warning-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ff9900;
+      padding: 10px;
+      border-radius: 5px;
+    }
+.title {
+            font-family: Comic Sans MS, cursive;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: blue;
+  text-shadow: 
+    0px 0px 10px #FFD700,
+    2px 2px 5px #FFD700, 
+    -2px -2px 5px #FFD700; 
+}
+.titleandbutton{
+	background: #fff;
+}
+          
+.button {
+  padding: 10px 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: blue;
+  background-color: #FFD700; 
+  border: 2px solid #FFD700;
+  border-radius: 10px;
+  transition: all 0.1s ease-in-out; 
+}
+
+.button:hover {
+  background-color: blue;
+  color: #FFD700; 
+  border: 2px solid #FFD700; 
+  box-shadow: 0px 0px 10px #FFD700;
+}
+        </style>
+      </head>
+      <body>
+		<div class='titleandbutton'>
+			<div class='title'>
+				<br>
+				&nbsp &nbsp Welcome to BUNNY HOME! &nbsp &nbsp 
+				<br>
+			</div>
+			<center>
+				<button class='button' onclick='startGame()'>Start Game</button>
+			</center>
+			<br><br>
+		</div>
+		
+        <script>
+          function startGame() {
+            parent.document.getElementById('welcome-iframe').remove();
+          }
+        </script>
+      </body>
+    </html>
+    " 
+    			scrolling="no" frameborder="0">
+  </iframe>
+    <div class="level-container">
+        <div class="level-sidebar left-image"></div>
+        <div class="level-content">
+            <h1>&nbsp; LEVELS &nbsp;</h1>
+            <button class="level-button" onclick="location.href='file:///C:/Users/HP/OneDrive/Desktop/Bunny%20Home%20Game/Bunny%20Home%20-%20Level%2001.html'">Level 1 <br> (Easy)</button>
+            <button class="level-button" onclick="location.href='file:///C:/Users/HP/OneDrive/Desktop/Bunny%20Home%20Game/Bunny%20Home%20-%20Level%2002.html'">Level 2 <br> (Medium)</button>
+            <button class="level-button" onclick="location.href='file:///C:/Users/HP/OneDrive/Desktop/Bunny%20Home%20Game/Bunny%20Home%20-%20Level%203.html'">Level 3 <br> (Difficult)</button>
+        </div>
+        <div class="level-sidebar right-image"></div>
+    </div>
+</body>
+</html>
