@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Vertices App</title>
+<script src="https://unpkg.com/vue@3"></script>
+<style>
+body { margin: 0; overflow: hidden; background: #000; }
+#app { width: 100vw; height: 100vh; position: relative; }
+.vertex { width: 22px; height: 22px; border-radius: 50%; position: absolute; background: rgba(255,255,255,0.2); cursor: move; 
+border: 2px solid rgba(255,255,255,0.5); backdrop-filter: blur(4px); }
+.vertex:hover { background: rgba(255,255,255,0.4); transform: scale(1.15); }
+svg { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+.line { stroke: rgba(255,255,255,0.45); stroke-width: 3; }
+.overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; display:flex; justify-content:center; font-size:70px; 
+background: radial-gradient(circle at center, #ff4de6, #ffd5f0 60%, #ffffff 100%); align-items:center; color:#ffffff; 
+font-family: "Merriweather", serif; letter-spacing: 4px; animation: 2s infinite ease-in-out; 
+text-shadow: 0 0 10px #fff, 0 0 25px #ff9df7, 0 0 40px #ff4de6, 0 0 60px #ffffff; }
+</style>
+</head>
+<body>
+<div id="app">
+    <svg><line v-for="(l,i) in lines" :key="i" class="line" :x1="l.x1" :y1="l.y1" :x2="l.x2" :y2="l.y2"/></svg>
+    <div class="vertex" v-for="v in vertices" :key="v.id" :style="{ left: v.x + 'px', top: v.y + 'px' }" 
+    @mousedown="startDrag(v,$event)" @click="select(v)"></div>
+    <div v-if="showOverlay" class="overlay">Happy Birthday!</div>
+</div>
+<script>
+const { createApp } = Vue;
+createApp({
+    data() {
+        return { vertices: [], lines: [], dragging: null, offsetX: 0, offsetY: 0, selected: null,
+            screenW: window.innerWidth, screenH: window.innerHeight, showOverlay: false
+        };
+    },
+    mounted() { this.generateVertices(); window.addEventListener("mousemove", this.drag); 
+                window.addEventListener("mouseup", this.stopDrag); },
+    methods: {
+        generateVertices() {
+            let n = Math.floor(Math.random() * 8) + 5;
+            for (let i = 0; i < n; i++) {
+                this.vertices.push({ 
+                    id: i, x: Math.random() * (this.screenW - 30), y: Math.random() * (this.screenH - 30), connected: false
+                });
+            }
+        },
+        startDrag(v, e) { this.dragging = v; this.offsetX = e.clientX - v.x; this.offsetY = e.clientY - v.y; },
+        drag(e) {
+            if (!this.dragging) return;
+            let newX = e.clientX - this.offsetX; let newY = e.clientY - this.offsetY;
+            newX = Math.max(0, Math.min(this.screenW - 22, newX)); newY = Math.max(0, Math.min(this.screenH - 22, newY));
+            this.dragging.x = newX; this.dragging.y = newY; this.updateLines();
+        },
+        stopDrag() { this.dragging = null; },
+        select(v) {
+            if (!this.selected) { this.selected = v; } 
+            else if (this.selected.id !== v.id) { this.connect(this.selected, v); this.selected = null; }
+        },
+        connect(a, b) {
+            this.lines.push({ x1: a.x + 11, y1: a.y + 11, x2: b.x + 11, y2: b.y + 11, a: a.id, b: b.id });
+            a.connected = true; b.connected = true; this.checkFinished();
+        },
+        updateLines() {
+            this.lines = this.lines.map(l => {
+                let v1 = this.vertices.find(v => v.id === l.a);
+                let v2 = this.vertices.find(v => v.id === l.b);
+                return { x1: v1.x + 11, y1: v1.y + 11, x2: v2.x + 11, y2: v2.y + 11, a: l.a, b: l.b };
+            });
+        },
+        checkFinished() { if (this.vertices.every(v => v.connected)) { this.showOverlay = true; } }
+    }
+}).mount("#app");
+</script>
+
+</body>
+</html>

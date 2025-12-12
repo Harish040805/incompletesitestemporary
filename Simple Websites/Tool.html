@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool</title>
+    <style>
+        .container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+            margin: 20px;
+            display: inline-block;
+        }
+        .drag-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: blue;
+            cursor: move;
+        }
+        .rotate-square {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            cursor: grab;
+        }
+        .slide-triangle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateX(0px);
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 50px solid green;
+            cursor: grab;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="drag-container">
+        <div class="drag-circle"></div>
+    </div>
+    <div class="container" id="rotate-container">
+        <div class="rotate-square"></div>
+    </div>
+    <div class="container" id="slide-container">
+        <div class="slide-triangle"></div>
+    </div>
+    <script>
+let activeElement = null;
+let offsetX = 0;
+let offsetY = 0;
+let angle = 0;
+document.addEventListener('mousedown', (e) => {
+    if (e.target.classList.contains('drag-circle')) {
+        activeElement = e.target;
+        let rect = activeElement.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+    } else if (e.target.classList.contains('rotate-square')) {
+        activeElement = e.target;
+        let rect = activeElement.getBoundingClientRect();
+        let centerX = rect.left + activeElement.offsetWidth / 2;
+        let centerY = rect.top + activeElement.offsetHeight / 2;
+        let x = e.clientX - centerX;
+        let y = e.clientY - centerY;
+        angle = Math.atan2(y, x) * (180 / Math.PI);
+    } else if (e.target.classList.contains('slide-triangle')) {
+        activeElement = e.target;
+        let rect = activeElement.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+    }
+});
+document.addEventListener('mousemove', (e) => {
+    if (activeElement) {
+        if (activeElement.classList.contains('drag-circle')) {
+            let newX = e.clientX - offsetX;
+            let newY = e.clientY - offsetY;
+            activeElement.style.top = `${newY}px`;
+            activeElement.style.left = `${newX}px`;
+        } else if (activeElement.classList.contains('rotate-square')) {
+            let rect = activeElement.getBoundingClientRect();
+            let centerX = rect.left + activeElement.offsetWidth / 2;
+            let centerY = rect.top + activeElement.offsetHeight / 2;
+            let x = e.clientX - centerX;
+            let y = e.clientY - centerY;
+            let newAngle = Math.atan2(y, x) * (180 / Math.PI);
+            activeElement.style.transform = `translate(-50%, -50%) rotate(${newAngle - angle}deg)`;
+        } else if (activeElement.classList.contains('slide-triangle')) {
+            let activeElement = null;
+document.addEventListener('mousedown', (e) => {
+    if (e.target.classList.contains('slide-triangle')) {
+        activeElement = e.target;
+        offsetX = e.clientX - activeElement.offsetLeft;
+    }
+});
+document.addEventListener('mousemove', (e) => {
+    if (activeElement) {
+        let newX = e.clientX - offsetX;
+        if (newX > 0 && newX < window.innerWidth - activeElement.offsetWidth) {
+            activeElement.style.left = `${newX}px`;
+        }
+    }
+});
+document.addEventListener('mouseup', () => {
+    activeElement = null;
+});
+        }
+    }
+});
+document.addEventListener('mouseup', () => {
+    activeElement = null;
+});
+    </script>
+</body>
+</html>
