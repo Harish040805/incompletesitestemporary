@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Command Line Adventure</title>
+<style>
+body{
+  background:#111;
+  color:#0f0;
+  font-family:monospace;
+  padding:20px;
+}
+#game{
+  width:100%;
+  height:70vh;
+  background:#000;
+  overflow-y:auto;
+  padding:10px;
+  border:2px solid #0f0;
+}
+#input{
+  width:100%;
+  padding:10px;
+  font-size:18px;
+  background:#000;
+  color:#0f0;
+  border:2px solid #0f0;
+  outline:none;
+}
+</style>
+</head>
+<body>
+
+<div id="game"></div>
+<input id="input" autocomplete="off" />
+
+<script>
+const game=document.getElementById("game");
+const input=document.getElementById("input");
+function print(t){game.innerHTML+=t+"<br>";game.scrollTop=game.scrollHeight;}
+function ask(){return new Promise(res=>{input.onkeydown=e=>{if(e.key==="Enter"){const v=input.value.trim();input.value="";print("> "+v);res(v);}}})}
+
+async function start(){
+print("You awaken on a cold stone floor in the middle of a vast forest temple.");
+print("Legends say the Temple of Orrin shifts its halls every sunrise.");
+print("You must escape before the temple seals itself.");
+print("Exits lead north, east, and west.<br>");
+
+let torch=false;
+let key=false;
+let sword=false;
+
+while(true){
+const c=await ask();
+
+if(c==="north"){
+print("You enter a long corridor lit by faint blue flames.");
+print("A ghostly figure blocks the far doorway.");
+print("Type 'talk', 'run', or 'back'.");
+}
+
+else if(c==="talk"){
+print("The spirit whispers: 'Light reveals truth. Seek the torch.'");
+}
+
+else if(c==="run"){
+print("The spirit screams. You are frozen in place.");
+print("GAME OVER");
+break;
+}
+
+else if(c==="east"){
+print("You reach a dusty library with collapsed shelves.");
+print("Something glows beneath rubble.");
+print("Type 'search' or 'back'.");
+}
+
+else if(c==="search"){
+if(!torch){
+print("You uncover an ancient torch. It lights itself as you touch it.");
+torch=true;
+}else{
+print("There's nothing else here.");
+}
+}
+
+else if(c==="west"){
+print("You find a stone chamber with a giant sealed door.");
+print("A pedestal stands in front of it.");
+print("Type 'inspect' or 'back'.");
+}
+
+else if(c==="inspect"){
+if(torch&&!key){
+print("With the torch's light, a hidden compartment opens, revealing a golden key.");
+key=true;
+}else if(key){
+print("The pedestal is empty now.");
+}else{
+print("It's too dark to see anything useful.");
+}
+}
+
+else if(c==="south"){
+print("You cannot go south here.");
+}
+
+else if(c==="back"){
+print("You return to the central chamber. Exits lead north, east, and west.");
+}
+
+else if(c==="use key"){
+if(key){
+print("You return to the sealed chamber. The key fits the door.");
+print("Beyond it lies a dark arena filled with shadows.");
+print("A massive stone guardian rises.");
+print("Type 'fight' or 'back'.");
+}else{
+print("You have no key.");
+}
+}
+
+else if(c==="fight"){
+if(!sword){
+print("You have no weapon. The guardian crushes you.");
+print("GAME OVER");
+break;
+}else{
+print("With the sword in hand, you defeat the guardian.");
+print("A portal opens behind it.");
+print("YOU ESCAPED THE TEMPLE!");
+break;
+}
+}
+
+else if(c==="north room"){
+print("Not a valid command here.");
+}
+
+else if(c==="temple"){
+print("Not a command.");
+}
+
+else if(c==="explore"){
+print("Be specific: north, east, west.");
+}
+
+else if(c==="torch"){
+if(torch){
+print("Your torch burns steadily.");
+}else{
+print("You don't have a torch.");
+}
+}
+
+else if(c==="key"){
+print(key?"You have a golden key.":"You have no key.");
+}
+
+else if(c==="inv"){
+let items=[];
+if(torch)items.push("Torch");
+if(key)items.push("Golden Key");
+if(sword)items.push("Sword");
+print(items.length?("Inventory: "+items.join(", ")):("You carry nothing."));
+}
+
+else if(c==="enter arena"){
+print("Not yet. You must 'use key' first.");
+}
+
+else if(c==="southwest"||c==="northeast"||c==="northwest"||c==="southeast"){
+print("You cannot go that way.");
+}
+
+else if(c==="altar"){
+print("There is no altar here.");
+}
+
+else if(c==="rest"){
+print("This place is too dangerous to rest.");
+}
+
+else if(c==="take sword"){
+if(!sword){
+print("A hidden rack slides out of the wall. A blade rests on it. You take the sword.");
+sword=true;
+}else{
+print("You already have the sword.");
+}
+}
+
+else{
+print("Invalid command.");
+}
+}
+
+input.disabled=true;
+}
+
+start();
+</script>
+
+</body>
+</html>

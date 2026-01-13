@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Convertor</title>
+    <style>
+        .box{
+            width: 200px;
+            height: 200px;
+            background: rgb(0, 179, 255);
+            transition: all 0.3s ease;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        .circle{
+            border-radius: 50%;
+            background: rgb(102, 35, 218);
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <button onclick="makeCircle()">Circle</button>
+    <button onclick="makeRectangle()">Square</button>
+    <script>
+        const box = document.querySelector('.box');
+
+        function makeCircle() {
+            box.classList.add('circle');
+        }
+
+        function makeRectangle() {
+            box.classList.remove('circle');
+        }
+    </script>
+</body>
+</html>
