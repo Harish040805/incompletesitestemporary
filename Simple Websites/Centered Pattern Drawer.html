@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centered Pattern Drawer</title>
+<style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #0f172a; color: #e5e7eb; display: flex;
+        flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
+    .input-bar { width: 98vw; padding: 10px; display: flex; gap: 10px; justify-content: center; 
+		background: #020617; }
+    input { flex: 1; max-width: 400px; padding: 10px; font-size: 16px; border-radius: 6px;
+        border: none; outline: none; }
+    button { padding: 10px 18px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer; 
+		background: #38bdf8; color: #020617; font-weight: bold; }
+    button:hover { background: #0ea5e9; }
+    .canvas { width: 98vw; height: 98vh; display: flex; align-items: center; justify-content: center;
+        overflow: hidden; }
+    .pattern { display: flex; flex-direction: column; align-items: center; justify-content: center;
+		gap: 6px; }
+    .row { display: flex; gap: 6px; justify-content: center; }
+	.block { width: 22px; height: 22px; border-radius: 6px; background: linear-gradient(135deg, #38bdf8, #6366f1);
+		box-shadow: 0 4px 10px rgba(56,189,248,0.4); }
+@media (max-width: 600px) {
+    .block {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="input-bar">
+    <input id="series" placeholder="Enter numbers e.g. 1,2,3,4">
+    <button onclick="drawPattern()">Draw</button>
+</div>
+<div class="canvas">
+    <div id="pattern" class="pattern"></div>
+</div>
+<script>
+function drawPattern() {
+    const input = document.getElementById("series").value.trim();
+    const container = document.getElementById("pattern");
+    container.innerHTML = "";
+    if (!input) return;
+    const numbers = input.split(",").map(n => parseInt(n.trim())).filter(n => !isNaN(n) && n > 0);
+    if (numbers.length === 0) return;
+    const maxStars = Math.max(...numbers);
+    const maxWidth = Math.min(window.innerWidth * 0.98, maxStars * 12);
+    const maxHeight = Math.min(window.innerHeight * 0.98, numbers.length * 20);
+    container.style.maxWidth = maxWidth + "px";
+    container.style.maxHeight = maxHeight + "px";
+
+numbers.forEach(n => {
+    const row = document.createElement("div");
+    row.className = "row";
+
+    for (let i = 0; i < n; i++) {
+        const block = document.createElement("div");
+        block.className = "block";
+        row.appendChild(block);
+    }
+
+    container.appendChild(row);
+});
+    const scaleX = maxWidth / (maxStars * 12);
+    const scaleY = maxHeight / (numbers.length * 20);
+    const scale = Math.min(1, scaleX, scaleY);
+    container.style.transform = `scale(${scale})`;
+}
+</script>
+</body>
+</html>
