@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optimal Resource Allocation</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<h1>Optimal Resource Allocation (Lagrange Method)</h1>
+
+<button onclick="solve()">Solve</button>
+
+<pre id="out">Click Solve to compute optimal allocation...</pre>
+
+<script>
+function solve(){
+    fetch("/solve", {
+        method: "POST"
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("out").textContent =
+            "CPU (x): " + data.x + "\n" +
+            "Memory (y): " + data.y + "\n" +
+            "Lambda (Shadow Price): " + data.lambda;
+    })
+    .catch(err => {
+        document.getElementById("out").textContent = "Error solving optimization problem.";
+    });
+}
+</script>
+
+</body>
+</html>
